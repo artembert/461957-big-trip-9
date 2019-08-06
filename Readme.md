@@ -1,7 +1,7 @@
 # Личный проект «Большое путешествие» [![Build status][travis-image]][travis-url]
 
 * Студент: [Артем Береснев](https://up.htmlacademy.ru/ecmascript/9/user/461957).
-* Наставник: `Неизвестно`.
+* Наставник: [Денис Быков](https://htmlacademy.ru/profile/id66426).
 
 ---
 
