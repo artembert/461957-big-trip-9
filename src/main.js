@@ -13,11 +13,12 @@ const render = (markup, container, place = `beforeend`) => {
 
 const renderPage = () => {
   const headerElement = document.getElementById(`trip-info`);
-  const tripControlsElement = document.getElementById(`trip-controls`);
+  const menuTitleElement = document.getElementById(`menu-title`);
+  const filterTitleElement = document.getElementById(`filter-title`);
 
   render(createTripInfoTemplate(), headerElement, `afterbegin`);
-  render(createMenuTemplate(), tripControlsElement, `afterbegin`);
-  render(createFilterTemplate(), tripControlsElement);
+  render(createMenuTemplate(), menuTitleElement, `afterend`);
+  render(createFilterTemplate(), filterTitleElement, `afterend`);
 };
 
 renderPage();
