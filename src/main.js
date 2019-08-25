@@ -7,7 +7,11 @@ import {createEventTemplate} from './components/event';
 import {getEvent} from "./data";
 import {render} from "./util/dom";
 
-const renderPage = () => {
+const EVENT_COUNT = 3;
+
+renderPage();
+
+function renderPage() {
   const headerElement = document.querySelector(`.trip-info`);
   const menuTitleElement = document.querySelector(`.menu-title`);
   const filterTitleElement = document.querySelector(`.filter-title`);
@@ -20,9 +24,11 @@ const renderPage = () => {
 
   const eventsListElement = document.querySelector(`.trip-events__list`);
   render(createEventEditTemplate(), eventsListElement);
-  for (let i = 0; i < 3; i++) {
-    render(createEventTemplate(), eventsListElement);
-  }
-};
+  renderEvents(eventsListElement);
+}
 
-renderPage();
+function renderEvents(eventList) {
+  new Array(EVENT_COUNT)
+  .fill(undefined)
+  .map(() => render(createEventTemplate(getEvent())), eventList);
+}
