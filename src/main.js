@@ -30,5 +30,5 @@ function renderPage() {
 function renderEvents(eventList) {
   new Array(EVENT_COUNT)
   .fill(undefined)
-  .map(() => render(createEventTemplate(getEvent())), eventList);
+  .map(() => render(createEventTemplate(getEvent()), eventList));
 }
