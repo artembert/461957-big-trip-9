@@ -4,33 +4,21 @@ import {createFilterTemplate} from './components/filter';
 import {createDayListTemplate} from './components/day-list';
 import {createEventEditTemplate} from './components/event-edit';
 import {createEventTemplate} from './components/event';
-
-const render = (markup, container, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, markup);
-};
-
-const getByIdFn = (selector) => document.getElementById(selector);
-
-const findElement = (selector, searchFunction = getByIdFn) => {
-  const element = searchFunction(selector);
-  if (!element) {
-    throw new Error(`Element \`${selector}\` did not found`);
-  }
-  return element;
-};
+import {getEvent} from "./data";
+import {render} from "./util/dom";
 
 const renderPage = () => {
-  const headerElement = findElement(`trip-info`);
-  const menuTitleElement = findElement(`menu-title`);
-  const filterTitleElement = findElement(`filter-title`);
-  const scheduleElement = findElement(`trip-events`);
+  const headerElement = document.querySelector(`.trip-info`);
+  const menuTitleElement = document.querySelector(`.menu-title`);
+  const filterTitleElement = document.querySelector(`.filter-title`);
+  const scheduleElement = document.querySelector(`.trip-events`);
 
   render(createTripInfoTemplate(), headerElement, `afterbegin`);
   render(createMenuTemplate(), menuTitleElement, `afterend`);
   render(createFilterTemplate(), filterTitleElement, `afterend`);
   render(createDayListTemplate(), scheduleElement);
 
-  const eventsListElement = findElement(`events-list`);
+  const eventsListElement = document.querySelector(`.trip-events__list`);
   render(createEventEditTemplate(), eventsListElement);
   for (let i = 0; i < 3; i++) {
     render(createEventTemplate(), eventsListElement);
