@@ -1,17 +1,17 @@
 export const moveTypes = [
-  {name: `bus`, icon: `bus`, isPlace: false},
-  {name: `restaurant`, icon: `restaurant`, isPlace: false},
-  {name: `train`, icon: `train`, isPlace: false},
-  {name: `ship`, icon: `ship`, isPlace: false},
-  {name: `transport`, icon: `transport`, isPlace: false},
-  {name: `drive`, icon: `drive`, isPlace: false},
-  {name: `trip`, icon: `trip`, isPlace: false},
+  {name: `bus`, icon: `bus`, preposition: `to`, isPlace: false},
+  {name: `restaurant`, icon: `restaurant`, preposition: `to`, isPlace: false},
+  {name: `train`, icon: `train`, preposition: `to`, isPlace: false},
+  {name: `ship`, icon: `ship`, preposition: `to`, isPlace: false},
+  {name: `transport`, icon: `transport`, preposition: `to`, isPlace: false},
+  {name: `drive`, icon: `drive`, preposition: `to`, isPlace: false},
+  {name: `trip`, icon: `trip`, preposition: `to`, isPlace: false},
 ];
 
 export const placeTypes = [
-  {name: `check`, icon: `check-in`, isPlace: true},
-  {name: `sightseeing`, icon: `sightseeing`, isPlace: true},
-  {name: `restaurant`, icon: `restaurant`, isPlace: true},
+  {name: `check`, icon: `check-in`, preposition: `into`, isPlace: true},
+  {name: `sightseeing`, icon: `sightseeing`, preposition: `at`, isPlace: true},
+  {name: `restaurant`, icon: `restaurant`, preposition: `in`, isPlace: true},
 ];
 
 export const types = moveTypes.concat(placeTypes);
