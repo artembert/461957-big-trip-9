@@ -15,7 +15,8 @@ export const getEvent = () => {
     description: getDescription(descriptions),
     destination: getDestination(cities),
     price: getPrice(),
-    additionalOptions: getAdditionalOptions(additionalOptions)
+    availableOptions: getOptions(additionalOptions, MAX_ADDITIONAL_OPTIONS_COUNT),
+    selectedOptions: getSelectedOptions(additionalOptions),
   };
   console.log(event);
   return event;
@@ -40,8 +41,12 @@ function getDescription(descriptionList) {
   .join(` `);
 }
 
-function getAdditionalOptions(tagList) {
+function getOptions(tagList) {
+  return new Set(tagList);
+}
+
+function getSelectedOptions(tagList, maxLength) {
   return new Set(tagList
   .sort(() => Math.random() - 0.5)
-  .slice(0, getRandomInteger(0, MAX_ADDITIONAL_OPTIONS_COUNT + 1)));
+  .slice(0, getRandomInteger(0, maxLength + 1)));
 }
