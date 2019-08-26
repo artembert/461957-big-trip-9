@@ -3,6 +3,7 @@ import {getRandomInteger} from "./util/math";
 import {cities} from "./models/places";
 import {descriptions} from "./models/descriptions";
 import {options} from "./models/options";
+import setMinutes from 'date-fns/setMinutes';
 
 const MS_IN_DAY = 86400000;
 const MS_IN_MINUTE = 60000;
@@ -12,11 +13,11 @@ const MAX_PRICE = 30;
 const MAX_DESCRIPTION_LENGTH = 3;
 const MAX_ADDITIONAL_OPTIONS_COUNT = 2;
 const MIN_DURATION_HOURS = 0.5;
-const MAX_DURATION_HOURS = 12;
+const MAX_DURATION_HOURS = 6;
 const MINUTES_IN_HOUR = 60;
 const MIN_TIME_INTERVAL = 20;
 
-const dateNow = Date.now();
+const dateNow = setMinutes(Date.now(), MIN_TIME_INTERVAL).getTime();
 
 export const getEvent = () => {
   const event = {
@@ -47,7 +48,7 @@ function getPrice() {
 }
 
 function getDate(currentDate) {
-  return currentDate + 1 + getRandomInteger(-DAYS_IN_WEEK, DAYS_IN_WEEK) * MS_IN_DAY;
+  return currentDate + 1 + getRandomInteger(0, 2 * DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - 0.5);
 }
 
 function getDuration() {
