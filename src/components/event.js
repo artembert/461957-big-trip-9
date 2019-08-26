@@ -1,6 +1,6 @@
 import {ucFirstLetter} from "../util/uc-first";
 
-export const createEventTemplate = ({type, destination, price}) => {
+export const createEventTemplate = ({type, destination, price, selectedOptions}) => {
   return `<li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
@@ -25,11 +25,12 @@ export const createEventTemplate = ({type, destination, price}) => {
 
                     <h4 class="visually-hidden">Offers:</h4>
                     <ul class="event__selected-offers">
+                    ${Array.from(selectedOptions).map((option) =>`
                       <li class="event__offer">
-                        <span class="event__offer-title">Order Uber</span>
+                        <span class="event__offer-title">${option.name}</span>
                         &plus;
-                        &euro;&nbsp;<span class="event__offer-price">20</span>
-                       </li>
+                        &euro;&nbsp;<span class="event__offer-price">${option.price}</span>
+                       </li>`).join(``)}
                     </ul>
 
                     <button class="event__rollup-btn" type="button">

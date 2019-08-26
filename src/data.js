@@ -2,7 +2,7 @@ import {types} from "./models/types";
 import {getRandomInteger} from "./util/math";
 import {cities} from "./models/places";
 import {descriptions} from "./models/descriptions";
-import {additionalOptions} from "./models/additional-options";
+import {options} from "./models/options";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -15,8 +15,8 @@ export const getEvent = () => {
     description: getDescription(descriptions),
     destination: getDestination(cities),
     price: getPrice(),
-    availableOptions: getOptions(additionalOptions, MAX_ADDITIONAL_OPTIONS_COUNT),
-    selectedOptions: getSelectedOptions(additionalOptions),
+    availableOptions: getOptions(options),
+    selectedOptions: getSelectedOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
   };
   console.log(event);
   return event;
