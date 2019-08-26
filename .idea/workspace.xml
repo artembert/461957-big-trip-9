@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3a7a5a73-9be6-4a03-861e-779cf39bcd0c" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="ProjectId" id="1Pq9gx76gpw312erSZK3dvyy9og" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../taskmanager" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.jscs" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.jscs" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.jscs" value="" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3a7a5a73-9be6-4a03-861e-779cf39bcd0c" name="Default Changelist" comment="" />
+      <created>1566590874555</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1566590874555</updated>
+      <workItem from="1566590876808" duration="476000" />
+      <workItem from="1566641919259" duration="1930000" />
+      <workItem from="1566643866109" duration="1227000" />
+      <workItem from="1566654078974" duration="2232000" />
+      <workItem from="1566721528388" duration="4492000" />
+      <workItem from="1566736569636" duration="27000" />
+      <workItem from="1566763473287" duration="3142000" />
+      <workItem from="1566841513509" duration="12936000" />
+    </task>
+    <task id="LOCAL-00001" summary="find elements by class name instead of id">
+      <created>1566724883011</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1566724883011</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add utils math functions">
+      <created>1566725394421</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1566725394421</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add cities and types data">
+      <created>1566725429838</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1566725429838</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Pass data to EventTemplate and rearrange code">
+      <created>1566725561704</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1566725561704</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix renderEvents()">
+      <created>1566725719046</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1566725719046</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Generate event: add type, destination, price">
+      <created>1566763857784</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1566763857784</updated>
+    </task>
+    <task id="LOCAL-00007" summary="add method to get description">
+      <created>1566766608545</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1566766608545</updated>
+    </task>
+    <task id="LOCAL-00008" summary="print destination">
+      <created>1566842208612</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1566842208612</updated>
+    </task>
+    <task id="LOCAL-00009" summary="generate additionalOptions">
+      <created>1566842766116</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1566842766116</updated>
+    </task>
+    <task id="LOCAL-00010" summary="generate available Options">
+      <created>1566843252069</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1566843252069</updated>
+    </task>
+    <task id="LOCAL-00011" summary="preserve line brakes in .event__selected-offers">
+      <created>1566844580927</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1566844580927</updated>
+    </task>
+    <task id="LOCAL-00012" summary="print selected options">
+      <created>1566844701316</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1566844701316</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Revert &quot;preserve line brakes in .event__selected-offers&quot;&#10;&#10;This reverts commit 9709c221">
+      <created>1566844842797</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1566844842797</updated>
+    </task>
+    <task id="LOCAL-00014" summary="fix long option description">
+      <created>1566844959561</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1566844959561</updated>
+    </task>
+    <task id="LOCAL-00015" summary="generate dateStart and duration">
+      <created>1566846042007</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1566846042007</updated>
+    </task>
+    <task id="LOCAL-00016" summary="FIX getDate() method">
+      <created>1566851985209</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1566851985209</updated>
+    </task>
+    <task id="LOCAL-00017" summary="fixin direction in progress">
+      <created>1566856187786</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1566856187786</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="find elements by class name instead of id" />
+    <MESSAGE value="Add utils math functions" />
+    <MESSAGE value="Add cities and types data" />
+    <MESSAGE value="Pass data to EventTemplate and rearrange code" />
+    <MESSAGE value="fix renderEvents()" />
+    <MESSAGE value="Generate event: add type, destination, price" />
+    <MESSAGE value="add method to get description" />
+    <MESSAGE value="print destination" />
+    <MESSAGE value="generate additionalOptions" />
+    <MESSAGE value="generate available Options" />
+    <MESSAGE value="preserve line brakes in .event__selected-offers" />
+    <MESSAGE value="print selected options" />
+    <MESSAGE value="Revert &quot;preserve line brakes in .event__selected-offers&quot;&#10;&#10;This reverts commit 9709c221" />
+    <MESSAGE value="fix long option description" />
+    <MESSAGE value="generate dateStart and duration" />
+    <MESSAGE value="FIX getDate() method" />
+    <MESSAGE value="fixin direction in progress" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixin direction in progress" />
+  </component>
+</project>
