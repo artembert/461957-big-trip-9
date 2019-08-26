@@ -1,6 +1,6 @@
 import {ucFirstLetter} from "../util/uc-first";
 
-export const createEventTemplate = ({type, destination, price, selectedOptions}) => {
+export const createEventTemplate = ({type, destination, price, selectedOptions, dateStart, duration}) => {
   return `<li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
@@ -12,11 +12,15 @@ export const createEventTemplate = ({type, destination, price, selectedOptions})
 
                     <div class="event__schedule">
                       <p class="event__time">
-                        <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
+                        <time class="event__start-time"
+                          datetime="${dateStart}">${dateStart}
+                        </time>
                         &mdash;
-                        <time class="event__end-time" datetime="2019-03-18T11:00">11:00</time>
+                        <time class="event__end-time" datetime="${dateStart + duration}">
+                          ${dateStart + duration}
+                        </time>
                       </p>
-                      <p class="event__duration">1H 30M</p>
+                      <p class="event__duration">${duration}</p>
                     </div>
 
                     <p class="event__price">
