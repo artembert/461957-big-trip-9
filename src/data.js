@@ -4,17 +4,14 @@ import {cities} from "./models/places";
 import {descriptions} from "./models/descriptions";
 import {options} from "./models/options";
 import setMinutes from 'date-fns/setMinutes';
+import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE} from "./models/time";
 
-const MS_IN_DAY = 86400000;
-const MS_IN_MINUTE = 60000;
-const DAYS_IN_WEEK = 7;
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
 const MAX_DESCRIPTION_LENGTH = 3;
 const MAX_ADDITIONAL_OPTIONS_COUNT = 2;
 const MIN_DURATION_HOURS = 0.5;
-const MAX_DURATION_HOURS = 6;
-const MINUTES_IN_HOUR = 60;
+const MAX_DURATION_HOURS = 30;
 const MIN_TIME_INTERVAL = 20;
 
 const dateNow = setMinutes(Date.now(), MIN_TIME_INTERVAL).getTime();
@@ -48,14 +45,14 @@ function getPrice() {
 }
 
 function getDate(currentDate) {
-  return currentDate + 1 + getRandomInteger(0, 2 * DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - 0.5);
+  return currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - 0.5);
 }
 
 function getDuration() {
   return getRandomInteger(
-      MIN_DURATION_HOURS * MINUTES_IN_HOUR / MIN_TIME_INTERVAL,
-      MAX_DURATION_HOURS * MINUTES_IN_HOUR / MIN_TIME_INTERVAL
-  ) * MIN_TIME_INTERVAL * MS_IN_MINUTE;
+      MIN_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL),
+      MAX_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL)
+  ) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;
 }
 
 function getDescription(descriptionList) {
