@@ -27,9 +27,9 @@ export const createEventTemplate = ({type, destination, price, selectedOptions})
                     <ul class="event__selected-offers">
                     ${Array.from(selectedOptions).map((option) =>`
                       <li class="event__offer">
-                        <span class="event__offer-title">${option.name}</span>
-                        &plus;
-                        &euro;&nbsp;<span class="event__offer-price">${option.price}</span>
+                        <span class="event__offer-title">
+                          ${option.name}</span>&nbsp;&plus;&nbsp;&euro;&nbsp;<span
+                          class="event__offer-price">&nbsp;${option.price}</span>
                        </li>`).join(``)}
                     </ul>
 
