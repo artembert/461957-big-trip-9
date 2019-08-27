@@ -2,7 +2,7 @@ import {ucFirstLetter} from "../util/uc-first";
 import {format} from "date-fns";
 import {MS_IN_DAY, MS_IN_HOUR} from "../models/time";
 
-export const createEventTemplate = ({type, destination, price, selectedOptions, dateStart, duration}) => {
+export const createEventTemplate = ({type, destination, price, options, dateStart, duration}) => {
   return `<li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
@@ -31,7 +31,7 @@ export const createEventTemplate = ({type, destination, price, selectedOptions, 
 
                     <h4 class="visually-hidden">Offers:</h4>
                     <ul class="event__selected-offers">
-                    ${Array.from(selectedOptions).map((option) =>`
+                    ${getSelectedOptions(options).map((option) =>`
                       <li class="event__offer">
                         <span class="event__offer-title">
                           ${option.name}</span>&nbsp;&plus;&nbsp;&euro;&nbsp;<span
@@ -50,10 +50,14 @@ export const createEventTemplate = ({type, destination, price, selectedOptions, 
 function formatDuration(duration) {
   console.log(duration /  (36 * Math.pow(10, 5)));
   if (duration >= MS_IN_DAY) {
-    return format(duration, `DD'\D' HH'\H' mm'\M'`);
+    return format(duration, `dd'\D' HH'\H' mm'\M'`);
   } else if (duration >= MS_IN_HOUR) {
     return format(duration, `HH'\H' mm'\M'`);
   } else {
     return format(duration, `mm'\M'`);
   }
+}
+
+function getSelectedOptions(options) {
+  return Array.from(options).filter((option) => option.isSelected);
 }
