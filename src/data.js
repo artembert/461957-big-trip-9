@@ -14,6 +14,8 @@ const MIN_DURATION_HOURS = 0.5;
 const MAX_DURATION_HOURS = 30;
 const MIN_TIME_INTERVAL = 20;
 const HALF_PROBABILITY = 0.5;
+const MIN_PICTURES_COUNT = 3;
+const MAX_PICTURES_COUNT = 8;
 
 const dateNow = setMinutes(Date.now(), MIN_TIME_INTERVAL).getTime();
 
@@ -25,6 +27,7 @@ export const getEvent = () => {
     destination: getDestination(cities),
     price: getPrice(),
     options: getOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
+    pictures: getPictures(),
   };
   console.log(event);
   return event;
@@ -67,4 +70,8 @@ function getDate(currentDate) {
   ) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;
   const end = start + duration;
   return {start, duration, end};
+}
+
+function getPictures() {
+  return new Array(getRandomInteger(MIN_PICTURES_COUNT, MAX_PICTURES_COUNT)).fill(undefined).map(() => `http://picsum.photos/300/150?r=${Math.random()}`);
 }
