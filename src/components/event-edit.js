@@ -3,7 +3,7 @@ import {format} from "date-fns";
 import {types} from "../models/types";
 import {cities} from "../models/places";
 
-export const createEventEditTemplate = ({type, description, pictures, price, options, date}) => {
+export const createEventEditTemplate = ({type, description, pictures, destination, price, options, date}) => {
   return `
 <li class="trip-events__item">
 <form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -20,7 +20,7 @@ export const createEventEditTemplate = ({type, description, pictures, price, opt
           <legend class="visually-hidden">Transfer</legend>
           ${types.filter((item) => !item.isPlace).map((item) =>
     `<div class="event__type-item">
-            <input id="event-type-${item.name}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item.name}">
+            <input id="event-type-${item.name}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item.name}" ${type.name === item.name ? `checked` : ``}>
             <label class="event__type-label  event__type-label--${item.icon}" for="event-type-${item.name}-1">${item.name}</label>
           </div>
           `).join(``)}
@@ -32,7 +32,7 @@ export const createEventEditTemplate = ({type, description, pictures, price, opt
   
           ${types.filter((item) => item.isPlace).map((item) =>
     `<div class="event__type-item">
-            <input id="event-type-${item.name}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item.name}">
+            <input id="event-type-${item.name}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item.name}" ${type.name === item.name ? `checked` : ``}>
             <label class="event__type-label  event__type-label--${item.icon}" for="event-type-${item.name}-1">${item.name}</label>
           </div>
           `).join(``)}
@@ -43,9 +43,9 @@ export const createEventEditTemplate = ({type, description, pictures, price, opt
   
     <div class="event__field-group  event__field-group--destination">
       <label class="event__label  event__type-output" for="event-destination-1">
-        Sightseeing at
+        ${ucFirstLetter(type.name)} ${type.preposition}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
       <datalist id="destination-list-1">
         ${cities.map((item) =>`<option value="${item}"></option>`).join(``)}
       </datalist>
@@ -68,7 +68,7 @@ export const createEventEditTemplate = ({type, description, pictures, price, opt
         <span class="visually-hidden">Price</span>
         &euro;
       </label>
-      <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+      <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
     </div>
   
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
