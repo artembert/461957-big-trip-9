@@ -3,7 +3,7 @@ import {format} from "date-fns";
 import {types} from "../models/types";
 import {cities} from "../models/places";
 
-export const createEventEditTemplate = ({type, description, destination, price, options, date}) => {
+export const createEventEditTemplate = ({type, description, pictures, price, options, date}) => {
   return `
 <li class="trip-events__item">
 <form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -97,11 +97,8 @@ export const createEventEditTemplate = ({type, description, destination, price, 
   
               <div class="event__photos-container">
                 <div class="event__photos-tape">
-                  <img class="event__photo" src="img/photos/1.jpg" alt="Event photo">
-                  <img class="event__photo" src="img/photos/2.jpg" alt="Event photo">
-                  <img class="event__photo" src="img/photos/3.jpg" alt="Event photo">
-                  <img class="event__photo" src="img/photos/4.jpg" alt="Event photo">
-                  <img class="event__photo" src="img/photos/5.jpg" alt="Event photo">
+                ${Array.from(pictures).map((picture) =>
+  `<img class="event__photo" src="${picture}" alt="Event photo">`).join(``)}
                 </div>
               </div>
             </section>
