@@ -19,7 +19,7 @@ const MAX_PICTURES_COUNT = 8;
 
 const dateNow = setMinutes(Date.now(), MIN_TIME_INTERVAL).getTime();
 
-export const getEvent = () => {
+function getEvent() {
   const event = {
     type: getType(types),
     description: getDescription(descriptions),
@@ -31,7 +31,11 @@ export const getEvent = () => {
   };
   console.log(event);
   return event;
-};
+}
+
+export function getEventList(count) {
+  return new Array(count).fill(undefined).map(() => getEvent());
+}
 
 function getType(typeList) {
   return typeList[getRandomInteger(0, typeList.length)];

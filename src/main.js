@@ -4,14 +4,16 @@ import {createFilterTemplate} from './components/filter';
 import {createDayListTemplate} from './components/day-list';
 import {createEventEditTemplate} from './components/event-edit';
 import {createEventTemplate} from './components/event';
-import {getEvent} from "./data";
 import {render} from "./util/dom";
+import {getEventList} from "./data";
 
-const EVENT_COUNT = 3;
+const EVENT_COUNT = 7;
 
-renderPage();
+const eventList = getEventList(EVENT_COUNT);
 
-function renderPage() {
+renderPage(eventList);
+
+function renderPage(events) {
   const headerElement = document.querySelector(`.trip-info`);
   const menuTitleElement = document.querySelector(`.menu-title`);
   const filterTitleElement = document.querySelector(`.filter-title`);
@@ -24,11 +26,9 @@ function renderPage() {
 
   const eventsListElement = document.querySelector(`.trip-events__list`);
   render(createEventEditTemplate(), eventsListElement);
-  renderEvents(eventsListElement);
+  renderEvents(events, eventsListElement);
 }
 
-function renderEvents(eventList) {
-  new Array(EVENT_COUNT)
-  .fill(undefined)
-  .map(() => render(createEventTemplate(getEvent()), eventList));
+function renderEvents(eventCollection, eventListElem) {
+  eventCollection.forEach((event) => render(createEventTemplate(event), eventListElem));
 }
