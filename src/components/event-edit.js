@@ -3,7 +3,7 @@ import {format} from "date-fns";
 import {types} from "../models/types";
 import {cities} from "../models/places";
 
-export const createEventEditTemplate = ({type, destination, price, options, date}) => {
+export const createEventEditTemplate = ({type, description, destination, price, options, date}) => {
   return `
 <li class="trip-events__item">
 <form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -93,7 +93,7 @@ export const createEventEditTemplate = ({type, destination, price, options, date
   
             <section class="event__section  event__section--destination">
               <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-              <p class="event__destination-description">Geneva is a city in Switzerland that lies at the southern tip of expansive Lac Léman (Lake Geneva). Surrounded by the Alps and Jura mountains, the city has views of dramatic Mont Blanc.</p>
+              <p class="event__destination-description">${description}</p>
   
               <div class="event__photos-container">
                 <div class="event__photos-tape">
