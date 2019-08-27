@@ -49,23 +49,17 @@ export const createEventTemplate = ({type, destination, price, options, date}) =
 
 
 function formatDuration(duration) {
-  if (duration >= MS_IN_DAY) {
-    const days = Math.floor(duration / MS_IN_DAY);
-    const hours = Math.floor((duration - days * MS_IN_DAY) / MS_IN_HOUR);
-    const minutes = Math.floor((duration - days * MS_IN_DAY - hours * MS_IN_HOUR) / MS_IN_MINUTE);
-    return `${toDoubleDigits(days)}D ${toDoubleDigits(hours)}H ${toDoubleDigits(minutes)}M`;
-  } else if (duration >= MS_IN_HOUR) {
-    const hours = Math.floor(duration / MS_IN_HOUR);
-    const minutes = Math.floor((duration - hours * MS_IN_HOUR) / MS_IN_MINUTE);
-    return `${toDoubleDigits(hours)}H ${toDoubleDigits(minutes)}M`;
-  } else {
-    const minutes = Math.floor(duration / MS_IN_MINUTE);
-    return `${toDoubleDigits(minutes)}M`;
-  }
+  const days = Math.floor(duration / MS_IN_DAY);
+  const hours = Math.floor((duration - days * MS_IN_DAY) / MS_IN_HOUR);
+  const minutes = Math.floor((duration - days * MS_IN_DAY - hours * MS_IN_HOUR) / MS_IN_MINUTE);
+  return `${formatUnit(days, `D`)}${formatUnit(hours, `H`)}${formatUnit(minutes, `M`)}`;
 }
 
-function toDoubleDigits(unit) {
-  return unit.toString().length > 1 ? `${unit}` : `0${unit}`;
+function formatUnit(value, unit) {
+  if (!value) {
+    return ``;
+  }
+  return value.toString().length > 1 ? `${value}${unit} ` : `0${value}${unit} `;
 }
 
 function getSelectedOptions(options) {
