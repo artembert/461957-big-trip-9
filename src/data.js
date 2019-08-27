@@ -21,9 +21,7 @@ export const getEvent = () => {
   const event = {
     type: getType(types),
     description: getDescription(descriptions),
-    dateStart: getDate(dateNow),
-    duration: getDuration(),
-    dateEnd: undefined,
+    date: getDate(dateNow),
     destination: getDestination(cities),
     price: getPrice(),
     options: getOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
@@ -44,17 +42,6 @@ function getPrice() {
   return getRandomInteger(MIN_PRICE, MAX_PRICE);
 }
 
-function getDate(currentDate) {
-  return currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - HALF_PROBABILITY);
-}
-
-function getDuration() {
-  return getRandomInteger(
-    MIN_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL),
-    MAX_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL)
-  ) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;
-}
-
 function getDescription(descriptionList) {
   return new Array(getRandomInteger(1, MAX_DESCRIPTION_LENGTH))
   .fill(undefined)
@@ -70,4 +57,14 @@ function getOptions(optionList, maxLength) {
   const unselectedOptions = shuffledOptions.slice(selectedOptionsCount).map(({name, price}) =>
     ({name, price, isSelected: false}));
   return new Set([...selectedOptions, ...unselectedOptions]);
+}
+
+function getDate(currentDate) {
+  const start = currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - HALF_PROBABILITY);
+  const duration = getRandomInteger(
+    MIN_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL),
+    MAX_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL)
+  ) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;
+  const end = start + duration;
+  return {start, duration, end};
 }
