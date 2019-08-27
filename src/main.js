@@ -25,10 +25,10 @@ function renderPage(events) {
   render(createDayListTemplate(), scheduleElement);
 
   const eventsListElement = document.querySelector(`.trip-events__list`);
-  render(createEventEditTemplate(), eventsListElement);
+  render(createEventEditTemplate(events[0]), eventsListElement);
   renderEvents(events, eventsListElement);
 }
 
 function renderEvents(eventCollection, eventListElem) {
-  eventCollection.forEach((event) => render(createEventTemplate(event), eventListElem));
+  eventCollection.slice(1).forEach((event) => render(createEventTemplate(event), eventListElem));
 }
