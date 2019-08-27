@@ -1,6 +1,7 @@
 import {ucFirstLetter} from "../util/uc-first";
 import {format} from "date-fns";
 import {types} from "../models/types";
+import {cities} from "../models/places";
 
 export const createEventEditTemplate = ({type, destination, price, options, date}) => {
   return `
@@ -46,10 +47,7 @@ export const createEventEditTemplate = ({type, destination, price, options, date
       </label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
       <datalist id="destination-list-1">
-        <option value="Amsterdam"></option>
-        <option value="Geneva"></option>
-        <option value="Chamonix"></option>
-        <option value="Saint Petersburg"></option>
+        ${cities.map((item) =>`<option value="${item}"></option>`).join(``)}
       </datalist>
     </div>
   
