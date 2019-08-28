@@ -30,7 +30,16 @@ function getEvent() {
     pictures: getPictures(),
   };
   console.log(event);
+
   return event;
+}
+
+export function getFilters() {
+  return [
+    {title: `Everything`, type: `everything`, isActive: true},
+    {title: `Feature`, type: `feature`, isActive: false},
+    {title: `Past`, type: `past`, isActive: false},
+  ];
 }
 
 export function getEventList(count) {

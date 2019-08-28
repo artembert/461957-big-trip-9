@@ -5,7 +5,7 @@ import {createDayListTemplate} from './components/day-list';
 import {createEventEditTemplate} from './components/event-edit';
 import {createEventTemplate} from './components/event';
 import {render} from "./util/dom";
-import {getEventList} from "./data";
+import {getEventList, getFilters} from "./data";
 
 const EVENT_COUNT = 7;
 
@@ -21,7 +21,7 @@ function renderPage(events) {
 
   render(createTripInfoTemplate(), headerElement, `afterbegin`);
   render(createMenuTemplate(), menuTitleElement, `afterend`);
-  render(createFilterTemplate(), filterTitleElement, `afterend`);
+  render(createFilterTemplate(getFilters()), filterTitleElement, `afterend`);
   render(createDayListTemplate(), scheduleElement);
 
   const eventsListElement = document.querySelector(`.trip-events__list`);
