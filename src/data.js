@@ -20,11 +20,16 @@ const MAX_PICTURES_COUNT = 8;
 const dateNow = setMinutes(Date.now(), MIN_TIME_INTERVAL).getTime();
 
 function getEvent() {
+
+  // вынес в переменную, чтобы иметь к ней доступ в функции getDestination()
+  const type = getType(types);
   const event = {
-    type: getType(types),
+    type,
     description: getDescription(descriptions),
     date: getDate(dateNow),
-    destination: getDestination(cities),
+
+    // если делать чистую функцию, то нужно "cities" и в getEvent() передавать, тогда у меня потянется большое количество параметров в функциях
+    destination: getDestination(type, cities),
     price: getPrice(),
     options: getOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
     pictures: getPictures(),
@@ -50,7 +55,9 @@ export function getMenu() {
 }
 
 export function getInfo(eventList) {
-  const sortEventList = eventList.sort((event1, event2) => event1.date.start - event2.date.start);
+  const sortEventList = eventList
+  .filter((event) => !event.type.isPlace)
+  .sort((event1, event2) => event1.date.start - event2.date.start);
   const firstEvent = sortEventList[0];
   const lastEvent = sortEventList[sortEventList.length - 1];
   const points = getPoints(eventList);
@@ -74,8 +81,8 @@ function getType(typeList) {
   return typeList[getRandomInteger(0, typeList.length)];
 }
 
-function getDestination(cityList) {
-  return cityList[getRandomInteger(0, cityList.length)];
+function getDestination(type, cityList) {
+  return type.isPlace ? undefined : cityList[getRandomInteger(0, cityList.length)];
 }
 
 function getPrice() {
