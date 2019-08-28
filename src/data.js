@@ -49,6 +49,15 @@ export function getMenu() {
   ];
 }
 
+export function getInfo() {
+  return {
+    pointStart: getPointStart(),
+    pointEnd: getPointEnd(),
+    dateStart: getDateStart(),
+    dateEnd: getDateEnd(),
+  };
+}
+
 export function getEventList(count) {
   return new Array(count).fill(undefined).map(() => getEvent());
 }
@@ -94,4 +103,20 @@ function getDate(currentDate) {
 
 function getPictures() {
   return new Array(getRandomInteger(MIN_PICTURES_COUNT, MAX_PICTURES_COUNT)).fill(undefined).map(() => `http://picsum.photos/300/150?r=${Math.random()}`);
+}
+
+function getPointStart() {
+  return `Saint-Petersburg`;
+}
+
+function getPointEnd() {
+  return `Pamplona`;
+}
+
+function getDateStart() {
+  return new Date().getTime();
+}
+
+function getDateEnd() {
+  return new Date(2019, 9, 28).getTime();
 }
