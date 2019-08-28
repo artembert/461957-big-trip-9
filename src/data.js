@@ -42,6 +42,13 @@ export function getFilters() {
   ];
 }
 
+export function getMenu() {
+  return [
+    {title: `Table`, href: `#`, isActive: true},
+    {title: `Stats`, href: `#`, isActive: false},
+  ];
+}
+
 export function getEventList(count) {
   return new Array(count).fill(undefined).map(() => getEvent());
 }
