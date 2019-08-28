@@ -49,12 +49,20 @@ export function getMenu() {
   ];
 }
 
-export function getInfo() {
+export function getInfo(eventList) {
+  const sortEventList = eventList.sort((event1, event2) => event1.date.start - event2.date.start);
+  const firstEvent = sortEventList[0];
+  const lastEvent = sortEventList[sortEventList.length - 1];
+  const points = getPoints(eventList);
   return {
-    pointStart: getPointStart(),
-    pointEnd: getPointEnd(),
-    dateStart: getDateStart(),
-    dateEnd: getDateEnd(),
+    points: {
+      start: points[0],
+      middle: getMiddlePoint(points),
+      end: points[points.length - 1],
+      count: points.length,
+    },
+    dateStart: getDateStart(firstEvent),
+    dateEnd: getDateEnd(lastEvent),
   };
 }
 
@@ -105,18 +113,18 @@ function getPictures() {
   return new Array(getRandomInteger(MIN_PICTURES_COUNT, MAX_PICTURES_COUNT)).fill(undefined).map(() => `http://picsum.photos/300/150?r=${Math.random()}`);
 }
 
-function getPointStart() {
-  return `Saint-Petersburg`;
+function getPoints(events) {
+  return Array.from(new Set(events.map((event) => event.destination)));
 }
 
-function getPointEnd() {
-  return `Pamplona`;
+function getMiddlePoint(points) {
+  return points.length > 3 ? undefined : points[1];
 }
 
-function getDateStart() {
-  return new Date().getTime();
+function getDateStart(event) {
+  return event.date.start;
 }
 
-function getDateEnd() {
-  return new Date(2019, 9, 28).getTime();
+function getDateEnd(event) {
+  return event.date.end;
 }

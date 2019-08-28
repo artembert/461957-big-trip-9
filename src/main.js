@@ -19,7 +19,7 @@ function renderPage(events) {
   const filterTitleElement = document.querySelector(`.filter-title`);
   const scheduleElement = document.querySelector(`.trip-events`);
 
-  render(createTripInfoTemplate(getInfo()), headerElement, `afterbegin`);
+  render(createTripInfoTemplate(getInfo(events)), headerElement, `afterbegin`);
   render(createMenuTemplate(getMenu()), menuTitleElement, `afterend`);
   render(createFilterTemplate(getFilters()), filterTitleElement, `afterend`);
   render(createDayListTemplate(), scheduleElement);

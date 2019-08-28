@@ -1,18 +1,20 @@
 import isSameMonth from 'date-fns/isSameMonth';
 import format from 'date-fns/format';
 
-export const createTripInfoTemplate = ({pointStart, pointEnd, dateStart, dateEnd}) => {
-  return `<div class="trip-info__main">
-              <h1 class="trip-info__title">${pointStart} &mdash; ... &mdash; ${pointEnd}</h1>
-
-              <p class="trip-info__dates">${formatDuration(dateStart, dateEnd)}</p>
-            </div>`;
+export const createTripInfoTemplate = ({points, dateStart, dateEnd}) => {
+  return `
+  <div class="trip-info__main">
+    <h1 class="trip-info__title">
+      ${points.start} &mdash; ${points.middle ? points.middle : `...`} &mdash; ${points.end}
+    </h1>
+    <p class="trip-info__dates">${formatDuration(dateStart, dateEnd)}</p>
+  </div>`.trim();
 };
 
 function formatDuration(start, end) {
   if (isSameMonth(start, end)) {
     return `${format(start, `MMM dd`)} &mdash; ${format(end, `dd`)}`;
   } else {
-    return `${format(start, `MMM dd`)} &mdash; ${format(end, `MMM dd`)}`;
+    return `${format(start, `dd MMM`)} &mdash; ${format(end, `dd MMM`)}`;
   }
 }
