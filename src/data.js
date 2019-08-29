@@ -23,7 +23,7 @@ function getEvent() {
 
   // вынес в переменную, чтобы иметь к ней доступ в функции getDestination()
   const type = getType(types);
-  const event = {
+  return {
     type,
     description: getDescription(descriptions),
     date: getDate(dateNow),
@@ -34,9 +34,6 @@ function getEvent() {
     options: getOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
     pictures: getPictures(),
   };
-  console.log(event);
-
-  return event;
 }
 
 export function getFilters() {
@@ -109,10 +106,7 @@ function getOptions(optionList, maxLength) {
 
 function getDate(currentDate) {
   const start = currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - HALF_PROBABILITY);
-  const duration = getRandomInteger(
-    MIN_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL),
-    MAX_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL),
-  ) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;
+  const duration = getRandomInteger(MIN_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL), MAX_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL)) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;
   const end = start + duration;
   return {start, duration, end};
 }
@@ -140,8 +134,8 @@ function getDateEnd(event) {
 function getCost(events) {
   return events.reduce((sum, event) => {
     const optionsCost = Array.from(event.options).filter((option) => option.isSelected)
-    .reduce((sum, option) => {
-      return sum + Number(option.price);
+    .reduce((accum, option) => {
+      return accum + Number(option.price);
     }, 0);
     return sum + Number(event.price) + optionsCost;
   }, 0);

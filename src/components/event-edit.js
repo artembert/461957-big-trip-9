@@ -98,7 +98,7 @@ export const createEventEditTemplate = ({type, description, pictures, destinatio
               <div class="event__photos-container">
                 <div class="event__photos-tape">
                 ${Array.from(pictures).map((picture) =>
-  `<img class="event__photo" src="${picture}" alt="Event photo">`).join(``)}
+    `<img class="event__photo" src="${picture}" alt="Event photo">`).join(``)}
                 </div>
               </div>
             </section>
