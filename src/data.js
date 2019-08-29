@@ -5,6 +5,7 @@ import {descriptions} from "./models/descriptions";
 import {options} from "./models/options";
 import setMinutes from 'date-fns/setMinutes';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR} from "./models/time";
+import {shuffle} from "./util/shuffle";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -96,7 +97,7 @@ function getDescription(descriptionList) {
 
 function getOptions(optionList, maxLength) {
   const selectedOptionsCount = getRandomInteger(0, maxLength + 1);
-  const shuffledOptions = optionList.sort(() => Math.random() - HALF_PROBABILITY);
+  const shuffledOptions = shuffle(optionList);
   const selectedOptions = shuffledOptions.slice(0, selectedOptionsCount).map(({name, price}) =>
     ({name, price, isSelected: true}));
   const unselectedOptions = shuffledOptions.slice(selectedOptionsCount).map(({name, price}) =>
