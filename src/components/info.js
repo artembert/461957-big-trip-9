@@ -17,7 +17,6 @@ export const createTripInfoTemplate = ({points, dateStart, dateEnd, cost}) => {
 function formatDuration(start, end) {
   if (isSameMonth(start, end)) {
     return `${format(start, `MMM dd`)} &mdash; ${format(end, `dd`)}`;
-  } else {
-    return `${format(start, `dd MMM`)} &mdash; ${format(end, `dd MMM`)}`;
   }
+  return `${format(start, `dd MMM`)} &mdash; ${format(end, `dd MMM`)}`;
 }
