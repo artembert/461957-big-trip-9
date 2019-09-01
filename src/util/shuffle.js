@@ -1,14 +1,14 @@
 import {getRandomInteger} from "./math";
 
-export function shuffle(array) {
-  let index = array.length;
+export function shuffle(items) {
+  let index = items.length;
   let randItem;
 
   while (index) {
     index -= 1;
     randItem = getRandomInteger(0, index);
-    [array[randItem], array[index]] = [array[index], array[randItem]];
+    [items[randItem], items[index]] = [items[index], items[randItem]];
   }
 
-  return array;
+  return items;
 }
