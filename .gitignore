@@ -3,9 +3,10 @@
 Thumbs.db
 
 # Файлы редактора
-.idea
+#.idea
 *.sublime*
 .vscode
+.idea/workspace.xml
 
 # Вспомогательные файлы
 *.log*
