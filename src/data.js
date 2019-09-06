@@ -117,7 +117,9 @@ function getPictures() {
 }
 
 function getPoints(events) {
-  return Array.from(new Set(events.map((event) => event.destination)));
+  return Array.from(new Set(events
+    .map((event) => event.destination)
+    .filter((event) => !!event)));
 }
 
 function getMiddlePoint(points) {
