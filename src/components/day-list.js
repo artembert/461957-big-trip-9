@@ -1,3 +1,5 @@
+import AbstractComponent from "./abstract-component";
+
 export const createDayListTemplate = () => {
   return `<ul class="trip-days">
             <li class="trip-days__item  day">
@@ -11,3 +13,7 @@ export const createDayListTemplate = () => {
 </li>
 </ul>`;
 };
+
+export default class XXX extends AbstractComponent {
+
+}

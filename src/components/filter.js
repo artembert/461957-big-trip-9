@@ -1,3 +1,5 @@
+import AbstractComponent from "./abstract-component";
+
 export const createFilterTemplate = (filters) => {
   return `<form class="trip-filters" action="#" method="get">
   ${filters.map((filter) => `
@@ -17,4 +19,8 @@ export const createFilterTemplate = (filters) => {
 
 function isFilterActive(filter) {
   return filter.isActive ? `checked` : ``;
+}
+
+export default class XXX extends AbstractComponent {
+
 }

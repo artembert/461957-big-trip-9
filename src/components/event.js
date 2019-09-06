@@ -1,6 +1,7 @@
 import {ucFirstLetter} from "../util/uc-first";
 import {format} from "date-fns";
 import {MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE} from "../models/time";
+import AbstractComponent from "./abstract-component";
 
 export const createEventTemplate = ({type, destination, price, options, date}) => {
   return `
@@ -64,4 +65,8 @@ function formatUnit(value, unit) {
 
 function getSelectedOptions(options) {
   return Array.from(options).filter((option) => option.isSelected);
+}
+
+export default class XXX extends AbstractComponent {
+
 }

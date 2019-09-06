@@ -1,5 +1,6 @@
 import isSameMonth from 'date-fns/isSameMonth';
 import format from 'date-fns/format';
+import AbstractComponent from "./abstract-component";
 
 export const createTripInfoTemplate = ({points, dateStart, dateEnd, cost}) => {
   return `
@@ -19,4 +20,9 @@ function formatDuration(start, end) {
     return `${format(start, `MMM dd`)} &mdash; ${format(end, `dd`)}`;
   }
   return `${format(start, `dd MMM`)} &mdash; ${format(end, `dd MMM`)}`;
+}
+
+
+export default class XXX extends AbstractComponent {
+
 }

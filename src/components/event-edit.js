@@ -2,6 +2,7 @@ import {ucFirstLetter} from "../util/uc-first";
 import {format} from "date-fns";
 import {types} from "../models/types";
 import {cities} from "../models/places";
+import AbstractComponent from "./abstract-component";
 
 export const createEventEditTemplate = ({type, description, pictures, destination, price, options, date}) => {
   return `
@@ -106,3 +107,7 @@ export const createEventEditTemplate = ({type, description, pictures, destinatio
   </form>
 </li>`;
 };
+
+export default class XXX extends AbstractComponent {
+
+}
