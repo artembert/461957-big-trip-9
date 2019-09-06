@@ -1,6 +1,6 @@
 import {createTripInfoTemplate} from './components/info';
 import Menu from './components/menu';
-import {createFilterTemplate} from './components/filter';
+import Filter, {createFilterTemplate} from './components/filter';
 import {createDayListTemplate} from './components/day-list';
 import {createEventEditTemplate} from './components/event-edit';
 import {createEventTemplate} from './components/event';
@@ -16,12 +16,14 @@ renderPage(eventList);
 function renderPage(events) {
   const headerElement = document.querySelector(`.trip-info`);
   const menuContainer = document.querySelector(`.trip-main__menu`);
-  const filterTitleElement = document.querySelector(`.filter-title`);
+  const filterContainer = document.querySelector(`.trip-main__filter`);
   const scheduleElement = document.querySelector(`.trip-events`);
 
   render(createTripInfoTemplate(getInfo(events)), headerElement, `afterbegin`);
+
   renderMenu(getMenu(), menuContainer);
-  render(createFilterTemplate(getFilters()), filterTitleElement, `afterend`);
+  renderFilter(getFilters(), filterContainer);
+
   render(createDayListTemplate(), scheduleElement);
 
   const eventsListElement = document.querySelector(`.trip-events__list`);
@@ -35,5 +37,10 @@ function renderEvents(eventCollection, eventListElem) {
 
 function renderMenu(menuItems, container) {
   const menu = new Menu(menuItems);
-  renderNew(menu.getElement(), container, `beforeend`);
+  renderNew(menu.getElement(), container);
+}
+
+function renderFilter(filterItems, container) {
+  const filter = new Filter(filterItems);
+  renderNew(filter.getElement(), container);
 }
