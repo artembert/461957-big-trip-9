@@ -1,8 +1,9 @@
 import AbstractComponent from "./abstract-component";
 
 export default class DayList extends AbstractComponent {
-  constructor() {
+  constructor(dayData) {
     super();
+    this._dayData = dayData;
   }
 
   getTemplate() {

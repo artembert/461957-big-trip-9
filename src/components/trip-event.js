@@ -1,4 +1,5 @@
 import {ucFirstLetter} from "../util/uc-first";
+// @ts-ignore
 import {format} from "date-fns";
 import {MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE} from "../models/time";
 import AbstractComponent from "./abstract-component";
@@ -73,6 +74,8 @@ function formatUnit(value, unit) {
   }
   return value.toString().length > 1 ? `${value}${unit} ` : `0${value}${unit} `;
 }
+
+
 
 function getSelectedOptions(options) {
   return Array.from(options).filter((option) => option.isSelected);

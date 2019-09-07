@@ -10,6 +10,7 @@ export default class AbstractComponent {
 
   getElement() {
     if (!this._element) {
+      // @ts-ignore
       this._element = createElement(this.getTemplate().trim());
     }
     return this._element;

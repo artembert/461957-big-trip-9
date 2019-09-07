@@ -3,6 +3,7 @@ import {getRandomInteger} from "./util/math";
 import {cities} from "./models/places";
 import {descriptions} from "./models/descriptions";
 import {options} from "./models/options";
+// @ts-ignore
 import setMinutes from 'date-fns/setMinutes';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR} from "./models/time";
 import {shuffle} from "./util/shuffle";
