@@ -1,11 +1,11 @@
-import TripInfo, {createTripInfoTemplate} from './components/info';
+import TripInfo from './components/info';
 import Menu from './components/menu';
-import Filter, {createFilterTemplate} from './components/filter';
-import {createDayListTemplate} from './components/day-list';
+import Filter from './components/filter';
+import DayList from './components/day-list';
 import {createEventEditTemplate} from './components/event-edit';
 import {createEventTemplate} from './components/event';
 import {render, renderNew} from "./util/dom";
-import {getEventList, getFilters, getMenu, getInfo} from "./data";
+import {getEventList, getFilters, getInfo, getMenu} from "./data";
 import {Position} from "./models/position";
 
 const EVENT_COUNT = 7;
@@ -24,7 +24,7 @@ function renderPage(events) {
   renderMenu(getMenu(), menuContainer);
   renderFilter(getFilters(), filterContainer);
 
-  render(createDayListTemplate(), scheduleElement);
+  renderDayList(undefined, scheduleElement);
 
   const eventsListElement = document.querySelector(`.trip-events__list`);
   render(createEventEditTemplate(events[0]), eventsListElement);
@@ -48,4 +48,9 @@ function renderMenu(menuItems, container) {
 function renderFilter(filterItems, container) {
   const filter = new Filter(filterItems);
   renderNew(filter.getElement(), container);
+}
+
+function renderDayList(dayListData, container) {
+  const dayList = new DayList(dayListData);
+  renderNew(dayList.getElement(), container);
 }
