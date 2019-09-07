@@ -7,6 +7,7 @@ import TripEvent from './components/trip-event';
 import {render} from "./util/dom";
 import {getEventList, getFilters, getInfo, getMenu} from "./data";
 import {Position} from "./models/position";
+import {EventsController} from "./controller/events-controller";
 
 const EVENT_COUNT = 7;
 
@@ -28,10 +29,10 @@ function renderPage(events) {
 
   const eventsListElement = document.querySelector(`.trip-events__list`);
   renderEventEdit(events[0], eventsListElement);
-  renderEvents(events, eventsListElement);
+  renderEventList(events, eventsListElement);
 }
 
-function renderEvents(eventCollection, eventListElem) {
+function renderEventList(eventCollection, eventListElem) {
   eventCollection.slice(1).forEach((event) => renderEvent(event, eventListElem));
 }
 
@@ -63,4 +64,8 @@ function renderEvent(eventData, container) {
 function renderEventEdit(eventEditData, container) {
   const tripEventEdit = new TripEventEdit(eventEditData);
   render(tripEventEdit.getElement(), container);
+}
+
+function renderEvents(eventList, container) {
+  const eventsController = new EventsController(container);
 }
