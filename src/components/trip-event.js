@@ -75,8 +75,6 @@ function formatUnit(value, unit) {
   return value.toString().length > 1 ? `${value}${unit} ` : `0${value}${unit} `;
 }
 
-
-
 function getSelectedOptions(options) {
   return Array.from(options).filter((option) => option.isSelected);
 }
