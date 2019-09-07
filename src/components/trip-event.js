@@ -2,6 +2,7 @@ import {ucFirstLetter} from "../util/uc-first";
 import {format} from "date-fns";
 import {MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE} from "../models/time";
 import AbstractComponent from "./abstract-component";
+import OptionsSelected from "./options-selected";
 
 export default class TripEvent extends AbstractComponent {
   constructor({type, destination, price, options, date}) {
@@ -11,6 +12,8 @@ export default class TripEvent extends AbstractComponent {
     this._price = price;
     this._options = options;
     this._date = date;
+    this._optionsSelectedMarkup
+      = new OptionsSelected(getSelectedOptions(this._options)).getTemplate();
   }
 
   getTemplate() {
@@ -45,12 +48,7 @@ export default class TripEvent extends AbstractComponent {
     <h4 class="visually-hidden">Offers:</h4>
     
     <ul class="event__selected-offers">
-    ${getSelectedOptions(this._options).map((option) =>`
-      <li class="event__offer">
-        <span class="event__offer-title">
-          ${option.name}</span>&nbsp;&plus;&nbsp;&euro;&nbsp;<span
-          class="event__offer-price">&nbsp;${option.price}</span>
-       </li>`).join(``)}
+      ${this._optionsSelectedMarkup}
     </ul>
   
     <button class="event__rollup-btn" type="button">
