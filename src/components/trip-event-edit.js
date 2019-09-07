@@ -1,14 +1,52 @@
 import {ucFirstLetter} from "../util/uc-first";
 import {format} from "date-fns";
-import {types} from "../models/types";
 import {cities} from "../models/places";
 import AbstractComponent from "./abstract-component";
+import EventTypeList from "./event-type-list";
+
+
+export default class TripEventEdit extends AbstractComponent {
+  constructor({type, description, pictures, destination, price, options, date}) {
+    super();
+    this._type = type;
+    this._description = description;
+    this._pictures = pictures;
+    this._destination = destination;
+    this._price = price;
+    this._options = options;
+    this._date = date;
+
+    this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
+  }
+
+  // this._
+
+  getTemplate() {
+    return `
+<li class="trip-events__item">
+  <form class="trip-events__item  event  event--edit" action="#" method="post">
+    <header class="event__header">
+      <div class="event__type-wrapper">
+      <label class="event__type  event__type-btn" for="event-type-toggle-1">
+        <span class="visually-hidden">Choose event type</span>
+        <img class="event__type-icon" width="42" height="42" src="img/icons/${this._type.icon}.png" alt="Event type icon">
+      </label>
+      <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+      ${this._eventTypeListMarkup}
+    </div>
+    
+    
+      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+      <button class="event__reset-btn" type="reset">Cancel</button>
+    </header>
+  </form>
+</li>`;
+  }
+}
+
 
 export const createEventEditTemplate = ({type, description, pictures, destination, price, options, date}) => {
   return `
-<li class="trip-events__item">
-<form class="trip-events__item  event  event--edit" action="#" method="post">
-  <header class="event__header">
     <div class="event__type-wrapper">
       <label class="event__type  event__type-btn" for="event-type-toggle-1">
         <span class="visually-hidden">Choose event type</span>
@@ -72,9 +110,7 @@ export const createEventEditTemplate = ({type, description, pictures, destinatio
       <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
     </div>
   
-    <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-    <button class="event__reset-btn" type="reset">Cancel</button>
-  </header>
+    
   <section class="event__details">
   
             <section class="event__section  event__section--offers">
@@ -104,10 +140,5 @@ export const createEventEditTemplate = ({type, description, pictures, destinatio
               </div>
             </section>
           </section>
-  </form>
-</li>`;
+`;
 };
-
-export default class XXX extends AbstractComponent {
-
-}
