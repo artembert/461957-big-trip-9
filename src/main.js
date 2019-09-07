@@ -2,9 +2,9 @@ import TripInfo from './components/info';
 import Menu from './components/menu';
 import Filter from './components/filter';
 import DayList from './components/day-list';
-import TripEventEdit, {createEventEditTemplate} from './components/trip-event-edit';
+import TripEventEdit from './components/trip-event-edit';
 import TripEvent from './components/trip-event';
-import {render, renderNew} from "./util/dom";
+import {render} from "./util/dom";
 import {getEventList, getFilters, getInfo, getMenu} from "./data";
 import {Position} from "./models/position";
 
@@ -37,30 +37,30 @@ function renderEvents(eventCollection, eventListElem) {
 
 function renderTripInfo(tripInfoData, container) {
   const tripInfo = new TripInfo(tripInfoData);
-  renderNew(tripInfo.getElement(), container, Position.AFTERBEGIN);
+  render(tripInfo.getElement(), container, Position.AFTERBEGIN);
 }
 
 function renderMenu(menuItems, container) {
   const menu = new Menu(menuItems);
-  renderNew(menu.getElement(), container);
+  render(menu.getElement(), container);
 }
 
 function renderFilter(filterItems, container) {
   const filter = new Filter(filterItems);
-  renderNew(filter.getElement(), container);
+  render(filter.getElement(), container);
 }
 
 function renderDayList(dayListData, container) {
   const dayList = new DayList(dayListData);
-  renderNew(dayList.getElement(), container);
+  render(dayList.getElement(), container);
 }
 
 function renderEvent(eventData, container) {
   const tripEvent = new TripEvent(eventData);
-  renderNew(tripEvent.getElement(), container);
+  render(tripEvent.getElement(), container);
 }
 
 function renderEventEdit(eventEditData, container) {
   const tripEventEdit = new TripEventEdit(eventEditData);
-  renderNew(tripEventEdit.getElement(), container);
+  render(tripEventEdit.getElement(), container);
 }

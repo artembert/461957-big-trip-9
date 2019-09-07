@@ -1,10 +1,6 @@
 import {Position} from "../models/position";
 
-export const render = (markup, container, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, markup);
-};
-
-export function renderNew(markup, container, place) {
+export function render(markup, container, place) {
   if (place === Position.AFTERBEGIN) {
     container.prepend(markup);
   } else if (place === Position.BEFOREEND || !place) {
