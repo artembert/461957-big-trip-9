@@ -3,6 +3,7 @@ import {format} from "date-fns";
 import {cities} from "../models/places";
 import AbstractComponent from "./abstract-component";
 import EventTypeList from "./event-type-list";
+import Options from "./options";
 
 
 export default class TripEventEdit extends AbstractComponent {
@@ -17,6 +18,7 @@ export default class TripEventEdit extends AbstractComponent {
     this._date = date;
 
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
+    this._optionsMarkup = new Options(Array.from(this._options)).getTemplate();
   }
 
   // this._
@@ -74,17 +76,7 @@ export default class TripEventEdit extends AbstractComponent {
     <section class="event__details">
       <section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-  
-        <div class="event__available-offers">
-        ${Array.from(this._options).map((offer) =>
-    `<div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.code}-1" type="checkbox" name="event-offer-${offer.code}" ${offer.isSelected ? `checked` : ``}>
-            <label class="event__offer-label" for="event-offer-${offer.code}-1">
-              <span class="event__offer-title">${offer.name}</span>&nbsp;&plus;&euro;&nbsp;<span class="event__offer-price">&nbsp;${offer.price}</span>
-            </label>
-          </div>`).join(``)}
-  
-        </div>
+        ${this._optionsMarkup}
       </section>
       
       <section class="event__section  event__section--destination">
