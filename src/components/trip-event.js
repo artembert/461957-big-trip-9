@@ -3,37 +3,49 @@ import {format} from "date-fns";
 import {MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE} from "../models/time";
 import AbstractComponent from "./abstract-component";
 
-export const createEventTemplate = ({type, destination, price, options, date}) => {
-  return `
+export default class TripEvent extends AbstractComponent {
+  constructor({type, destination, price, options, date}) {
+    super();
+    this._type = type;
+    this._destination = destination;
+    this._price = price;
+    this._options = options;
+    this._date = date;
+  }
+
+  getTemplate() {
+    return `
 <li class="trip-events__item">
   <div class="event">
     <div class="event__type">
-      <img class="event__type-icon" width="42" height="42" src="img/icons/${type.icon}.png" alt="Event type icon">
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${this._type.icon}.png" alt="Event type icon">
     </div>
+    
     <h3 class="event__title">
-      ${ucFirstLetter(type.name)} ${type.preposition} ${destination}
+      ${ucFirstLetter(this._type.name)} ${this._type.preposition} ${this._destination}
     </h3>
-  
+    
     <div class="event__schedule">
       <p class="event__time">
-        <time class="event__start-time" datetime="${date.start}">
-          ${format(date.start, `HH:mm`)}
+        <time class="event__start-time" datetime="${this._date.start}">
+          ${format(this._date.start, `HH:mm`)}
         </time>
         &mdash;
-        <time class="event__end-time" datetime="${date.end}">
-          ${format(date.end, `HH:mm`)}
+        <time class="event__end-time" datetime="${this._date.end}">
+          ${format(this._date.end, `HH:mm`)}
         </time>
       </p>
-      <p class="event__duration">${formatDuration(date.duration)}</p>
+      <p class="event__duration">${formatDuration(this._date.duration)}</p>
     </div>
-  
+    
     <p class="event__price">
-      &euro;&nbsp;<span class="event__price-value">${price}</span>
+      &euro;&nbsp;<span class="event__price-value">${this._price}</span>
     </p>
-  
+    
     <h4 class="visually-hidden">Offers:</h4>
+    
     <ul class="event__selected-offers">
-    ${getSelectedOptions(options).map((option) =>`
+    ${getSelectedOptions(this._options).map((option) =>`
       <li class="event__offer">
         <span class="event__offer-title">
           ${option.name}</span>&nbsp;&plus;&nbsp;&euro;&nbsp;<span
@@ -45,8 +57,9 @@ export const createEventTemplate = ({type, destination, price, options, date}) =
       <span class="visually-hidden">Open event</span>
     </button>
   </div>
-  </li>`;
-};
+</li>`;
+  }
+}
 
 
 function formatDuration(duration) {
@@ -65,8 +78,4 @@ function formatUnit(value, unit) {
 
 function getSelectedOptions(options) {
   return Array.from(options).filter((option) => option.isSelected);
-}
-
-export default class XXX extends AbstractComponent {
-
 }
