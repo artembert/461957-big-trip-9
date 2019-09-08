@@ -1,9 +1,6 @@
 import TripInfo from './components/info';
 import Menu from './components/menu';
 import Filter from './components/filter';
-import DayList from './components/day-list';
-import TripEventEdit from './components/trip-event-edit';
-import TripEvent from './components/trip-event';
 import {render} from "./util/dom";
 import {getEventList, getFilters, getInfo, getMenu} from "./data";
 import {Position} from "./models/position";
@@ -26,12 +23,6 @@ function renderPage(events) {
   renderFilter(getFilters(), filterContainer);
 
   renderEvents(events, scheduleElement);
-  // renderEventEdit(events[0], eventsListElement);
-  // renderEventList(events, eventsListElement);
-}
-
-function renderEventList(eventCollection, eventListElem) {
-  eventCollection.slice(1).forEach((event) => renderEvent(event, eventListElem));
 }
 
 function renderTripInfo(tripInfoData, container) {
@@ -47,21 +38,6 @@ function renderMenu(menuItems, container) {
 function renderFilter(filterItems, container) {
   const filter = new Filter(filterItems);
   render(filter.getElement(), container);
-}
-
-function renderDayList(dayListData, container) {
-  const dayList = new DayList(dayListData);
-  render(dayList.getElement(), container);
-}
-
-function renderEvent(eventData, container) {
-  const tripEvent = new TripEvent(eventData);
-  render(tripEvent.getElement(), container);
-}
-
-function renderEventEdit(eventEditData, container) {
-  const tripEventEdit = new TripEventEdit(eventEditData);
-  render(tripEventEdit.getElement(), container);
 }
 
 function renderEvents(eventListData, container) {
