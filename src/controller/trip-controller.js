@@ -4,7 +4,7 @@ import EmptyPointList from "../components/empty-point-list";
 import TripEvent from "../components/trip-event";
 import TripEventEdit from "../components/trip-event-edit";
 
-export class EventsController {
+export class TripController {
   // eslint-disable-next-line valid-jsdoc
   /**
    * @param {import("../types/trip-event").TripEventT[]} eventList

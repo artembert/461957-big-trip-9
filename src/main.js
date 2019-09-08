@@ -4,7 +4,7 @@ import Filter from './components/filter';
 import {render} from "./util/dom";
 import {getEventList, getFilters, getInfo, getMenu} from "./data";
 import {Position} from "./models/position";
-import {EventsController} from "./controller/events-controller";
+import {TripController} from "./controller/trip-controller";
 
 const EVENT_COUNT = 7;
 
@@ -41,6 +41,6 @@ function renderFilter(filterItems, container) {
 }
 
 function renderEvents(eventListData, container) {
-  const eventsController = new EventsController(eventListData, container);
+  const eventsController = new TripController(eventListData, container);
   eventsController.init();
 }
