@@ -33,9 +33,24 @@ export class EventsController {
     const tripEvent = new TripEvent(eventData);
     const tripEventEdit = new TripEventEdit(eventData);
 
-    const onEditEvent = () => tripEvent.getElement().replaceWith(tripEventEdit.getElement());
-    const onSaveEvent = () => tripEventEdit.getElement().replaceWith(tripEvent.getElement());
-    const onResetEvent = () => tripEventEdit.getElement().replaceWith(tripEvent.getElement());
+    const onEditEvent = () => {
+      tripEvent.getElement().replaceWith(tripEventEdit.getElement());
+      document.addEventListener(`keydown`, onKeyDown);
+    };
+    const onSaveEvent = () => {
+      tripEventEdit.getElement().replaceWith(tripEvent.getElement());
+      document.removeEventListener(`keydown`, onKeyDown);
+    };
+    const onResetEvent = () => {
+      tripEventEdit.getElement().replaceWith(tripEvent.getElement());
+      document.removeEventListener(`keydown`, onKeyDown);
+    };
+    const onKeyDown = (evt) => {
+      if (evt.code === `Esc` || evt.code === `Escape`) {
+        onResetEvent();
+        document.removeEventListener(`keydown`, onKeyDown);
+      }
+    };
 
     tripEvent.getElement()
       .querySelector(`.event__rollup-btn`)
