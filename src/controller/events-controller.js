@@ -33,11 +33,22 @@ export class EventsController {
     const tripEvent = new TripEvent(eventData);
     const tripEventEdit = new TripEventEdit(eventData);
 
-    const onEditCard = () => tripEvent.getElement().replaceWith(tripEventEdit.getElement());
+    const onEditEvent = () => tripEvent.getElement().replaceWith(tripEventEdit.getElement());
+    const onSaveEvent = () => tripEventEdit.getElement().replaceWith(tripEvent.getElement());
+    const onResetEvent = () => tripEventEdit.getElement().replaceWith(tripEvent.getElement());
 
     tripEvent.getElement()
       .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, onEditCard);
+      .addEventListener(`click`, onEditEvent);
+    tripEventEdit.getElement()
+      .querySelector(`.event__save-btn`)
+      .addEventListener(`click`, onSaveEvent);
+    tripEventEdit.getElement()
+      .querySelector(`.event--edit`)
+      .addEventListener(`submit`, onSaveEvent);
+    tripEventEdit.getElement()
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, onResetEvent);
 
     // @ts-ignore
     render(tripEvent.getElement(), this._dayList.getElement().querySelector(`.trip-events__list`));
