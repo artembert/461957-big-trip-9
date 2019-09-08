@@ -25,11 +25,9 @@ function renderPage(events) {
   renderMenu(getMenu(), menuContainer);
   renderFilter(getFilters(), filterContainer);
 
-  renderDayList(undefined, scheduleElement);
-
-  const eventsListElement = document.querySelector(`.trip-events__list`);
-  renderEventEdit(events[0], eventsListElement);
-  renderEventList(events, eventsListElement);
+  renderEvents(events, scheduleElement);
+  // renderEventEdit(events[0], eventsListElement);
+  // renderEventList(events, eventsListElement);
 }
 
 function renderEventList(eventCollection, eventListElem) {
@@ -66,6 +64,7 @@ function renderEventEdit(eventEditData, container) {
   render(tripEventEdit.getElement(), container);
 }
 
-function renderEvents(eventList, container) {
-  const eventsController = new EventsController(container);
+function renderEvents(eventListData, container) {
+  const eventsController = new EventsController(eventListData, container);
+  eventsController.init();
 }

@@ -8,9 +8,14 @@ export function render(markup, container, place) {
   }
 }
 
+/**
+ * @param {string} template
+ * @return {Element}
+ */
 export function createElement(template) {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
+  // @ts-ignore
   return newElement.firstChild;
 }
 
