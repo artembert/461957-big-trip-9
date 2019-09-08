@@ -5,15 +5,9 @@ export default class AbstractComponent {
     if (new.target === AbstractComponent) {
       throw new Error(`Can't instantiate AbstractComponent, only inherit from it.`);
     }
-    /**
-     * @type {ChildNode | null}
-     */
     this._element = null;
   }
 
-  /**
-   * @return {ChildNode}
-   */
   getElement() {
     if (!this._element) {
       // @ts-ignore

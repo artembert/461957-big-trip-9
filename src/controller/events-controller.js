@@ -33,6 +33,12 @@ export class EventsController {
     const tripEvent = new TripEvent(eventData);
     const tripEventEdit = new TripEventEdit(eventData);
 
+    const onEditCard = () => tripEvent.getElement().replaceWith(tripEventEdit.getElement());
+
+    tripEvent.getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, onEditCard);
+
     // @ts-ignore
     render(tripEvent.getElement(), this._dayList.getElement().querySelector(`.trip-events__list`));
   }
