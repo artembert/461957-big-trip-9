@@ -1,9 +1,10 @@
 import DayList from "../components/day-list";
-import {render} from "../util/dom";
+import {render, unrender} from "../util/dom";
 import EmptyPointList from "../components/empty-point-list";
 import TripEvent from "../components/trip-event";
 import TripEventEdit from "../components/trip-event-edit";
 import Sort from "../components/sort";
+import {sortFns, SortType} from "../models/sort";
 
 export class TripController {
   // eslint-disable-next-line valid-jsdoc
@@ -18,7 +19,7 @@ export class TripController {
     this._eventList = eventList;
     this._dayList = new DayList(undefined);
     this._emptyPointList = new EmptyPointList();
-    this._sortMarkup = new Sort().getElement();
+    this._sortType = SortType.EVENT;
   }
 
 
@@ -26,10 +27,33 @@ export class TripController {
     if (!this._eventList.length) {
       render(this._emptyPointList.getElement(), this._container);
     } else {
-      render(this._sortMarkup, this._container);
+      this._renderSort();
       render(this._dayList.getElement(), this._container);
-      this._eventList.forEach((item) => this._renderEvent(item));
+      this._renderEvents();
     }
+  }
+
+  _renderSort() {
+    const sort = new Sort();
+
+    const onChangeSort = (evt) => {
+      this._sortType = evt.target.dataset.sort;
+      unrender(this._dayList.getElement());
+      this._dayList.removeElement();
+      render(this._dayList.getElement(), this._container);
+      this._renderEvents();
+    };
+
+    sort.getElement()
+      .addEventListener(`change`, onChangeSort);
+
+    render(sort.getElement(), this._container);
+  }
+
+  _renderEvents() {
+    this._eventList
+      .sort(sortFns[this._sortType])
+      .forEach((item) => this._renderEvent(item));
   }
 
   _renderEvent(eventData) {
