@@ -1,5 +1,4 @@
 import {ucFirstLetter} from "../util/uc-first";
-// @ts-ignore
 import {format} from "date-fns";
 import {MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE} from "../models/time";
 import AbstractComponent from "./abstract-component";

@@ -7,15 +7,8 @@ import Sort from "../components/sort";
 import {sortFns, SortType} from "../models/sort";
 
 export class TripController {
-  // eslint-disable-next-line valid-jsdoc
-  /**
-   * @param {import("../types/trip-event").TripEventT[]} eventList
-   * @param {Element} container
-   */
   constructor(eventList, container) {
-    /** @type {Element} */
     this._container = container;
-    /** @type {import("../types/trip-event").TripEventT[]} */
     this._eventList = eventList;
     this._dayList = new DayList(undefined);
     this._emptyPointList = new EmptyPointList();
@@ -92,7 +85,6 @@ export class TripController {
       .querySelector(`.event__reset-btn`)
       .addEventListener(`click`, onResetEvent);
 
-    // @ts-ignore
     render(tripEvent.getElement(), this._dayList.getElement().querySelector(`.trip-events__list`));
   }
 }
