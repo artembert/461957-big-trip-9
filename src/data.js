@@ -3,21 +3,9 @@ import {getRandomInteger} from "./util/math";
 import {cities} from "./models/places";
 import {descriptions} from "./models/descriptions";
 import {options} from "./models/options";
-// @ts-ignore
 import setMinutes from 'date-fns/setMinutes';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR} from "./models/time";
 import {shuffle} from "./util/shuffle";
-
-/**
- @typedef TripEventT
- @property {TripTypeT} type
- @property {string} description
- @property {string[]} pictures
- @property {string | undefined} destination
- @property {number} price
- @property {TripDate} date
- @property {Set<string>} options
- */
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -32,10 +20,6 @@ const MAX_PICTURES_COUNT = 8;
 
 const dateNow = setMinutes(Date.now(), MIN_TIME_INTERVAL).getTime();
 
-// eslint-disable-next-line valid-jsdoc
-/**
- * @return {TripEventT}
- */
 function getEvent() {
 
   // вынес в переменную, чтобы иметь к ней доступ в функции getDestination()
@@ -92,10 +76,6 @@ export function getEventList(count) {
   return new Array(count).fill(undefined).map(() => getEvent());
 }
 
-/**
- * @param {TripTypeT[]} typeList
- * @return {TripTypeT}
- */
 function getType(typeList) {
   return typeList[getRandomInteger(0, typeList.length)];
 }
@@ -125,10 +105,6 @@ function getOptions(optionList, maxLength) {
   return new Set([...selectedOptions, ...unselectedOptions]);
 }
 
-/**
- * @param {number} currentDate
- * @return {TripDate}
- */
 function getDate(currentDate) {
   const start = currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - HALF_PROBABILITY);
   const duration = getRandomInteger(MIN_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL), MAX_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL)) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;

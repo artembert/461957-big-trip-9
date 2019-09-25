@@ -1,5 +1,4 @@
 import {ucFirstLetter} from "../util/uc-first";
-// @ts-ignore
 import {format} from "date-fns";
 import {cities} from "../models/places";
 import AbstractComponent from "./abstract-component";
