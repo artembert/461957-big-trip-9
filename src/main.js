@@ -1,11 +1,10 @@
-import {createTripInfoTemplate} from './components/info';
-import {createMenuTemplate} from './components/menu';
-import {createFilterTemplate} from './components/filter';
-import {createDayListTemplate} from './components/day-list';
-import {createEventEditTemplate} from './components/event-edit';
-import {createEventTemplate} from './components/event';
+import TripInfo from './components/info';
+import Menu from './components/menu';
+import Filter from './components/filter';
 import {render} from "./util/dom";
-import {getEventList, getFilters, getMenu, getInfo} from "./data";
+import {getEventList, getFilters, getInfo, getMenu} from "./data";
+import {Position} from "./models/position";
+import {TripController} from "./controller/trip-controller";
 
 const EVENT_COUNT = 7;
 
@@ -14,21 +13,34 @@ const eventList = getEventList(EVENT_COUNT);
 renderPage(eventList);
 
 function renderPage(events) {
-  const headerElement = document.querySelector(`.trip-info`);
-  const menuTitleElement = document.querySelector(`.menu-title`);
-  const filterTitleElement = document.querySelector(`.filter-title`);
+  const headerElement = document.querySelector(`.trip-main`);
+  const menuContainer = document.querySelector(`.trip-main__menu`);
+  const filterContainer = document.querySelector(`.trip-main__filter`);
   const scheduleElement = document.querySelector(`.trip-events`);
 
-  render(createTripInfoTemplate(getInfo(events)), headerElement, `afterbegin`);
-  render(createMenuTemplate(getMenu()), menuTitleElement, `afterend`);
-  render(createFilterTemplate(getFilters()), filterTitleElement, `afterend`);
-  render(createDayListTemplate(), scheduleElement);
+  renderTripInfo(getInfo(events), headerElement);
+  renderMenu(getMenu(), menuContainer);
+  renderFilter(getFilters(), filterContainer);
 
-  const eventsListElement = document.querySelector(`.trip-events__list`);
-  render(createEventEditTemplate(events[0]), eventsListElement);
-  renderEvents(events, eventsListElement);
+  renderEvents(events, scheduleElement);
 }
 
-function renderEvents(eventCollection, eventListElem) {
-  eventCollection.slice(1).forEach((event) => render(createEventTemplate(event), eventListElem));
+function renderTripInfo(tripInfoData, container) {
+  const tripInfo = new TripInfo(tripInfoData);
+  render(tripInfo.getElement(), container, Position.AFTERBEGIN);
+}
+
+function renderMenu(menuItems, container) {
+  const menu = new Menu(menuItems);
+  render(menu.getElement(), container);
+}
+
+function renderFilter(filterItems, container) {
+  const filter = new Filter(filterItems);
+  render(filter.getElement(), container);
+}
+
+function renderEvents(eventListData, container) {
+  const eventsController = new TripController(eventListData, container);
+  eventsController.init();
 }
