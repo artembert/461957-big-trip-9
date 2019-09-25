@@ -17,12 +17,12 @@ export class TripController {
 
 
   init() {
-    if (!this._eventList.length) {
-      render(this._emptyPointList.getElement(), this._container);
-    } else {
+    if (this._eventList.length) {
       this._renderSort();
       render(this._dayList.getElement(), this._container);
       this._renderEvents();
+    } else {
+      render(this._emptyPointList.getElement(), this._container);
     }
   }
 
