@@ -106,7 +106,7 @@ function getOptions(optionList, maxLength) {
 }
 
 function getDate(currentDate) {
-  const start = currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - HALF_PROBABILITY);
+  const start = Math.round(currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - HALF_PROBABILITY));
   const duration = getRandomInteger(MIN_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL), MAX_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL)) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;
   const end = start + duration;
   return {start, duration, end};
