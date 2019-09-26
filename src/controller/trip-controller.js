@@ -5,6 +5,9 @@ import TripEvent from "../components/trip-event";
 import TripEventEdit from "../components/trip-event-edit";
 import Sort from "../components/sort";
 import {sortFns, SortType} from "../models/sort";
+import getDate from "date-fns/getDate";
+import getMonth from 'date-fns/getMonth';
+import getYear from 'date-fns/getYear';
 
 export class TripController {
   constructor(eventList, container) {
@@ -14,7 +17,6 @@ export class TripController {
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
   }
-
 
   init() {
     if (this._eventList.length) {
@@ -48,6 +50,19 @@ export class TripController {
       .sort(sortFns[this._sortType])
       .forEach((item) => this._renderEvent(item));
   }
+
+  __groupEventsByDay() {
+    return this._eventList.reduce((accum, item) => {
+      const dateKey
+        = `${getDate(item.date.start)}.${getMonth(item.date.start)}.${getYear(item.date.start)}`;
+      if (!accum.has(dateKey)) {
+        accum.set(dateKey, []);
+      }
+      accum.get(dateKey).push(item);
+      return accum;
+    }, new Map());
+  }
+
 
   _renderEvent(eventData) {
     const tripEvent = new TripEvent(eventData);

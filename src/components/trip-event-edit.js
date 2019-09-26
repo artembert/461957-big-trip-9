@@ -21,8 +21,6 @@ export default class TripEventEdit extends AbstractComponent {
     this._optionsMarkup = new Options(Array.from(this._options)).getTemplate();
   }
 
-  // this._
-
   getTemplate() {
     return `
 <li class="trip-events__item">
