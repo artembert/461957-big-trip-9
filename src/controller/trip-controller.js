@@ -51,15 +51,14 @@ export class TripController {
       .forEach((day, dayIndex) => {
         this._renderDay(day, dayIndex, this._dayList.getElement());
       });
-      // .forEach((item) => this._renderEvent(item, this._dayList.getElement().querySelector(`.trip-events__list`)));
   }
 
   _renderDay(day, dayIndex, container) {
     const dayElement = new Day(day[0].date.start, dayIndex).getElement();
     render(dayElement, container);
-    // day.forEach((day) => {
-    //   ;
-    // })
+    day.forEach((event) => {
+      this._renderEvent(event, dayElement.querySelector(`.trip-events__list`));
+    });
   }
 
   _renderEvent(eventData, container) {
