@@ -2,8 +2,9 @@ import AbstractComponent from "./abstract-component";
 import format from 'date-fns/format';
 
 export default class Day extends AbstractComponent {
-  constructor(date, number) {
+  constructor(date, number, isShowDate) {
     super();
+    this._isShowDate = isShowDate;
     this._date = date;
     this._number = number + 1;
   }
@@ -11,9 +12,12 @@ export default class Day extends AbstractComponent {
   getTemplate() {
     return `<li class="trip-days__item  day">
   <div class="day__info">
-    <span class="day__counter">${this._number}</span>
-    <time class="day__date" datetime="${getMetadataDate(this._date)}">
-      ${getDisplayDate(this._date)}</time>
+    ${this._isShowDate
+    ? `<span class="day__counter">${this._number}</span>
+      <time class="day__date" datetime="${getMetadataDate(this._date)}">
+        ${getDisplayDate(this._date)}
+      </time>`
+    : ``}
   </div>
   <ul class="trip-events__list">
   </ul>

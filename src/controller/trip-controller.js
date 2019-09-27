@@ -23,7 +23,7 @@ export class TripController {
     if (this._eventList.length) {
       this._renderSort();
       render(this._dayList.getElement(), this._container);
-      this._renderEvents();
+      this._renderEvents(this._sortType === `event`);
     } else {
       render(this._emptyPointList.getElement(), this._container);
     }
@@ -37,7 +37,7 @@ export class TripController {
       unrender(this._dayList.getElement());
       this._dayList.removeElement();
       render(this._dayList.getElement(), this._container);
-      this._renderEvents();
+      this._renderEvents(this._sortType === `event`);
     };
 
     sort.getElement()
@@ -46,15 +46,17 @@ export class TripController {
     render(sort.getElement(), this._container);
   }
 
-  _renderEvents() {
-    groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
-      .forEach((day, dayIndex) => {
-        this._renderDay(day, dayIndex, this._dayList.getElement());
-      });
+  _renderEvents(isSortByEvent) {
+    const events = isSortByEvent
+      ? groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
+      : combineEventsInOneDay(this._eventList.sort(sortFns[this._sortType]));
+    events.forEach((day, dayIndex) => {
+      this._renderDay(day, dayIndex, isSortByEvent, this._dayList.getElement());
+    });
   }
 
-  _renderDay(day, dayIndex, container) {
-    const dayElement = new Day(day[0].date.start, dayIndex).getElement();
+  _renderDay(day, dayIndex, isSortByEvent, container) {
+    const dayElement = new Day(day[0].date.start, dayIndex, isSortByEvent).getElement();
     render(dayElement, container);
     day.forEach((event) => {
       this._renderEvent(event, dayElement.querySelector(`.trip-events__list`));
@@ -112,4 +114,8 @@ function groupEventsByDay(eventList) {
     return accum;
   }, new Map());
   return Array.from(dayList.values());
+}
+
+function combineEventsInOneDay(eventList) {
+  return [[...eventList]];
 }
