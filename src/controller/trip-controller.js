@@ -1,4 +1,5 @@
 import DayList from "../components/day-list";
+import Day from "../components/day";
 import {render, unrender} from "../util/dom";
 import EmptyPointList from "../components/empty-point-list";
 import TripEvent from "../components/trip-event";
@@ -13,7 +14,7 @@ export class TripController {
   constructor(eventList, container) {
     this._container = container;
     this._eventList = eventList;
-    this._dayList = new DayList(undefined);
+    this._dayList = new DayList();
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
   }
@@ -46,25 +47,22 @@ export class TripController {
   }
 
   _renderEvents() {
-    this._eventList
-      .sort(sortFns[this._sortType])
-      .forEach((item) => this._renderEvent(item));
+    groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
+      .forEach((day, dayIndex) => {
+        this._renderDay(day, dayIndex, this._dayList.getElement());
+      });
+      // .forEach((item) => this._renderEvent(item, this._dayList.getElement().querySelector(`.trip-events__list`)));
   }
 
-  __groupEventsByDay() {
-    return this._eventList.reduce((accum, item) => {
-      const dateKey
-        = `${getDate(item.date.start)}.${getMonth(item.date.start)}.${getYear(item.date.start)}`;
-      if (!accum.has(dateKey)) {
-        accum.set(dateKey, []);
-      }
-      accum.get(dateKey).push(item);
-      return accum;
-    }, new Map());
+  _renderDay(day, dayIndex, container) {
+    const dayElement = new Day(day[0].date.start, dayIndex).getElement();
+    render(dayElement, container);
+    // day.forEach((day) => {
+    //   ;
+    // })
   }
 
-
-  _renderEvent(eventData) {
+  _renderEvent(eventData, container) {
     const tripEvent = new TripEvent(eventData);
     const tripEventEdit = new TripEventEdit(eventData);
 
@@ -100,6 +98,19 @@ export class TripController {
       .querySelector(`.event__reset-btn`)
       .addEventListener(`click`, onResetEvent);
 
-    render(tripEvent.getElement(), this._dayList.getElement().querySelector(`.trip-events__list`));
+    render(tripEvent.getElement(), container);
   }
+}
+
+function groupEventsByDay(eventList) {
+  const dayList = eventList.reduce((accum, item) => {
+    const dateKey
+      = `${getDate(item.date.start)}.${getMonth(item.date.start)}.${getYear(item.date.start)}`;
+    if (!accum.has(dateKey)) {
+      accum.set(dateKey, []);
+    }
+    accum.get(dateKey).push(item);
+    return accum;
+  }, new Map());
+  return Array.from(dayList.values());
 }
