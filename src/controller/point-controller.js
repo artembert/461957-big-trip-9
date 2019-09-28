@@ -1,8 +1,9 @@
 import TripEvent from "../components/trip-event";
 import TripEventEdit from "../components/trip-event-edit";
-import {render} from "../util/dom";
+import {createElement, render} from "../util/dom";
 import parse from 'date-fns/parse';
 import getTime from 'date-fns/getTime';
+import {getTypeByName} from "../util/get-type-by-name";
 
 export class PointController {
   constructor({eventData, container, onDataChange, onViewChange}) {
@@ -48,6 +49,20 @@ export class PointController {
       }
     };
 
+    const onChangeType = (evt) => {
+      if (evt.target.checked) {
+        return;
+      }
+      const selectedTypeName = new FormData(this._tripEventEdit.getElement()
+        .querySelector(`.event--edit`)).get(`event-type`);
+      const selectedType = getTypeByName(selectedTypeName);
+      const updatedTypeElement = createElement(this._tripEventEdit
+        .getSelectedTypeMarkup(selectedType.icon));
+      this._tripEventEdit.getElement()
+        .querySelector(`.event__type-btn`)
+        .replaceWith(updatedTypeElement);
+    };
+
     this._tripEvent.getElement()
       .querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, onEditEvent);
@@ -60,6 +75,9 @@ export class PointController {
     this._tripEventEdit.getElement()
       .querySelector(`.event__reset-btn`)
       .addEventListener(`click`, onResetEvent);
+    this._tripEventEdit.getElement()
+      .querySelector(`.event__type-toggle`)
+      .addEventListener(`change`, onChangeType);
 
     render(this._tripEvent.getElement(), this._container);
   }

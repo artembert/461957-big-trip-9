@@ -29,10 +29,7 @@ export default class TripEventEdit extends AbstractComponent {
   
     <header class="event__header">
       <div class="event__type-wrapper">
-        <label class="event__type  event__type-btn" for="event-type-toggle-1">
-          <span class="visually-hidden">Choose event type</span>
-          <img class="event__type-icon" width="42" height="42" src="img/icons/${this._type.icon}.png" alt="Event type icon">
-        </label>
+        ${this.getSelectedTypeMarkup(this._type.icon)}
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
         ${this._eventTypeListMarkup}
       </div>
@@ -94,5 +91,13 @@ export default class TripEventEdit extends AbstractComponent {
     
   </form>
 </li>`;
+  }
+
+  getSelectedTypeMarkup(icon) {
+    return `
+    <label class="event__type  event__type-btn" for="event-type-toggle-1">
+      <span class="visually-hidden">Choose event type</span>
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event type icon">
+    </label>`.trim();
   }
 }
