@@ -10,12 +10,14 @@ export class PointController {
     this._container = container;
     this._eventData = eventData;
     this._onDataChange = onDataChange;
+    this._onViewChange = onViewChange;
     this._tripEvent = new TripEvent(this._eventData);
     this._tripEventEdit = new TripEventEdit(this._eventData);
   }
 
   init() {
     const onEditEvent = () => {
+      this._onViewChange();
       this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
       document.addEventListener(`keydown`, onKeyDown);
     };
@@ -88,7 +90,7 @@ export class PointController {
   }
 
   closeEventsEdit() {
-    if (this._container.contains(this._tripEvent.getElement())) {
+    if (this._container.contains(this._tripEventEdit.getElement())) {
       this.closeEditForm();
     }
   }

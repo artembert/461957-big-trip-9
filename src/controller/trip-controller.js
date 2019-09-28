@@ -17,7 +17,9 @@ export class TripController {
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
 
+    this._subscriptions = [];
     this._onDataChange = this._onDataChange.bind(this);
+    this._onViewChange = this._onViewChange.bind(this);
   }
 
   init() {
@@ -76,8 +78,10 @@ export class TripController {
       eventData,
       container,
       onDataChange: this._onDataChange,
+      onViewChange: this._onViewChange,
     });
     event.init();
+    this._subscriptions.push(event.closeEventsEdit.bind(event));
   }
 
   _onDataChange(entry) {
@@ -87,6 +91,10 @@ export class TripController {
     this._dayList.removeElement();
     render(this._dayList.getElement(), this._container);
     this._renderEvents();
+  }
+
+  _onViewChange() {
+    this._subscriptions.forEach((subscription) => subscription());
   }
 }
 
