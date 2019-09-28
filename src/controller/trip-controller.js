@@ -54,10 +54,10 @@ export class TripController {
 
   _renderEvents() {
     const isSortByEvent = this._sortType === `event`;
-    const events = isSortByEvent
+    const dayList = isSortByEvent
       ? groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
-      : combineEventsInOneDay(this._eventList.sort(sortFns[this._sortType]));
-    events.forEach((day, dayIndex) => {
+      : [...[this._eventList.sort(sortFns[this._sortType])]];
+    dayList.forEach((day, dayIndex) => {
       this._renderDay(day, dayIndex, isSortByEvent, this._dayList.getElement());
     });
   }
@@ -121,8 +121,4 @@ function groupEventsByDay(eventList) {
     return accum;
   }, new Map());
   return Array.from(dayList.values());
-}
-
-function combineEventsInOneDay(eventList) {
-  return [[...eventList]];
 }
