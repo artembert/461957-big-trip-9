@@ -8,18 +8,18 @@ export class PointController {
   constructor(eventData, container) {
     this._container = container;
     this._eventData = eventData;
-    this.tripEvent = new TripEvent(this._eventData);
-    this.tripEventEdit = new TripEventEdit(this._eventData);
+    this._tripEvent = new TripEvent(this._eventData);
+    this._tripEventEdit = new TripEventEdit(this._eventData);
   }
 
   init() {
     const onEditEvent = () => {
-      this.tripEvent.getElement().replaceWith(this.tripEventEdit.getElement());
+      this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
       document.addEventListener(`keydown`, onKeyDown);
     };
     const onSaveEvent = (evt) => {
       evt.preventDefault();
-      const formData = new FormData(this.tripEventEdit.getElement().querySelector(`.event--edit`));
+      const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
       const entry = {
         type: formData.get(`event-type`),
         date: {
@@ -29,14 +29,14 @@ export class PointController {
         },
         destination: formData.get(`event-destination`),
         price: formData.get(`event-price`),
-        options: getOptions(this.tripEventEdit.getElement().querySelector(`.event--edit`)),
+        options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),
         id: this._eventData.id,
       };
-      this.tripEventEdit.getElement().replaceWith(this.tripEvent.getElement());
+      this.closeEditForm();
       document.removeEventListener(`keydown`, onKeyDown);
     };
     const onResetEvent = () => {
-      this.tripEventEdit.getElement().replaceWith(this.tripEvent.getElement());
+      this.closeEditForm();
       document.removeEventListener(`keydown`, onKeyDown);
     };
     const onKeyDown = (evt) => {
@@ -46,20 +46,20 @@ export class PointController {
       }
     };
 
-    this.tripEvent.getElement()
+    this._tripEvent.getElement()
       .querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, onEditEvent);
-    this.tripEventEdit.getElement()
+    this._tripEventEdit.getElement()
       .querySelector(`.event__save-btn`)
       .addEventListener(`click`, onSaveEvent);
-    this.tripEventEdit.getElement()
+    this._tripEventEdit.getElement()
       .querySelector(`.event--edit`)
       .addEventListener(`submit`, onSaveEvent);
-    this.tripEventEdit.getElement()
+    this._tripEventEdit.getElement()
       .querySelector(`.event__reset-btn`)
       .addEventListener(`click`, onResetEvent);
 
-    render(this.tripEvent.getElement(), this._container);
+    render(this._tripEvent.getElement(), this._container);
   }
 }
 
