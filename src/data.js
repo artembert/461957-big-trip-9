@@ -98,10 +98,10 @@ function getDescription(descriptionList) {
 function getOptions(optionList, maxLength) {
   const selectedOptionsCount = getRandomInteger(0, maxLength + 1);
   const shuffledOptions = shuffle(optionList);
-  const selectedOptions = shuffledOptions.slice(0, selectedOptionsCount).map(({name, price}) =>
-    ({name, price, isSelected: true}));
-  const unselectedOptions = shuffledOptions.slice(selectedOptionsCount).map(({name, price}) =>
-    ({name, price, isSelected: false}));
+  const selectedOptions = shuffledOptions.slice(0, selectedOptionsCount).map(({name, price, code}) =>
+    ({name, price, code, isSelected: true}));
+  const unselectedOptions = shuffledOptions.slice(selectedOptionsCount).map(({name, price, code}) =>
+    ({name, price, code, isSelected: false}));
   return new Set([...selectedOptions, ...unselectedOptions]);
 }
 
