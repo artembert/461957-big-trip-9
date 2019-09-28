@@ -34,6 +34,7 @@ function getEvent() {
     price: getPrice(),
     options: getOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
     pictures: getPictures(),
+    id: getId(),
   };
 }
 
@@ -142,4 +143,8 @@ function getCost(events) {
     }, 0);
     return sum + Number(event.price) + optionsCost;
   }, 0);
+}
+
+function getId() {
+  return `f${(~~(Math.random() * 1e8)).toString(16)}`;
 }

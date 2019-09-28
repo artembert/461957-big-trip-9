@@ -30,6 +30,7 @@ export class PointController {
         destination: formData.get(`event-destination`),
         price: formData.get(`event-price`),
         options: getOptions(this.tripEventEdit.getElement().querySelector(`.event--edit`)),
+        id: this._eventData.id,
       };
       this.tripEventEdit.getElement().replaceWith(this.tripEvent.getElement());
       document.removeEventListener(`keydown`, onKeyDown);
