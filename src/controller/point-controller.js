@@ -61,6 +61,16 @@ export class PointController {
 
     render(this._tripEvent.getElement(), this._container);
   }
+
+  closeEventsEdit() {
+    if (this._container.contains(this._tripEvent.getElement())) {
+      this.closeEditForm();
+    }
+  }
+
+  closeEditForm() {
+    this._tripEventEdit.getElement().replaceWith(this._tripEvent.getElement());
+  }
 }
 
 function parseTimeTag(dateTime) {
