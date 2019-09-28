@@ -23,21 +23,27 @@ export class TripController {
     if (this._eventList.length) {
       this._renderSort();
       render(this._dayList.getElement(), this._container);
-      this._renderEvents(this._sortType === `event`);
+      this._renderEvents();
     } else {
       render(this._emptyPointList.getElement(), this._container);
     }
   }
 
   _renderSort() {
-    const sort = new Sort();
+    let sort = new Sort(this._sortType, this._sortType === `event`);
 
     const onChangeSort = (evt) => {
       this._sortType = evt.target.dataset.sort;
       unrender(this._dayList.getElement());
       this._dayList.removeElement();
+      unrender(sort.getElement());
+      sort.removeElement();
+      sort = new Sort(this._sortType, this._sortType === `event`);
+      render(sort.getElement(), this._container);
       render(this._dayList.getElement(), this._container);
-      this._renderEvents(this._sortType === `event`);
+      this._renderEvents();
+      sort.getElement()
+        .addEventListener(`change`, onChangeSort);
     };
 
     sort.getElement()
@@ -46,7 +52,8 @@ export class TripController {
     render(sort.getElement(), this._container);
   }
 
-  _renderEvents(isSortByEvent) {
+  _renderEvents() {
+    const isSortByEvent = this._sortType === `event`;
     const events = isSortByEvent
       ? groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
       : combineEventsInOneDay(this._eventList.sort(sortFns[this._sortType]));
