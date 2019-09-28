@@ -9,6 +9,8 @@ import {sortFns, SortType} from "../models/sort";
 import getDate from "date-fns/getDate";
 import getMonth from 'date-fns/getMonth';
 import getYear from 'date-fns/getYear';
+import parse from 'date-fns/parse';
+import getTime from 'date-fns/getTime';
 
 export class TripController {
   constructor(eventList, container) {
@@ -78,7 +80,21 @@ export class TripController {
       tripEvent.getElement().replaceWith(tripEventEdit.getElement());
       document.addEventListener(`keydown`, onKeyDown);
     };
-    const onSaveEvent = () => {
+    const onSaveEvent = (evt) => {
+      evt.preventDefault();
+      const formData = new FormData(tripEventEdit.getElement().querySelector(`.event--edit`));
+      const entry = {
+        type: formData.get(`event-type`),
+        date: {
+          start: parseTimeTag(formData.get(`event-start-time`)),
+          duration: getEventDuration(formData.get(`event-start-time`), formData.get(`event-end-time`)),
+          end: parseTimeTag(formData.get(`event-end-time`)),
+        },
+        destination: formData.get(`event-destination`),
+        price: formData.get(`event-price`),
+        // options: options,
+      };
+
       tripEventEdit.getElement().replaceWith(tripEvent.getElement());
       document.removeEventListener(`keydown`, onKeyDown);
     };
@@ -121,4 +137,12 @@ function groupEventsByDay(eventList) {
     return accum;
   }, new Map());
   return Array.from(dayList.values());
+}
+
+function parseTimeTag(dateTime) {
+  return getTime(parse(dateTime, `dd/MM/yy HH:mm`, new Date()));
+}
+
+function getEventDuration(dateStart, dateEnd) {
+  return parseTimeTag(dateEnd) - parseTimeTag(dateStart);
 }
