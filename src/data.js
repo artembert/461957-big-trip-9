@@ -6,6 +6,7 @@ import {options} from "./models/options";
 import setMinutes from 'date-fns/setMinutes';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR} from "./models/time";
 import {shuffle} from "./util/shuffle";
+import {getTypeByName} from "./util/get-type-by-name";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -25,7 +26,7 @@ function getEvent() {
   // вынес в переменную, чтобы иметь к ней доступ в функции getDestination()
   const type = getType(types);
   return {
-    type,
+    type: type.name,
     description: getDescription(descriptions),
     date: getDate(dateNow),
 
@@ -34,6 +35,7 @@ function getEvent() {
     price: getPrice(),
     options: getOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
     pictures: getPictures(),
+    id: getId(),
   };
 }
 
@@ -54,7 +56,7 @@ export function getMenu() {
 
 export function getInfo(eventList) {
   const sortEventList = eventList
-  .filter((event) => !event.type.isPlace)
+  .filter((event) => !getTypeByName(event.type).isPlace)
   .sort((event1, event2) => event1.date.start - event2.date.start);
   const firstEvent = sortEventList[0];
   const lastEvent = sortEventList[sortEventList.length - 1];
@@ -98,15 +100,15 @@ function getDescription(descriptionList) {
 function getOptions(optionList, maxLength) {
   const selectedOptionsCount = getRandomInteger(0, maxLength + 1);
   const shuffledOptions = shuffle(optionList);
-  const selectedOptions = shuffledOptions.slice(0, selectedOptionsCount).map(({name, price}) =>
-    ({name, price, isSelected: true}));
-  const unselectedOptions = shuffledOptions.slice(selectedOptionsCount).map(({name, price}) =>
-    ({name, price, isSelected: false}));
+  const selectedOptions = shuffledOptions.slice(0, selectedOptionsCount).map(({name, price, code}) =>
+    ({name, price, code, isSelected: true}));
+  const unselectedOptions = shuffledOptions.slice(selectedOptionsCount).map(({name, price, code}) =>
+    ({name, price, code, isSelected: false}));
   return new Set([...selectedOptions, ...unselectedOptions]);
 }
 
 function getDate(currentDate) {
-  const start = currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - HALF_PROBABILITY);
+  const start = Math.round(currentDate + 1 + getRandomInteger(0, DAYS_IN_WEEK) * MS_IN_DAY * (Math.random() - HALF_PROBABILITY));
   const duration = getRandomInteger(MIN_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL), MAX_DURATION_HOURS * (MINUTES_IN_HOUR / MIN_TIME_INTERVAL)) / (MINUTES_IN_HOUR / MIN_TIME_INTERVAL) * MS_IN_HOUR;
   const end = start + duration;
   return {start, duration, end};
@@ -142,4 +144,8 @@ function getCost(events) {
     }, 0);
     return sum + Number(event.price) + optionsCost;
   }, 0);
+}
+
+function getId() {
+  return `f${(~~(Math.random() * 1e8)).toString(16)}`;
 }

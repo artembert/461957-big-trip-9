@@ -3,11 +3,12 @@ import {format} from "date-fns";
 import {MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE} from "../models/time";
 import AbstractComponent from "./abstract-component";
 import OptionsSelected from "./options-selected";
+import {getTypeByName} from "../util/get-type-by-name";
 
 export default class TripEvent extends AbstractComponent {
   constructor({type, destination, price, options, date}) {
     super();
-    this._type = type;
+    this._type = getTypeByName(type);
     this._destination = destination;
     this._price = price;
     this._options = options;

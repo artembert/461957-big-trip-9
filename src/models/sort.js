@@ -6,6 +6,6 @@ export const SortType = {
 
 export const sortFns = {
   event: (a, b) => a.date.start - b.date.start,
-  time: (a, b) => a.date.start - b.date.start,
-  price: (a, b) => a.price - b.price,
+  time: (a, b) => b.date.duration - a.date.duration,
+  price: (a, b) => b.price - a.price,
 };
