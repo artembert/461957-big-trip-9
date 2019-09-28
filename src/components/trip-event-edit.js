@@ -4,12 +4,13 @@ import {cities} from "../models/places";
 import AbstractComponent from "./abstract-component";
 import EventTypeList from "./event-type-list";
 import Options from "./options";
+import {getTypeByName} from "../util/get-type-by-name";
 
 
 export default class TripEventEdit extends AbstractComponent {
   constructor({type, description, pictures, destination, price, options, date}) {
     super();
-    this._type = type;
+    this._type = getTypeByName(type);
     this._description = description;
     this._pictures = pictures;
     this._destination = destination;

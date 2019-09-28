@@ -6,6 +6,7 @@ import {options} from "./models/options";
 import setMinutes from 'date-fns/setMinutes';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR} from "./models/time";
 import {shuffle} from "./util/shuffle";
+import {getTypeByName} from "./util/get-type-by-name";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -25,7 +26,7 @@ function getEvent() {
   // вынес в переменную, чтобы иметь к ней доступ в функции getDestination()
   const type = getType(types);
   return {
-    type,
+    type: type.name,
     description: getDescription(descriptions),
     date: getDate(dateNow),
 
@@ -55,7 +56,7 @@ export function getMenu() {
 
 export function getInfo(eventList) {
   const sortEventList = eventList
-  .filter((event) => !event.type.isPlace)
+  .filter((event) => !getTypeByName(event.type).isPlace)
   .sort((event1, event2) => event1.date.start - event2.date.start);
   const firstEvent = sortEventList[0];
   const lastEvent = sortEventList[sortEventList.length - 1];

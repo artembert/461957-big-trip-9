@@ -2,9 +2,9 @@ import AbstractComponent from "./abstract-component";
 import {types} from "../models/types";
 
 export default class EventTypeList extends AbstractComponent {
-  constructor(currentType) {
+  constructor(type) {
     super();
-    this._currentType = currentType;
+    this._currentType = type;
   }
 
   getTemplate() {
