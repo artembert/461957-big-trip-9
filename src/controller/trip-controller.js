@@ -16,6 +16,8 @@ export class TripController {
     this._dayList = new DayList();
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
+
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   init() {
@@ -70,8 +72,21 @@ export class TripController {
   }
 
   _renderEvent(eventData, container) {
-    const event = new PointController(eventData, container);
+    const event = new PointController({
+      eventData,
+      container,
+      onDataChange: this._onDataChange,
+    });
     event.init();
+  }
+
+  _onDataChange(entry) {
+    const changedProperty = this._eventList.find((tripEvent) => tripEvent.id === entry.id);
+    updateProps(changedProperty, entry);
+    unrender(this._dayList.getElement());
+    this._dayList.removeElement();
+    render(this._dayList.getElement(), this._container);
+    this._renderEvents();
   }
 }
 
@@ -86,4 +101,12 @@ function groupEventsByDay(eventList) {
     return accum;
   }, new Map());
   return Array.from(dayList.values());
+}
+
+function updateProps(originalEvent, newEvent) {
+  Object.entries(newEvent).forEach(([key, value]) => {
+    if (originalEvent.hasOwnProperty(key)) {
+      originalEvent[key] = value;
+    }
+  });
 }

@@ -5,9 +5,10 @@ import parse from 'date-fns/parse';
 import getTime from 'date-fns/getTime';
 
 export class PointController {
-  constructor(eventData, container) {
+  constructor({eventData, container, onDataChange, onViewChange}) {
     this._container = container;
     this._eventData = eventData;
+    this._onDataChange = onDataChange;
     this._tripEvent = new TripEvent(this._eventData);
     this._tripEventEdit = new TripEventEdit(this._eventData);
   }
@@ -32,6 +33,7 @@ export class PointController {
         options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),
         id: this._eventData.id,
       };
+      this._onDataChange(entry);
       this.closeEditForm();
       document.removeEventListener(`keydown`, onKeyDown);
     };
