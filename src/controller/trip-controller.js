@@ -2,15 +2,12 @@ import DayList from "../components/day-list";
 import Day from "../components/day";
 import {render, unrender} from "../util/dom";
 import EmptyPointList from "../components/empty-point-list";
-import TripEvent from "../components/trip-event";
-import TripEventEdit from "../components/trip-event-edit";
 import Sort from "../components/sort";
 import {sortFns, SortType} from "../models/sort";
 import getDate from "date-fns/getDate";
 import getMonth from 'date-fns/getMonth';
 import getYear from 'date-fns/getYear';
-import parse from 'date-fns/parse';
-import getTime from 'date-fns/getTime';
+import {PointController} from "./point-controller";
 
 export class TripController {
   constructor(eventList, container) {
@@ -73,55 +70,8 @@ export class TripController {
   }
 
   _renderEvent(eventData, container) {
-    const tripEvent = new TripEvent(eventData);
-    const tripEventEdit = new TripEventEdit(eventData);
-
-    const onEditEvent = () => {
-      tripEvent.getElement().replaceWith(tripEventEdit.getElement());
-      document.addEventListener(`keydown`, onKeyDown);
-    };
-    const onSaveEvent = (evt) => {
-      evt.preventDefault();
-      const formData = new FormData(tripEventEdit.getElement().querySelector(`.event--edit`));
-      const entry = {
-        type: formData.get(`event-type`),
-        date: {
-          start: parseTimeTag(formData.get(`event-start-time`)),
-          duration: getEventDuration(formData.get(`event-start-time`), formData.get(`event-end-time`)),
-          end: parseTimeTag(formData.get(`event-end-time`)),
-        },
-        destination: formData.get(`event-destination`),
-        price: formData.get(`event-price`),
-        options: getOptions(tripEventEdit.getElement().querySelector(`.event--edit`)),
-      };
-      tripEventEdit.getElement().replaceWith(tripEvent.getElement());
-      document.removeEventListener(`keydown`, onKeyDown);
-    };
-    const onResetEvent = () => {
-      tripEventEdit.getElement().replaceWith(tripEvent.getElement());
-      document.removeEventListener(`keydown`, onKeyDown);
-    };
-    const onKeyDown = (evt) => {
-      if (evt.code === `Esc` || evt.code === `Escape`) {
-        onResetEvent();
-        document.removeEventListener(`keydown`, onKeyDown);
-      }
-    };
-
-    tripEvent.getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, onEditEvent);
-    tripEventEdit.getElement()
-      .querySelector(`.event__save-btn`)
-      .addEventListener(`click`, onSaveEvent);
-    tripEventEdit.getElement()
-      .querySelector(`.event--edit`)
-      .addEventListener(`submit`, onSaveEvent);
-    tripEventEdit.getElement()
-      .querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, onResetEvent);
-
-    render(tripEvent.getElement(), container);
+    const event = new PointController(eventData, container);
+    event.init();
   }
 }
 
@@ -136,22 +86,4 @@ function groupEventsByDay(eventList) {
     return accum;
   }, new Map());
   return Array.from(dayList.values());
-}
-
-function parseTimeTag(dateTime) {
-  return getTime(parse(dateTime, `dd/MM/yy HH:mm`, new Date()));
-}
-
-function getEventDuration(dateStart, dateEnd) {
-  return parseTimeTag(dateEnd) - parseTimeTag(dateStart);
-}
-
-function getOptions(container) {
-  return [...container.querySelectorAll(`.event__offer-checkbox`)]
-    .map((input) => ({
-      name: input.dataset.name,
-      code: input.dataset.code,
-      isSelected: input.checked,
-      price: input.dataset.price,
-    }));
 }
