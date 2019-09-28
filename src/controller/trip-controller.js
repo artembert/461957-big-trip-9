@@ -92,9 +92,8 @@ export class TripController {
         },
         destination: formData.get(`event-destination`),
         price: formData.get(`event-price`),
-        // options: options,
+        options: getOptions(tripEventEdit.getElement().querySelector(`.event--edit`)),
       };
-
       tripEventEdit.getElement().replaceWith(tripEvent.getElement());
       document.removeEventListener(`keydown`, onKeyDown);
     };
@@ -145,4 +144,14 @@ function parseTimeTag(dateTime) {
 
 function getEventDuration(dateStart, dateEnd) {
   return parseTimeTag(dateEnd) - parseTimeTag(dateStart);
+}
+
+function getOptions(container) {
+  return [...container.querySelectorAll(`.event__offer-checkbox`)]
+    .map((input) => ({
+      name: input.dataset.name,
+      code: input.dataset.code,
+      isSelected: input.checked,
+      price: input.dataset.price,
+    }));
 }
