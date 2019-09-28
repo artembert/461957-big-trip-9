@@ -29,15 +29,13 @@ export default class TripEventEdit extends AbstractComponent {
   
     <header class="event__header">
       <div class="event__type-wrapper">
-        ${this.getSelectedTypeMarkup(this._type.icon)}
+        ${this.getSelectedTypeTemplate(this._type.icon)}
         <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
         ${this._eventTypeListMarkup}
       </div>
       
       <div class="event__field-group  event__field-group--destination">
-        <label class="event__label  event__type-output" for="event-destination-1">
-          ${ucFirstLetter(this._type.name)} ${this._type.preposition}
-        </label>
+        ${this.getDestinationLabelTemplate(this._type.name, this._type.preposition)}
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${this._destination}" list="destination-list-1">
         <datalist id="destination-list-1">
           ${cities.map((item) => `<option value="${item}"></option>`).join(``)}
@@ -93,11 +91,18 @@ export default class TripEventEdit extends AbstractComponent {
 </li>`;
   }
 
-  getSelectedTypeMarkup(icon) {
+  getSelectedTypeTemplate(icon) {
     return `
     <label class="event__type  event__type-btn" for="event-type-toggle-1">
       <span class="visually-hidden">Choose event type</span>
       <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event type icon">
     </label>`.trim();
+  }
+
+  getDestinationLabelTemplate(typeName, preposition) {
+    return `
+  <label class="event__label  event__type-output" for="event-destination-1">
+    ${ucFirstLetter(typeName)} ${preposition}
+  </label>`.trim();
   }
 }

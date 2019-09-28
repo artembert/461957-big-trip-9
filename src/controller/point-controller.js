@@ -57,10 +57,15 @@ export class PointController {
         .querySelector(`.event--edit`)).get(`event-type`);
       const selectedType = getTypeByName(selectedTypeName);
       const updatedTypeElement = createElement(this._tripEventEdit
-        .getSelectedTypeMarkup(selectedType.icon));
+        .getSelectedTypeTemplate(selectedType.icon));
+      const updatedDestinationLabelElement = createElement(this._tripEventEdit
+        .getDestinationLabelTemplate(selectedType.name, selectedType.preposition));
       this._tripEventEdit.getElement()
         .querySelector(`.event__type-btn`)
         .replaceWith(updatedTypeElement);
+      this._tripEventEdit.getElement()
+        .querySelector(`.event__type-output`)
+        .replaceWith(updatedDestinationLabelElement);
     };
 
     this._tripEvent.getElement()
