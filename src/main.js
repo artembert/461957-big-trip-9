@@ -5,11 +5,13 @@ import {render} from "./util/dom";
 import {getEventList, getFilters, getInfo, getMenu} from "./data";
 import {Position} from "./models/position";
 import {TripController} from "./controller/trip-controller";
+import Stats from "./components/stats";
 
 const EVENT_COUNT = 7;
 
 const eventList = getEventList(EVENT_COUNT);
 
+renderStats();
 renderPage(eventList);
 
 function renderPage(events) {
@@ -43,4 +45,11 @@ function renderFilter(filterItems, container) {
 function renderEvents(eventListData, container) {
   const eventsController = new TripController(eventListData, container);
   eventsController.init();
+}
+
+function renderStats() {
+  const stats = new Stats();
+  const statisticsContainer = document.querySelector(`.page-main__container`);
+
+  render(stats.getElement(), statisticsContainer, Position.AFTERBEGIN);
 }
