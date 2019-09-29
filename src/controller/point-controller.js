@@ -4,6 +4,9 @@ import {createElement, render} from "../util/dom";
 import parse from 'date-fns/parse';
 import getTime from 'date-fns/getTime';
 import {getTypeByName} from "../util/get-type-by-name";
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import 'flatpickr/dist/themes/light.css';
 
 export class PointController {
   constructor({eventData, container, onDataChange, onViewChange}) {
@@ -16,6 +19,16 @@ export class PointController {
   }
 
   init() {
+
+    flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time`), {
+      altInput: true,
+      allowInput: true,
+      defaultDate: this._eventData.date.start,
+      dateFormat: `d/m/y H:i`,
+      altFormat: `d/m/y H:i`,
+      enableTime: true,
+    });
+
     const onEditEvent = () => {
       this._onViewChange();
       this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
@@ -50,7 +63,6 @@ export class PointController {
         document.removeEventListener(`keydown`, onKeyDown);
       }
     };
-
     const onChangeType = (evt) => {
       if (evt.target.checked) {
         return;
