@@ -20,14 +20,8 @@ export class PointController {
 
   init() {
 
-    flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time`), {
-      altInput: true,
-      allowInput: true,
-      defaultDate: this._eventData.date.start,
-      dateFormat: `d/m/y H:i`,
-      altFormat: `d/m/y H:i`,
-      enableTime: true,
-    });
+    flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`), getDateConfig(this._eventData.date.start));
+    flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), getDateConfig(this._eventData.date.end));
 
     const onEditEvent = () => {
       this._onViewChange();
@@ -128,4 +122,15 @@ function getOptions(container) {
       isSelected: input.checked,
       price: input.dataset.price,
     }));
+}
+
+function getDateConfig(defaultDate) {
+  return {
+    altInput: true,
+    allowInput: true,
+    defaultDate,
+    dateFormat: `d/m/y H:i`,
+    altFormat: `d/m/y H:i`,
+    enableTime: true,
+  };
 }
