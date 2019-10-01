@@ -11,6 +11,7 @@ import {Pages} from "./models/pages";
 const EVENT_COUNT = 7;
 
 const eventList = getEventList(EVENT_COUNT);
+
 const onChangeRoute = (route) => {
   switch (route) {
     case (Pages.EVENTS):
@@ -35,13 +36,15 @@ const filterContainer = document.querySelector(`.trip-main__filter`);
 const scheduleElement = document.querySelector(`.trip-events`);
 const statisticsContainer = document.querySelector(`.page-main__container`);
 
+const tripInfo = new TripInfo(getInfo(eventList));
 const menu = new Menu(getMenuItems());
+const filter = new Filter(getFilters());
 const stats = new Stats();
 const eventsController = new TripController(eventList, scheduleElement);
 
-renderTripInfo(getInfo(eventList), headerElement);
+render(tripInfo.getElement(), headerElement, Position.AFTERBEGIN);
 render(menu.getElement(), menuContainer);
-renderFilter(getFilters(), filterContainer);
+render(filter.getElement(), filterContainer);
 onChangeRoute(Pages.EVENTS);
 
 
@@ -50,14 +53,3 @@ Array.from(menu.getElement()
   .forEach((link) => {
     link.addEventListener(`change`, (evt) => onChangeRoute(evt.currentTarget.value));
   });
-
-
-function renderTripInfo(tripInfoData, container) {
-  const tripInfo = new TripInfo(tripInfoData);
-  render(tripInfo.getElement(), container, Position.AFTERBEGIN);
-}
-
-function renderFilter(filterItems, container) {
-  const filter = new Filter(filterItems);
-  render(filter.getElement(), container);
-}
