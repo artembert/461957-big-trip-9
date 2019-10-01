@@ -16,7 +16,7 @@ export class TripController {
     this._dayList = new DayList();
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
-    this._sort = new Sort(this._sortType, this._sortType === `event`);
+    this._sort = new Sort(this._sortType, this._sortType === SortType.EVENT);
 
     this._subscriptions = [];
     this._onDataChange = this._onDataChange.bind(this);
@@ -27,7 +27,7 @@ export class TripController {
     if (this._eventList.length) {
       this._renderSort();
       render(this._dayList.getElement(), this._container);
-      this._renderEvents();
+      this._renderDayList();
     } else {
       render(this._emptyPointList.getElement(), this._container);
     }
@@ -43,6 +43,10 @@ export class TripController {
     this._dayList.removeElement();
   }
 
+  get _isShowDay() {
+    return this._sortType === SortType.EVENT;
+  }
+
   _renderSort() {
     this._sort.getElement()
       .addEventListener(`change`, this._onChangeSort.bind(this));
@@ -54,20 +58,19 @@ export class TripController {
     this._sortType = evt.target.dataset.sort;
     this.unrenderDayList();
     this.unrenderSort();
-    this._sort = new Sort(this._sortType, this._sortType === `event`);
+    this._sort = new Sort(this._sortType, this._isShowDay);
     this._renderSort();
 
     render(this._dayList.getElement(), this._container);
-    this._renderEvents();
+    this._renderDayList();
   }
 
-  _renderEvents() {
-    const isSortByEvent = this._sortType === `event`;
-    const dayList = isSortByEvent
+  _renderDayList() {
+    const dayList = this._isShowDay
       ? groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
       : [...[this._eventList.sort(sortFns[this._sortType])]];
     dayList.forEach((day, dayIndex) => {
-      this._renderDay(day, dayIndex, isSortByEvent, this._dayList.getElement());
+      this._renderDay(day, dayIndex, this._isShowDay, this._dayList.getElement());
     });
   }
 
@@ -96,7 +99,7 @@ export class TripController {
     unrender(this._dayList.getElement());
     this._dayList.removeElement();
     render(this._dayList.getElement(), this._container);
-    this._renderEvents();
+    this._renderDayList();
   }
 
   _onViewChange() {
