@@ -7,6 +7,7 @@ import setMinutes from 'date-fns/setMinutes';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR} from "./models/time";
 import {shuffle} from "./util/shuffle";
 import {getTypeByName} from "./util/get-type-by-name";
+import {Pages} from "./models/pages";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -47,10 +48,10 @@ export function getFilters() {
   ];
 }
 
-export function getMenu() {
+export function getMenuItems() {
   return [
-    {title: `Table`, href: `#`, isActive: true},
-    {title: `Stats`, href: `#`, isActive: false},
+    {title: `Table`, href: Pages.EVENTS, isActive: true},
+    {title: `Stats`, href: Pages.STATS, isActive: false},
   ];
 }
 
