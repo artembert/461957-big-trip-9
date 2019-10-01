@@ -26,7 +26,6 @@ export class TripController {
   init() {
     if (this._eventList.length) {
       this._renderSort();
-      render(this._dayList.getElement(), this._container);
       this._renderDayList();
     } else {
       render(this._emptyPointList.getElement(), this._container);
@@ -60,12 +59,11 @@ export class TripController {
     this.unrenderSort();
     this._sort = new Sort(this._sortType, this._isShowDay);
     this._renderSort();
-
-    render(this._dayList.getElement(), this._container);
     this._renderDayList();
   }
 
   _renderDayList() {
+    render(this._dayList.getElement(), this._container);
     const dayList = this._isShowDay
       ? groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
       : [...[this._eventList.sort(sortFns[this._sortType])]];
@@ -98,7 +96,6 @@ export class TripController {
     updateProps(changedProperty, entry);
     unrender(this._dayList.getElement());
     this._dayList.removeElement();
-    render(this._dayList.getElement(), this._container);
     this._renderDayList();
   }
 
