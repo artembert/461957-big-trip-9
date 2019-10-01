@@ -23,6 +23,10 @@ export class TripController {
     this._onViewChange = this._onViewChange.bind(this);
   }
 
+  get _isShowDay() {
+    return this._sortType === SortType.EVENT;
+  }
+
   init() {
     if (this._eventList.length) {
       this._renderSort();
@@ -42,14 +46,8 @@ export class TripController {
     this._dayList.removeElement();
   }
 
-  get _isShowDay() {
-    return this._sortType === SortType.EVENT;
-  }
-
   _renderSort() {
-    this._sort.getElement()
-      .addEventListener(`change`, this._onChangeSort.bind(this));
-
+    this._sort.getElement().addEventListener(`change`, this._onChangeSort.bind(this));
     render(this._sort.getElement(), this._container);
   }
 
@@ -67,17 +65,25 @@ export class TripController {
     const dayList = this._isShowDay
       ? groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
       : [...[this._eventList.sort(sortFns[this._sortType])]];
+
     dayList.forEach((day, dayIndex) => {
-      this._renderDay(day, dayIndex, this._isShowDay, this._dayList.getElement());
+      this._renderDay({
+        dayEvents: day,
+        dayIndex,
+        container: this._dayList.getElement()});
     });
   }
 
-  _renderDay(day, dayIndex, isSortByEvent, container) {
-    const dayElement = new Day(day[0].date.start, dayIndex, isSortByEvent).getElement();
-    render(dayElement, container);
-    day.forEach((event) => {
-      this._renderEvent(event, dayElement.querySelector(`.trip-events__list`));
+  _renderDay({dayEvents, dayIndex, container}) {
+    const day = new Day({
+      date: dayEvents[0].date.start,
+      dayIndex,
+      isShowDate: this._isShowDay,
     });
+    const eventsContainer = day.getElement().querySelector(`.trip-events__list`);
+
+    render(day.getElement(), container);
+    dayEvents.forEach((event) => this._renderEvent(event, eventsContainer));
   }
 
   _renderEvent(eventData, container) {
@@ -94,8 +100,7 @@ export class TripController {
   _onDataChange(entry) {
     const changedProperty = this._eventList.find((tripEvent) => tripEvent.id === entry.id);
     updateProps(changedProperty, entry);
-    unrender(this._dayList.getElement());
-    this._dayList.removeElement();
+    this.unrenderDayList();
     this._renderDayList();
   }
 
