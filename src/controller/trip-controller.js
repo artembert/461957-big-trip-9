@@ -16,6 +16,7 @@ export class TripController {
     this._dayList = new DayList();
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
+    this._sort = new Sort(this._sortType, this._sortType === `event`);
 
     this._subscriptions = [];
     this._onDataChange = this._onDataChange.bind(this);
@@ -32,27 +33,35 @@ export class TripController {
     }
   }
 
-  _renderSort() {
-    let sort = new Sort(this._sortType, this._sortType === `event`);
+  unrenderDayList() {
+    unrender(this._dayList.getElement());
+    this._dayList.removeElement();
+  }
 
+  _renderSort() {
     const onChangeSort = (evt) => {
       this._sortType = evt.target.dataset.sort;
       unrender(this._dayList.getElement());
       this._dayList.removeElement();
-      unrender(sort.getElement());
-      sort.removeElement();
-      sort = new Sort(this._sortType, this._sortType === `event`);
-      render(sort.getElement(), this._container);
+      unrender(this._sort.getElement());
+      this._sort.removeElement();
+      this._sort = new Sort(this._sortType, this._sortType === `event`);
+      render(this._sort.getElement(), this._container);
       render(this._dayList.getElement(), this._container);
       this._renderEvents();
-      sort.getElement()
+      this._sort.getElement()
         .addEventListener(`change`, onChangeSort);
     };
 
-    sort.getElement()
+    this._sort.getElement()
       .addEventListener(`change`, onChangeSort);
 
-    render(sort.getElement(), this._container);
+    render(this._sort.getElement(), this._container);
+  }
+
+  unrenderSort() {
+    unrender(this._sort.getElement());
+    this._sort.removeElement();
   }
 
   _renderEvents() {
