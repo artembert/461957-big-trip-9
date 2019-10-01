@@ -33,35 +33,32 @@ export class TripController {
     }
   }
 
+  unrenderSort() {
+    unrender(this._sort.getElement());
+    this._sort.removeElement();
+  }
+
   unrenderDayList() {
     unrender(this._dayList.getElement());
     this._dayList.removeElement();
   }
 
   _renderSort() {
-    const onChangeSort = (evt) => {
-      this._sortType = evt.target.dataset.sort;
-      unrender(this._dayList.getElement());
-      this._dayList.removeElement();
-      unrender(this._sort.getElement());
-      this._sort.removeElement();
-      this._sort = new Sort(this._sortType, this._sortType === `event`);
-      render(this._sort.getElement(), this._container);
-      render(this._dayList.getElement(), this._container);
-      this._renderEvents();
-      this._sort.getElement()
-        .addEventListener(`change`, onChangeSort);
-    };
-
     this._sort.getElement()
-      .addEventListener(`change`, onChangeSort);
+      .addEventListener(`change`, this._onChangeSort.bind(this));
 
     render(this._sort.getElement(), this._container);
   }
 
-  unrenderSort() {
-    unrender(this._sort.getElement());
-    this._sort.removeElement();
+  _onChangeSort(evt) {
+    this._sortType = evt.target.dataset.sort;
+    this.unrenderDayList();
+    this.unrenderSort();
+    this._sort = new Sort(this._sortType, this._sortType === `event`);
+    this._renderSort();
+
+    render(this._dayList.getElement(), this._container);
+    this._renderEvents();
   }
 
   _renderEvents() {
