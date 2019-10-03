@@ -102,8 +102,8 @@ export class TripController {
   _renderDay({dayEvents, dayIndex, container}) {
     const day = new Day({
       date: dayEvents[0].date.start,
-      dayIndex,
-      isShowDate: this._isShowDay,
+      dayIndex: this._isEventCreating ? dayIndex : dayIndex + 1,
+      isShowDate: !dayEvents[0].isNew && this._isShowDay,
     });
     const eventsContainer = day.getElement().querySelector(`.trip-events__list`);
 
@@ -163,6 +163,10 @@ export class TripController {
 
 function groupEventsByDay(eventList) {
   const dayList = eventList.reduce((accum, item) => {
+    if (item.isNew) {
+      accum.set(0, [item]);
+      return accum;
+    }
     const dateKey
       = `${getDate(item.date.start)}.${getMonth(item.date.start)}.${getYear(item.date.start)}`;
     if (!accum.has(dateKey)) {
