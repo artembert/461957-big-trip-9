@@ -98,8 +98,12 @@ export class TripController {
   }
 
   _onDataChange(entry) {
-    const changedProperty = this._eventList.find((tripEvent) => tripEvent.id === entry.id);
-    updateProps(changedProperty, entry);
+    if (entry) {
+      const changedProperty = this._eventList.find((tripEvent) => tripEvent.id === entry.id);
+      updateProps(changedProperty, entry);
+    } else {
+      console.log(`null`);
+    }
     this.unrenderDayList();
     this._renderDayList();
   }

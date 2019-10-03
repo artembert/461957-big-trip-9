@@ -78,6 +78,9 @@ export class PointController {
         .querySelector(`.event__type-output`)
         .replaceWith(updatedDestinationLabelElement);
     };
+    const onRemoveEvent = () => {
+      this._onDataChange(null);
+    };
 
     this._tripEvent.getElement()
       .querySelector(`.event__rollup-btn`)
@@ -90,7 +93,7 @@ export class PointController {
       .addEventListener(`submit`, onSaveEvent);
     this._tripEventEdit.getElement()
       .querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, onResetEvent);
+      .addEventListener(`click`, onRemoveEvent);
     this._tripEventEdit.getElement()
       .querySelector(`.event__type-toggle`)
       .addEventListener(`change`, onChangeType);
