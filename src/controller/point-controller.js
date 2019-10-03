@@ -7,11 +7,13 @@ import {getTypeByName} from "../util/get-type-by-name";
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
+import {EventMode} from "../models/event-mode";
 
 export class PointController {
-  constructor({eventData, container, onDataChange, onViewChange, onRemoveEvent}) {
+  constructor({eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode}) {
     this._container = container;
     this._eventData = eventData;
+    this._mode = eventMode;
     this._onDataChange = onDataChange;
     this._onRemoveEvent = onRemoveEvent;
     this._onViewChange = onViewChange;
@@ -99,7 +101,11 @@ export class PointController {
       .querySelector(`.event__type-toggle`)
       .addEventListener(`change`, onChangeType);
 
-    render(this._tripEvent.getElement(), this._container);
+    if (this._mode === EventMode.READ) {
+      render(this._tripEvent.getElement(), this._container);
+    } else if (this._mode === EventMode.EDIT) {
+      render(this._tripEventEdit.getElement(), this._container);
+    }
   }
 
   closeEventsEdit() {
