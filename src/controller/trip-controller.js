@@ -8,6 +8,24 @@ import getDate from "date-fns/getDate";
 import getMonth from 'date-fns/getMonth';
 import getYear from 'date-fns/getYear';
 import {PointController} from "./point-controller";
+import {getId} from "../util/get-id";
+import {EventMode} from "../models/event-mode";
+
+const defaultEvent = {
+  type: `train`,
+  description: ``,
+  date: {
+    start: new Date(),
+    duration: 0,
+    end: new Date()
+  },
+  destination: ``,
+  price: ``,
+  options: new Set(),
+  pictures: [],
+  id: getId(),
+  isNew: true,
+};
 
 export class TripController {
   constructor(eventList, container) {
@@ -17,6 +35,7 @@ export class TripController {
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
     this._sort = new Sort(this._sortType, this._sortType === SortType.EVENT);
+    this._isEventCreating = false;
 
     this._subscriptions = [];
     this._onDataChange = this._onDataChange.bind(this);
@@ -35,6 +54,16 @@ export class TripController {
     } else {
       this._renderEmptyEventList();
     }
+  }
+
+  createEvent() {
+    if (this._isEventCreating) {
+      return;
+    }
+    this._isEventCreating = true;
+    this._eventList = [defaultEvent, ...this._eventList];
+    this.unrenderDayList();
+    this._renderDayList();
   }
 
   unrenderSort() {
@@ -86,6 +115,7 @@ export class TripController {
     const event = new PointController({
       eventData,
       container,
+      eventMode: getEventMode(eventData.isNew),
       onDataChange: this._onDataChange,
       onViewChange: this._onViewChange,
       onRemoveEvent: this._onRemoveEvent,
@@ -150,4 +180,8 @@ function updateProps(originalEvent, newEvent) {
       originalEvent[key] = value;
     }
   });
+}
+
+function getEventMode(isNew) {
+  return isNew ? EventMode.EDIT : EventMode.READ;
 }
