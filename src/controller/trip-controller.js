@@ -47,17 +47,8 @@ export class TripController {
   }
 
   _renderSort() {
-    this._sort.getElement().addEventListener(`change`, this._onChangeSort.bind(this));
+    this._sort.getElement().addEventListener(`change`, this._onSortChange.bind(this));
     render(this._sort.getElement(), this._container);
-  }
-
-  _onChangeSort(evt) {
-    this._sortType = evt.target.dataset.sort;
-    this.unrenderDayList();
-    this.unrenderSort();
-    this._sort = new Sort(this._sortType, this._isShowDay);
-    this._renderSort();
-    this._renderDayList();
   }
 
   _renderDayList() {
@@ -95,6 +86,15 @@ export class TripController {
     });
     event.init();
     this._subscriptions.push(event.closeEventsEdit.bind(event));
+  }
+
+  _onSortChange(evt) {
+    this._sortType = evt.target.dataset.sort;
+    this.unrenderDayList();
+    this.unrenderSort();
+    this._sort = new Sort(this._sortType, this._isShowDay);
+    this._renderSort();
+    this._renderDayList();
   }
 
   _onDataChange(entry) {
