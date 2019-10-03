@@ -118,7 +118,12 @@ export class TripController {
   _onRemoveEvent(eventId) {
     this._removeEvent(eventId);
     this.unrenderDayList();
-    this._renderDayList();
+    if (this._eventList.length) {
+      this._renderDayList();
+    } else {
+      this.unrenderSort();
+      this._renderEmptyEventList();
+    }
   }
 
   _onViewChange() {
