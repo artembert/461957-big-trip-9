@@ -30,6 +30,10 @@ const onChangeRoute = (route) => {
       return;
   }
 };
+const onAddNewEvent = () => {
+  onChangeRoute(Pages.EVENTS);
+  eventsController.createEvent();
+};
 
 
 const headerElement = document.querySelector(`.trip-main`);
@@ -37,6 +41,7 @@ const menuContainer = document.querySelector(`.trip-main__menu`);
 const filterContainer = document.querySelector(`.trip-main__filter`);
 const scheduleElement = document.querySelector(`.trip-events`);
 const statisticsContainer = document.querySelector(`.page-main__container`);
+const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
 const tripInfo = new TripInfo(getInfo(eventList));
 const menu = new Menu(getMenuItems());
@@ -55,3 +60,5 @@ Array.from(menu.getElement()
   .forEach((link) => {
     link.addEventListener(`change`, (evt) => onChangeRoute(evt.currentTarget.value));
   });
+
+addNewEventButton.addEventListener(`click`, () => onAddNewEvent());
