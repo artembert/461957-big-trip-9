@@ -15,6 +15,8 @@ const eventList = getEventList(EVENT_COUNT);
 const onChangeRoute = (route) => {
   switch (route) {
     case (Pages.EVENTS):
+      eventsController.unrenderDayList();
+      eventsController.unrenderSort();
       eventsController.init();
       unrender(stats.getElement());
       stats.removeElement();
