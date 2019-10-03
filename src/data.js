@@ -8,6 +8,7 @@ import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR} from "./models/tim
 import {shuffle} from "./util/shuffle";
 import {getTypeByName} from "./util/get-type-by-name";
 import {Pages} from "./models/pages";
+import {getId} from "./util/get-id";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -145,8 +146,4 @@ function getCost(events) {
     }, 0);
     return sum + Number(event.price) + optionsCost;
   }, 0);
-}
-
-function getId() {
-  return `f${(~~(Math.random() * 1e8)).toString(16)}`;
 }
