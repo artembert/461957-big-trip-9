@@ -5,7 +5,7 @@ export default class Day extends AbstractComponent {
   constructor({date, dayIndex, isShowDate}) {
     super();
     this._date = date;
-    this._number = dayIndex + 1;
+    this._number = dayIndex;
     this._isShowDate = isShowDate;
   }
 
