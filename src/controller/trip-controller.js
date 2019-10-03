@@ -33,7 +33,7 @@ export class TripController {
       this._renderSort();
       this._renderDayList();
     } else {
-      render(this._emptyPointList.getElement(), this._container);
+      this._renderEmptyEventList();
     }
   }
 
@@ -50,6 +50,10 @@ export class TripController {
   _renderSort() {
     this._sort.getElement().addEventListener(`change`, this._onSortChange.bind(this));
     render(this._sort.getElement(), this._container);
+  }
+
+  _renderEmptyEventList() {
+    render(this._emptyPointList.getElement(), this._container);
   }
 
   _renderDayList() {
