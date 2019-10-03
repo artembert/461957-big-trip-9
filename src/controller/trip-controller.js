@@ -21,6 +21,7 @@ export class TripController {
     this._subscriptions = [];
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
+    this._onRemoveEvent = this._onRemoveEvent.bind(this);
   }
 
   get _isShowDay() {
@@ -83,9 +84,15 @@ export class TripController {
       container,
       onDataChange: this._onDataChange,
       onViewChange: this._onViewChange,
+      onRemoveEvent: this._onRemoveEvent,
     });
     event.init();
     this._subscriptions.push(event.closeEventsEdit.bind(event));
+  }
+
+  _removeEvent(eventId) {
+    const removeIndex = this._eventList.findIndex((tripEvent) => tripEvent.id === eventId);
+    this._eventList = [...this._eventList.slice(0, removeIndex), ...this._eventList.slice(removeIndex + 1)];
   }
 
   _onSortChange(evt) {
@@ -98,12 +105,14 @@ export class TripController {
   }
 
   _onDataChange(entry) {
-    if (entry) {
-      const changedProperty = this._eventList.find((tripEvent) => tripEvent.id === entry.id);
-      updateProps(changedProperty, entry);
-    } else {
-      console.log(`null`);
-    }
+    const changedProperty = this._eventList.find((tripEvent) => tripEvent.id === entry.id);
+    updateProps(changedProperty, entry);
+    this.unrenderDayList();
+    this._renderDayList();
+  }
+
+  _onRemoveEvent(eventId) {
+    this._removeEvent(eventId);
     this.unrenderDayList();
     this._renderDayList();
   }

@@ -9,10 +9,11 @@ import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
 
 export class PointController {
-  constructor({eventData, container, onDataChange, onViewChange}) {
+  constructor({eventData, container, onDataChange, onViewChange, onRemoveEvent}) {
     this._container = container;
     this._eventData = eventData;
     this._onDataChange = onDataChange;
+    this._onRemoveEvent = onRemoveEvent;
     this._onViewChange = onViewChange;
     this._tripEvent = new TripEvent(this._eventData);
     this._tripEventEdit = new TripEventEdit(this._eventData);
@@ -79,7 +80,7 @@ export class PointController {
         .replaceWith(updatedDestinationLabelElement);
     };
     const onRemoveEvent = () => {
-      this._onDataChange(null);
+      this._onRemoveEvent(this._eventData.id);
     };
 
     this._tripEvent.getElement()
