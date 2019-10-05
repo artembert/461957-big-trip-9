@@ -1,4 +1,5 @@
 import {Method} from "./models/method";
+import EventAdapter from "./adapters/event-adapter";
 
 export const API = class {
   constructor({endPoint, authorization}) {
@@ -10,7 +11,8 @@ export const API = class {
     return this._load({
       url: `tasks`,
     })
-    .then(toJSON);
+    .then(toJSON)
+    .then(EventAdapter.parseEvents);
   }
 
   createTask({task}) {
@@ -20,7 +22,8 @@ export const API = class {
       body: JSON.stringify(task),
       headers: new Headers({'Content-Type': `application/json`}),
     })
-    .then(toJSON);
+    .then(toJSON)
+    .then(EventAdapter.parseEvent);
   }
 
   updateTask({id, data}) {
@@ -30,13 +33,14 @@ export const API = class {
       body: JSON.stringify(data),
       headers: new Headers({'Content-Type': `application/json`}),
     })
-    .then(toJSON);
+    .then(toJSON)
+    .then(EventAdapter.parseEvent);
   }
 
   deleteTask({id}) {
     return this._load({
       url: `task/${id}`,
-      method: Method.DELETE
+      method: Method.DELETE,
     });
   }
 
