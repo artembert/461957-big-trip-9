@@ -8,7 +8,7 @@ import {getTypeByName} from "../util/get-type-by-name";
 
 
 export default class TripEventEdit extends AbstractComponent {
-  constructor({type, description, pictures, destination, price, options, date}) {
+  constructor({type, description, pictures, destination, price, options, date, isNew}) {
     super();
     this._type = getTypeByName(type);
     this._description = description;
@@ -17,6 +17,7 @@ export default class TripEventEdit extends AbstractComponent {
     this._price = price;
     this._options = options;
     this._date = date;
+    this._isNew = isNew || false;
 
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
     this._optionsMarkup = new Options(Array.from(this._options)).getTemplate();
@@ -61,10 +62,9 @@ export default class TripEventEdit extends AbstractComponent {
         </label>
         <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${this._price}">
       </div>
-    
-    
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Cancel</button>
+      
+      ${getActionButtons(this._isNew)}
+      
     </header>
     
     <section class="event__details">
@@ -105,4 +105,12 @@ export default class TripEventEdit extends AbstractComponent {
     ${ucFirstLetter(typeName)} ${preposition}
   </label>`.trim();
   }
+}
+
+
+function getActionButtons(isNew) {
+  return `
+    <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+    <button class="event__reset-btn">${isNew ? `Cancel` : `Delete`}</button>
+  `.trim();
 }

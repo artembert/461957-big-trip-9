@@ -7,21 +7,27 @@ import {getTypeByName} from "../util/get-type-by-name";
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
+import {EventMode} from "../models/event-mode";
 
 export class PointController {
-  constructor({eventData, container, onDataChange, onViewChange}) {
+  constructor({eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode}) {
     this._container = container;
     this._eventData = eventData;
+    this._mode = eventMode;
     this._onDataChange = onDataChange;
+    this._onRemoveEvent = onRemoveEvent;
     this._onViewChange = onViewChange;
     this._tripEvent = new TripEvent(this._eventData);
     this._tripEventEdit = new TripEventEdit(this._eventData);
   }
 
   init() {
-
-    flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`), getDateConfig(this._eventData.date.start));
-    flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), getDateConfig(this._eventData.date.end));
+    const flatpickrStart = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`), getDateConfig(this._eventData.date.start));
+    const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), {
+      ...getDateConfig(this._eventData.date.end),
+      minDate: this._eventData.date.start,
+    });
+    flatpickrStart.config.onChange.push((selectedDates) => flatpickrEnd.set(`minDate`, selectedDates[0]));
 
     const onEditEvent = () => {
       this._onViewChange();
@@ -75,6 +81,9 @@ export class PointController {
         .querySelector(`.event__type-output`)
         .replaceWith(updatedDestinationLabelElement);
     };
+    const onRemoveEvent = () => {
+      this._onRemoveEvent(this._eventData.id);
+    };
 
     this._tripEvent.getElement()
       .querySelector(`.event__rollup-btn`)
@@ -87,12 +96,16 @@ export class PointController {
       .addEventListener(`submit`, onSaveEvent);
     this._tripEventEdit.getElement()
       .querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, onResetEvent);
+      .addEventListener(`click`, onRemoveEvent);
     this._tripEventEdit.getElement()
       .querySelector(`.event__type-toggle`)
       .addEventListener(`change`, onChangeType);
 
-    render(this._tripEvent.getElement(), this._container);
+    if (this._mode === EventMode.READ) {
+      render(this._tripEvent.getElement(), this._container);
+    } else if (this._mode === EventMode.EDIT) {
+      render(this._tripEventEdit.getElement(), this._container);
+    }
   }
 
   closeEventsEdit() {

@@ -48,5 +48,11 @@ git clone SSH-адрес_вашего_форка
 
 Репозиторий создан для обучения на интенсивном онлайн‑курсе «[Профессиональный JavaScript, уровень 2](https://htmlacademy.ru/intensive/ecmascript)» от [HTML Academy](https://htmlacademy.ru).
 
+### 5. Список вопросов:
+- Как переформировать метод _renderSort() в TripController, чтобы он был чище и понятнее?
+
+- Как вызывать создание компонентов только при обращении к ним?
+
+
 [travis-image]: https://travis-ci.com/htmlacademy-ecmascript/461957-big-trip-9.svg?branch=master
 [travis-url]: https://travis-ci.com/htmlacademy-ecmascript/461957-big-trip-9

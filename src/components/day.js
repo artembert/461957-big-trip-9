@@ -2,11 +2,11 @@ import AbstractComponent from "./abstract-component";
 import format from 'date-fns/format';
 
 export default class Day extends AbstractComponent {
-  constructor(date, number, isShowDate) {
+  constructor({date, dayIndex, isShowDate}) {
     super();
-    this._isShowDate = isShowDate;
     this._date = date;
-    this._number = number + 1;
+    this._number = dayIndex;
+    this._isShowDate = isShowDate;
   }
 
   getTemplate() {
