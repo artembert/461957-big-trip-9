@@ -6,6 +6,40 @@ export const API = class {
     this._authorization = authorization;
   }
 
+  getTasks() {
+    return this._load({
+      url: `tasks`,
+    })
+    .then(toJSON);
+  }
+
+  createTask({task}) {
+    return this._load({
+      url: `tasks`,
+      method: Method.POST,
+      body: JSON.stringify(task),
+      headers: new Headers({'Content-Type': `application/json`}),
+    })
+    .then(toJSON);
+  }
+
+  updateTask({id, data}) {
+    return this._load({
+      url: `tasks/${id}`,
+      method: Method.PUT,
+      body: JSON.stringify(data),
+      headers: new Headers({'Content-Type': `application/json`}),
+    })
+    .then(toJSON);
+  }
+
+  deleteTask({id}) {
+    return this._load({
+      url: `task/${id}`,
+      method: Method.DELETE
+    });
+  }
+
   _load({
     url,
     method = Method.GET,
@@ -13,11 +47,12 @@ export const API = class {
     headers = new Headers(),
   }) {
     return fetch(`${this._endPoint}/${url}`, {method, body, headers})
-      .then(checkStatus)
-      .catch((err) => {
-        console.error(`fetch error: ${err}`);
-        throw err;
-      });
+    .then(checkStatus)
+    .catch((err) => {
+      // eslint-disable-next-line no-console
+      console.error(`fetch error: ${err}`);
+      throw err;
+    });
   }
 };
 
@@ -27,4 +62,8 @@ function checkStatus(response) {
   } else {
     throw new Error(`${response.status}: ${response.statusText}`);
   }
+}
+
+function toJSON(response) {
+  return response.json();
 }
