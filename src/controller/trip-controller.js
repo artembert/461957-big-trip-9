@@ -11,22 +11,6 @@ import {PointController} from "./point-controller";
 import {getId} from "../util/get-id";
 import {EventMode} from "../models/event-mode";
 
-const defaultEvent = {
-  type: `train`,
-  description: ``,
-  date: {
-    start: new Date(),
-    duration: 0,
-    end: new Date()
-  },
-  destination: ``,
-  price: ``,
-  options: new Set(),
-  pictures: [],
-  id: getId(),
-  isNew: true,
-};
-
 export class TripController {
   constructor(eventList, container) {
     this._container = container;
@@ -66,7 +50,7 @@ export class TripController {
       this._renderSort();
     }
     this._isEventCreating = true;
-    this._eventList = [defaultEvent, ...this._eventList];
+    this._eventList = [getDefaultEvent(), ...this._eventList];
     this.unrenderDayList();
     this._renderDayList();
   }
@@ -191,9 +175,27 @@ function updateProps(originalEvent, newEvent) {
       originalEvent[key] = value;
     }
   });
-  newEvent.isNew = false;
+  originalEvent.isNew = false;
 }
 
 function getEventMode(isNew) {
   return isNew ? EventMode.EDIT : EventMode.READ;
+}
+
+function getDefaultEvent() {
+  return {
+    type: `train`,
+    description: ``,
+    date: {
+      start: new Date(),
+      duration: 0,
+      end: new Date()
+    },
+    destination: ``,
+    price: ``,
+    options: new Set(),
+    pictures: [],
+    id: getId(),
+    isNew: true,
+  };
 }
