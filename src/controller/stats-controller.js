@@ -36,7 +36,6 @@ export default class StatsController {
         options: {
           plugins: {
             datalabels: {
-              color: `red`,
               anchor: `end`,
               clamp: true,
               align: `left`,
