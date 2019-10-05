@@ -1,12 +1,12 @@
 import TripInfo from './components/info';
 import Menu from './components/menu';
 import Filter from './components/filter';
-import {render, unrender} from "./util/dom";
+import {render} from "./util/dom";
 import {getEventList, getFilters, getInfo, getMenuItems} from "./data";
 import {Position} from "./models/position";
 import {TripController} from "./controller/trip-controller";
-import Stats from "./components/stats";
 import {Pages} from "./models/pages";
+import StatsController from "./controller/stats-controller";
 
 const EVENT_COUNT = 7;
 
@@ -18,13 +18,12 @@ const onChangeRoute = (route) => {
       eventsController.unrenderDayList();
       eventsController.unrenderSort();
       eventsController.init();
-      unrender(stats.getElement());
-      stats.removeElement();
+      statsController.destroy();
       break;
     case (Pages.STATS):
       eventsController.unrenderDayList();
       eventsController.unrenderSort();
-      render(stats.getElement(), statisticsContainer, Position.AFTERBEGIN);
+      statsController.init();
       break;
     default:
       return;
@@ -46,7 +45,7 @@ const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 const tripInfo = new TripInfo(getInfo(eventList));
 const menu = new Menu(getMenuItems());
 const filter = new Filter(getFilters());
-const stats = new Stats();
+const statsController = new StatsController(statisticsContainer);
 const eventsController = new TripController(eventList, scheduleElement);
 
 render(tripInfo.getElement(), headerElement, Position.AFTERBEGIN);
