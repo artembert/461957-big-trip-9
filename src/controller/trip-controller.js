@@ -139,6 +139,7 @@ export class TripController {
   }
 
   _onDataChange(entry) {
+    this._isEventCreating = false;
     const changedProperty = this._eventList.find((tripEvent) => tripEvent.id === entry.id);
     updateProps(changedProperty, entry);
     this.unrenderDayList();
@@ -146,6 +147,7 @@ export class TripController {
   }
 
   _onRemoveEvent(eventId) {
+    this._isEventCreating = false;
     this._removeEvent(eventId);
     this.unrenderDayList();
     if (this._eventList.length) {
@@ -184,6 +186,7 @@ function updateProps(originalEvent, newEvent) {
       originalEvent[key] = value;
     }
   });
+  newEvent.isNew = false;
 }
 
 function getEventMode(isNew) {
