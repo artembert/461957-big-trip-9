@@ -61,3 +61,9 @@ Array.from(menu.getElement()
   });
 
 addNewEventButton.addEventListener(`click`, () => onAddNewEvent());
+
+Array.from(filter.getElement()
+  .querySelectorAll(`.trip-filters__filter-input`))
+  .forEach((link) => {
+    link.addEventListener(`change`, (evt) => eventsController.updateFilter(evt.currentTarget.value));
+  });

@@ -9,6 +9,7 @@ import {shuffle} from "./util/shuffle";
 import {getTypeByName} from "./util/get-type-by-name";
 import {Pages} from "./models/pages";
 import {getId} from "./util/get-id";
+import {EventFilter} from "./models/event-filter";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -43,9 +44,9 @@ function getEvent() {
 
 export function getFilters() {
   return [
-    {title: `Everything`, type: `everything`, isActive: true},
-    {title: `Feature`, type: `feature`, isActive: false},
-    {title: `Past`, type: `past`, isActive: false},
+    {title: `Everything`, type: EventFilter.DEFAULT, isActive: true},
+    {title: `Feature`, type: EventFilter.FEATURE, isActive: false},
+    {title: `Past`, type: EventFilter.PAST, isActive: false},
   ];
 }
 

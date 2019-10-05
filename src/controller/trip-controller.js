@@ -10,16 +10,18 @@ import getYear from 'date-fns/getYear';
 import {PointController} from "./point-controller";
 import {getId} from "../util/get-id";
 import {EventMode} from "../models/event-mode";
+import {EventFilter, filterFns} from "../models/event-filter";
 
 export class TripController {
   constructor(eventList, container) {
     this._container = container;
-    this._eventList = eventList;
+    this._eventListValue = eventList;
     this._dayList = new DayList();
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
     this._sort = new Sort(this._sortType, this._sortType === SortType.EVENT);
     this._isEventCreating = false;
+    this._filterType = EventFilter.DEFAULT;
 
     this._subscriptions = [];
     this._onDataChange = this._onDataChange.bind(this);
@@ -29,6 +31,12 @@ export class TripController {
 
   get _isShowDay() {
     return this._sortType === SortType.EVENT;
+  }
+
+  get _eventList() {
+    return this._eventListValue
+      .filter(filterFns[this._filterType])
+      .sort(sortFns[this._sortType]);
   }
 
   init() {
@@ -63,6 +71,14 @@ export class TripController {
   unrenderDayList() {
     unrender(this._dayList.getElement());
     this._dayList.removeElement();
+  }
+
+  updateFilter(filterType) {
+    this._filterType = filterType;
+    this.unrenderSort();
+    this.unrenderDayList();
+    this._renderSort();
+    this._renderDayList();
   }
 
   _renderSort() {
