@@ -60,6 +60,11 @@ export class TripController {
     if (this._isEventCreating) {
       return;
     }
+    if (!this._dayList.length) {
+      unrender(this._emptyPointList.getElement());
+      this._emptyPointList.removeElement();
+      this._renderSort();
+    }
     this._isEventCreating = true;
     this._eventList = [defaultEvent, ...this._eventList];
     this.unrenderDayList();
