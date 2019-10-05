@@ -11,7 +11,8 @@ export default class StatsController {
 
   init() {
     render(this._statsComponent.getElement(), this._container);
-    // this._initMoneyChart();
+    this._setGlobalChartOptions();
+    this._initMoneyChart();
   }
 
   destroy() {
@@ -23,9 +24,36 @@ export default class StatsController {
     const moneyChart = this._initChart({
       selector: `.statistics__chart--money`, options: {
         plugins: [ChartDataLabels],
-        type: `bar`,
-        data: [10, 20, 30],
-        options: {},
+        type: `horizontalBar`,
+        data: {
+          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          datasets: [{
+            data: [65, 59, 80, 81, 56, 55, 40],
+            borderWidth: 1,
+            backgroundColor: `#ffffff`,
+          }],
+        },
+        options: {
+          plugins: {
+            datalabels: {
+              color: `red`,
+              anchor: `end`,
+              clamp: true,
+              align: `left`,
+              formatter: (value) => `€ ${value}`
+            },
+          },
+          legend: {
+            display: false,
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: false,
+              },
+            }],
+          },
+        },
       },
     });
   }
@@ -41,5 +69,12 @@ export default class StatsController {
   _initChart({selector, options}) {
     const container = this._statsComponent.getElement().querySelector(selector);
     return new Chart(container, options);
+  }
+
+  _setGlobalChartOptions() {
+    Chart.defaults.global.defaultFontFamily = `"Montserrat", "Arial", sans-serif`;
+    Chart.defaults.global.defaultFontSize = 17;
+    Chart.defaults.global.defaultFontStyle = `bold`;
+    Chart.defaults.global.defaultFontColor = `#000`;
   }
 }
