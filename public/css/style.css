@@ -797,6 +797,28 @@ main {
   .event__reset-btn:active {
     opacity: 0.6; }
 
+.event__delete-btn {
+  display: block;
+  padding: 0;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 21px;
+  font-family: inherit;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #0d8ae4;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s; }
+.event__delete-btn:hover {
+  opacity: 0.8; }
+.event__delete-btn:active {
+  opacity: 0.6; }
+
 .event__favorite-btn {
   margin-left: 36px;
   margin-right: 18px;
