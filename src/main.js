@@ -7,10 +7,9 @@ import {Position} from "./models/position";
 import {TripController} from "./controller/trip-controller";
 import {Pages} from "./models/pages";
 import StatsController from "./controller/stats-controller";
+import api from "./api";
 
 const EVENT_COUNT = 7;
-
-const eventList = getEventList(EVENT_COUNT);
 
 const onChangeRoute = (route) => {
   switch (route) {
@@ -42,7 +41,9 @@ const scheduleElement = document.querySelector(`.trip-events`);
 const statisticsContainer = document.querySelector(`.page-main__container`);
 const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
-const tripInfo = new TripInfo(getInfo(eventList));
+const mockEventList = getEventList(EVENT_COUNT);
+const eventList = api.getEvents();
+const tripInfo = new TripInfo(getInfo(mockEventList));
 const menu = new Menu(getMenuItems());
 const filter = new Filter(getFilters());
 const statsController = new StatsController(statisticsContainer);

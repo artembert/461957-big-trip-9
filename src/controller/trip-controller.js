@@ -11,6 +11,7 @@ import {PointController} from "./point-controller";
 import {getId} from "../util/get-id";
 import {EventMode} from "../models/event-mode";
 import {EventFilter, filterFns} from "../models/event-filter";
+import api from "../api";
 
 export class TripController {
   constructor(eventList, container) {
@@ -34,18 +35,22 @@ export class TripController {
   }
 
   get _eventList() {
-    return this._eventListValue
-      .filter(filterFns[this._filterType])
-      .sort(sortFns[this._sortType]);
+    return this._eventListValue;
+    //   .filter(filterFns[this._filterType])
+    //   .sort(sortFns[this._sortType]);
   }
 
   init() {
-    if (this._eventList.length) {
-      this._renderSort();
-      this._renderDayList();
-    } else {
-      this._renderEmptyEventList();
-    }
+    api.getEvents().then((response) => {
+      this._eventListValue = response;
+      if (this._eventList.length) {
+        this._renderSort();
+        this._renderDayList();
+      } else {
+        this._renderEmptyEventList();
+      }
+
+    });
   }
 
   createEvent() {
