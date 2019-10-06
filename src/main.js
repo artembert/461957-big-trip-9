@@ -2,7 +2,7 @@ import TripInfo from './components/info';
 import Menu from './components/menu';
 import Filter from './components/filter';
 import {render} from "./util/dom";
-import {getEventList, getFilters, getInfo, getMenuItems} from "./data";
+import {getEventList, getFilters, getInfo, getMenuItems} from "./mock-data";
 import {Position} from "./models/position";
 import {TripController} from "./controller/trip-controller";
 import {Pages} from "./models/pages";
