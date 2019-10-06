@@ -1,23 +1,26 @@
 import {Method} from "./models/method";
 import EventAdapter from "./adapters/event-adapter";
 
-export const API = class {
+const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
+const END_POINT = `https://htmlacademy-es-9.appspot.com/big-trip`;
+
+class API {
   constructor({endPoint, authorization}) {
     this._endPoint = endPoint;
     this._authorization = authorization;
   }
 
-  getTasks() {
+  getEvents() {
     return this._load({
-      url: `tasks`,
+      url: `points`,
     })
     .then(toJSON)
     .then(EventAdapter.parseEvents);
   }
 
-  createTask({task}) {
+  createEvent({task}) {
     return this._load({
-      url: `tasks`,
+      url: `points`,
       method: Method.POST,
       body: JSON.stringify(task),
       headers: new Headers({'Content-Type': `application/json`}),
@@ -26,9 +29,9 @@ export const API = class {
     .then(EventAdapter.parseEvent);
   }
 
-  updateTask({id, data}) {
+  updateEvent({id, data}) {
     return this._load({
-      url: `tasks/${id}`,
+      url: `points/${id}`,
       method: Method.PUT,
       body: JSON.stringify(data),
       headers: new Headers({'Content-Type': `application/json`}),
@@ -37,9 +40,9 @@ export const API = class {
     .then(EventAdapter.parseEvent);
   }
 
-  deleteTask({id}) {
+  deleteEvent({id}) {
     return this._load({
-      url: `task/${id}`,
+      url: `points/${id}`,
       method: Method.DELETE,
     });
   }
@@ -50,6 +53,8 @@ export const API = class {
     body = null,
     headers = new Headers(),
   }) {
+    headers.append(`Authorization`, this._authorization);
+
     return fetch(`${this._endPoint}/${url}`, {method, body, headers})
     .then(checkStatus)
     .catch((err) => {
@@ -58,7 +63,11 @@ export const API = class {
       throw err;
     });
   }
-};
+}
+
+const api = new API({authorization: AUTHORIZATION, endPoint: END_POINT});
+Object.freeze(api);
+export default api;
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
