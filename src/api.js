@@ -47,6 +47,14 @@ class API {
     });
   }
 
+  getOptions() {
+    return this._load({
+      url: `offers`,
+      method: Method.GET,
+    })
+    .then(toJSON);
+  }
+
   _load({
     url,
     method = Method.GET,

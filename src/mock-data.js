@@ -35,7 +35,11 @@ function getEvent() {
     // если делать чистую функцию, то нужно "cities" и в getEvent() передавать, тогда у меня потянется большое количество параметров в функциях
     destination: getDestination(type, cities),
     price: getPrice(),
-    options: getOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
+    options: getOptions({
+      optionList: options,
+      maxLength: MAX_ADDITIONAL_OPTIONS_COUNT,
+      typeName: type.name
+    }),
     id: getId(),
   };
 }
@@ -102,13 +106,20 @@ function getDescription(descriptionList) {
   .join(` `);
 }
 
-function getOptions(optionList, maxLength) {
+function getOptions({optionList, maxLength, typeName}) {
   const selectedOptionsCount = getRandomInteger(0, maxLength + 1);
-  const shuffledOptions = shuffle(optionList);
-  const selectedOptions = shuffledOptions.slice(0, selectedOptionsCount).map(({name, price, code}) =>
-    ({name, price, code, isSelected: true}));
-  const unselectedOptions = shuffledOptions.slice(selectedOptionsCount).map(({name, price, code}) =>
-    ({name, price, code, isSelected: false}));
+  const offers = (optionList
+    .find((optionGroup) => optionGroup.type === typeName)
+  .offers);
+  const shuffledOptions = shuffle(offers);
+  const selectedOptions = shuffledOptions
+    .slice(0, selectedOptionsCount)
+    .map(({name, price, title}) =>
+      ({name, price, title, isSelected: true}));
+  const unselectedOptions = shuffledOptions
+    .slice(selectedOptionsCount)
+    .map(({name, price, title}) =>
+      ({name, price, title, isSelected: false}));
   return new Set([...selectedOptions, ...unselectedOptions]);
 }
 

@@ -9,7 +9,7 @@ export const moveTypes = [
 ];
 
 export const placeTypes = [
-  {name: `check`, icon: `check-in`, preposition: `into`, isPlace: true},
+  {name: `check-in`, icon: `check-in`, preposition: `into`, isPlace: true},
   {name: `sightseeing`, icon: `sightseeing`, preposition: `at`, isPlace: true},
   {name: `restaurant`, icon: `restaurant`, preposition: `in`, isPlace: true},
 ];
