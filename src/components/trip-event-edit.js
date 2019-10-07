@@ -75,12 +75,11 @@ export default class TripEventEdit extends AbstractComponent {
       
       <section class="event__section  event__section--destination">
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${this._description}</p>
+        <p class="event__destination-description">${this._destination.name}</p>
   
         <div class="event__photos-container">
           <div class="event__photos-tape">
-          ${Array.from(this._pictures).map((picture) =>
-    `<img class="event__photo" src="${picture}" alt="Event photo">`).join(``)}
+          ${getPictures(this._destination.pictures)}
           </div>
         </div>
       </section>
@@ -113,4 +112,10 @@ function getActionButtons(isNew) {
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
     <button class="event__reset-btn">${isNew ? `Cancel` : `Delete`}</button>
   `.trim();
+}
+
+function getPictures(pictures) {
+  return pictures.map((picture) =>
+    `<img class="event__photo" src="${picture.src}" alt="${picture.descriptions}">`.trim())
+  .join();
 }

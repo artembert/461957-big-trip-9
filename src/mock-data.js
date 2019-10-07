@@ -30,14 +30,12 @@ function getEvent() {
   const type = getType(types);
   return {
     type: type.name,
-    description: getDescription(descriptions),
     date: getDate(dateNow),
 
     // если делать чистую функцию, то нужно "cities" и в getEvent() передавать, тогда у меня потянется большое количество параметров в функциях
     destination: getDestination(type, cities),
     price: getPrice(),
     options: getOptions(options, MAX_ADDITIONAL_OPTIONS_COUNT),
-    pictures: getPictures(),
     id: getId(),
   };
 }
@@ -86,7 +84,11 @@ function getType(typeList) {
 }
 
 function getDestination(type, cityList) {
-  return type.isPlace ? undefined : cityList[getRandomInteger(0, cityList.length)];
+  return {
+    description: getDescription(descriptions),
+    name: cityList[getRandomInteger(0, cityList.length)],
+    pictures: getPictures(),
+  };
 }
 
 function getPrice() {
@@ -118,7 +120,10 @@ function getDate(currentDate) {
 }
 
 function getPictures() {
-  return new Array(getRandomInteger(MIN_PICTURES_COUNT, MAX_PICTURES_COUNT)).fill(undefined).map(() => `http://picsum.photos/300/150?r=${Math.random()}`);
+  return new Array(getRandomInteger(MIN_PICTURES_COUNT, MAX_PICTURES_COUNT)).fill(undefined).map(() => ({
+    src: `http://picsum.photos/300/150?r=${Math.random()}`,
+    descriptions: `Photo description`
+  }));
 }
 
 function getPoints(events) {
