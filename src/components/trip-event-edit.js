@@ -5,14 +5,13 @@ import AbstractComponent from "./abstract-component";
 import EventTypeList from "./event-type-list";
 import Options from "./options";
 import {getTypeByName} from "../util/get-type-by-name";
+import Destination from "./destination";
 
 
 export default class TripEventEdit extends AbstractComponent {
-  constructor({type, description, pictures, destination, price, options, date, isNew}) {
+  constructor({type, destination, price, options, date, isNew}) {
     super();
     this._type = getTypeByName(type);
-    this._description = description;
-    this._pictures = pictures;
     this._destination = destination;
     this._price = price;
     this._options = options;
