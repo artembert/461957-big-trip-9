@@ -19,7 +19,7 @@ export default class Options extends AbstractComponent {
       data-code="${offer.code}"
       data-price="${offer.price}">
       <label class="event__offer-label" for="event-offer-${offer.code}-1">
-        <span class="event__offer-title">${offer.name}</span>&nbsp;&plus;&euro;&nbsp;<span class="event__offer-price">&nbsp;${offer.price}</span>
+        <span class="event__offer-title">${offer.name}</span>&nbsp;&plus;&nbsp;&euro;&nbsp;<span class="event__offer-price">&nbsp;${offer.price}</span>
       </label>
     </div>`).join(``)}
   </div>`;
