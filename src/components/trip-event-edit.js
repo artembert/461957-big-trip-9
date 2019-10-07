@@ -19,6 +19,9 @@ export default class TripEventEdit extends AbstractComponent {
     this._date = date;
     this._isNew = isNew || false;
 
+    this._destinationMarkup = this._destination
+      ? new Destination(this._destination).getTemplate()
+      : ``;
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
     this._optionsMarkup = new Options(Array.from(this._options)).getTemplate();
   }
@@ -37,7 +40,7 @@ export default class TripEventEdit extends AbstractComponent {
       
       <div class="event__field-group  event__field-group--destination">
         ${this.getDestinationLabelTemplate(this._type.name, this._type.preposition)}
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${this._destination}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${this._destination.name}" list="destination-list-1">
         <datalist id="destination-list-1">
           ${cities.map((item) => `<option value="${item}"></option>`).join(``)}
         </datalist>
@@ -72,18 +75,7 @@ export default class TripEventEdit extends AbstractComponent {
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
         ${this._optionsMarkup}
       </section>
-      
-      <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${this._destination.name}</p>
-  
-        <div class="event__photos-container">
-          <div class="event__photos-tape">
-          ${getPictures(this._destination.pictures)}
-          </div>
-        </div>
-      </section>
-    
+      ${this._destinationMarkup}
     </section>
     
   </form>
@@ -112,10 +104,4 @@ function getActionButtons(isNew) {
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
     <button class="event__reset-btn">${isNew ? `Cancel` : `Delete`}</button>
   `.trim();
-}
-
-function getPictures(pictures) {
-  return pictures.map((picture) =>
-    `<img class="event__photo" src="${picture.src}" alt="${picture.descriptions}">`.trim())
-  .join();
 }
