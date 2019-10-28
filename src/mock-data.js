@@ -114,12 +114,12 @@ function getOptions({optionList, maxLength, typeName}) {
   const shuffledOptions = shuffle(offers);
   const selectedOptions = shuffledOptions
     .slice(0, selectedOptionsCount)
-    .map(({name, price, title}) =>
-      ({name, price, title, isSelected: true}));
+    .map(({price, title}) =>
+      ({price, title, accepted: true}));
   const unselectedOptions = shuffledOptions
     .slice(selectedOptionsCount)
-    .map(({name, price, title}) =>
-      ({name, price, title, isSelected: false}));
+    .map(({price, title}) =>
+      ({price, title, accepted: false}));
   return new Set([...selectedOptions, ...unselectedOptions]);
 }
 
