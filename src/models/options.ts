@@ -1,4 +1,6 @@
-export const options = [
+import {Offer} from "../types/offer";
+
+export const options: Offer[] = [
   {
     type: `taxi`,
     offers: [{

@@ -1,6 +1,7 @@
 import {createElement} from "../util/dom";
 
 export default class AbstractComponent {
+  private _element: HTMLElement;
   constructor() {
     if (new.target === AbstractComponent) {
       throw new Error(`Can't instantiate AbstractComponent, only inherit from it.`);
@@ -12,10 +13,10 @@ export default class AbstractComponent {
     if (!this._element) {
       this._element = createElement(this.getTemplate().trim());
     }
-    return this._element;
+    return (this._element as HTMLElement);
   }
 
-  getTemplate() {
+  getTemplate(): string {
     throw new Error(`Abstract method is not implemented`);
   }
 

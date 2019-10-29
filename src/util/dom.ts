@@ -1,6 +1,6 @@
 import {Position} from "../models/position";
 
-export function render(markup, container, place) {
+export function render(markup, container, place?) {
   if (place === Position.AFTERBEGIN) {
     container.prepend(markup);
   } else if (place === Position.BEFOREEND || !place) {
@@ -11,7 +11,7 @@ export function render(markup, container, place) {
 export function createElement(template) {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
-  return newElement.firstChild;
+  return (newElement.firstChild as HTMLElement);
 }
 
 export function unrender(element) {

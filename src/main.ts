@@ -8,6 +8,7 @@ import {TripController} from "./controller/trip-controller";
 import {Pages} from "./models/pages";
 import StatsController from "./controller/stats-controller";
 import api from "./api";
+import {allOptions} from "./data";
 
 const EVENT_COUNT = 7;
 
@@ -41,30 +42,35 @@ const scheduleElement = document.querySelector(`.trip-events`);
 const statisticsContainer = document.querySelector(`.page-main__container`);
 const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
+api.getOptions()
+.then((response) => {
+  allOptions.push(response);
+  console.log(allOptions);
+});
+
 const mockEventList = getEventList(EVENT_COUNT);
 const eventList = api.getEvents();
 const tripInfo = new TripInfo(getInfo(mockEventList));
 const menu = new Menu(getMenuItems());
 const filter = new Filter(getFilters());
 const statsController = new StatsController(statisticsContainer);
-const eventsController = new TripController(eventList, scheduleElement);
+const eventsController = new TripController(mockEventList, scheduleElement);
 
 render(tripInfo.getElement(), headerElement, Position.AFTERBEGIN);
 render(menu.getElement(), menuContainer);
 render(filter.getElement(), filterContainer);
 onChangeRoute(Pages.EVENTS);
 
-
 Array.from(menu.getElement()
-  .querySelectorAll(`.trip-tabs__toggle`))
-  .forEach((link) => {
-    link.addEventListener(`change`, (evt) => onChangeRoute(evt.currentTarget.value));
-  });
+.querySelectorAll(`.trip-tabs__toggle`))
+.forEach((link) => {
+  link.addEventListener(`change`, (evt) => onChangeRoute((evt.currentTarget as HTMLInputElement).value));
+});
 
 addNewEventButton.addEventListener(`click`, () => onAddNewEvent());
 
 Array.from(filter.getElement()
-  .querySelectorAll(`.trip-filters__filter-input`))
-  .forEach((link) => {
-    link.addEventListener(`change`, (evt) => eventsController.updateFilter(evt.currentTarget.value));
-  });
+.querySelectorAll(`.trip-filters__filter-input`))
+.forEach((link) => {
+  link.addEventListener(`change`, (evt) => eventsController.updateFilter((evt.currentTarget as HTMLInputElement).value));
+});
