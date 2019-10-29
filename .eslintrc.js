@@ -15,7 +15,7 @@ module.exports = {
     "@typescript-eslint/typedef": [
       2,
       {
-        arrayDestructuring: true,
+        arrayDestructuring: false,
         arrowParameter: true,
         memberVariableDeclaration: true,
         objectDestructuring: true,
