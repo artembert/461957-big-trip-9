@@ -1,6 +1,6 @@
-import {Position} from "../models/position";
+import { Position } from "../models/position";
 
-export function render(markup, container, place?) {
+export function render(markup, container, place?): void {
   if (place === Position.AFTERBEGIN) {
     container.prepend(markup);
   } else if (place === Position.BEFOREEND || !place) {
@@ -8,13 +8,13 @@ export function render(markup, container, place?) {
   }
 }
 
-export function createElement(template) {
+export function createElement(template): HTMLElement {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
-  return (newElement.firstChild as HTMLElement);
+  return newElement.firstChild as HTMLElement;
 }
 
-export function unrender(element) {
+export function unrender(element): void {
   if (element) {
     element.remove();
   }

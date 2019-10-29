@@ -1,4 +1,4 @@
-import {createElement} from "../util/dom";
+import { createElement } from "../util/dom";
 
 export default abstract class AbstractComponent {
   private _element: HTMLElement;
@@ -10,16 +10,16 @@ export default abstract class AbstractComponent {
     this._element = null;
   }
 
-  public getElement() {
+  public getElement(): HTMLElement {
     if (!this._element) {
       this._element = createElement(this.getTemplate().trim());
     }
-    return (this._element as HTMLElement);
+    return this._element as HTMLElement;
   }
 
   public abstract getTemplate(): string;
 
-  public removeElement() {
+  public removeElement(): void {
     this._element = null;
   }
 }
