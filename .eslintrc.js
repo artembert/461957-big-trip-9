@@ -16,7 +16,7 @@ module.exports = {
       2,
       {
         arrayDestructuring: false,
-        arrowParameter: true,
+        arrowParameter: false,
         memberVariableDeclaration: true,
         objectDestructuring: true,
         parameter: true,
