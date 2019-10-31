@@ -1,23 +1,33 @@
-import {ucFirstLetter} from "../util/uc-first";
-import {format} from "date-fns";
-import {MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE} from "../models/time";
+import { ucFirstLetter } from "../util/uc-first";
+// @ts-ignore
+import format from "date-fns/format";
+import { MS_IN_DAY, MS_IN_HOUR, MS_IN_MINUTE } from "../models/time";
 import AbstractComponent from "./abstract-component";
 import OptionsSelected from "./options-selected";
-import {getTypeByName} from "../util/get-type-by-name";
+import { getTypeByName } from "../util/get-type-by-name";
+import { EventType } from "../types/event-type";
+import { EventDate } from "../types/event-date";
+import { AssignedOfferItem } from "../types/offer";
 
 export default class TripEvent extends AbstractComponent {
-  constructor({type, destination, price, options, date}) {
+  private _type: EventType;
+  private readonly _price: number;
+  private _options: AssignedOfferItem[];
+  private _date: EventDate;
+  private readonly _optionsSelectedMarkup: string;
+  private readonly _destination: any;
+
+  constructor({ type, destination, price, options, date }) {
     super();
     this._type = getTypeByName(type);
     this._destination = destination;
     this._price = price;
     this._options = options;
     this._date = date;
-    this._optionsSelectedMarkup
-      = new OptionsSelected(getSelectedOptions(this._options)).getTemplate();
+    this._optionsSelectedMarkup = new OptionsSelected(getSelectedOptions(this._options)).getTemplate();
   }
 
-  getTemplate() {
+  getTemplate(): string {
     return `
 <li class="trip-events__item">
   <div class="event">
@@ -60,7 +70,6 @@ export default class TripEvent extends AbstractComponent {
   }
 }
 
-
 function formatDuration(duration) {
   const days = Math.floor(duration / MS_IN_DAY);
   const hours = Math.floor((duration - days * MS_IN_DAY) / MS_IN_HOUR);
@@ -75,6 +84,6 @@ function formatUnit(value, unit) {
   return value.toString().length > 1 ? `${value}${unit} ` : `0${value}${unit} `;
 }
 
-function getSelectedOptions(options) {
-  return Array.from(options).filter((option) => option.isSelected);
+function getSelectedOptions(options: AssignedOfferItem[]): AssignedOfferItem[] {
+  return Array.from(options).filter(option => option.accepted);
 }
