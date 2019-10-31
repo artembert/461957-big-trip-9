@@ -70,14 +70,14 @@ export default class TripEvent extends AbstractComponent {
   }
 }
 
-function formatDuration(duration) {
+function formatDuration(duration: number): string {
   const days = Math.floor(duration / MS_IN_DAY);
   const hours = Math.floor((duration - days * MS_IN_DAY) / MS_IN_HOUR);
   const minutes = Math.floor((duration - days * MS_IN_DAY - hours * MS_IN_HOUR) / MS_IN_MINUTE);
   return `${formatUnit(days, `D`)}${formatUnit(hours, `H`)}${formatUnit(minutes, `M`)}`;
 }
 
-function formatUnit(value, unit) {
+function formatUnit(value: number, unit: string): string {
   if (!value) {
     return ``;
   }
