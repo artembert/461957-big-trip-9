@@ -27,7 +27,7 @@ export default class TripEvent extends AbstractComponent {
     this._optionsSelectedMarkup = new OptionsSelected(getSelectedOptions(this._options)).getTemplate();
   }
 
-  getTemplate(): string {
+  public getTemplate(): string {
     return `
 <li class="trip-events__item">
   <div class="event">
