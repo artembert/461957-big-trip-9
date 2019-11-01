@@ -3,7 +3,7 @@ import {format} from "date-fns";
 import {cities} from "../models/places";
 import AbstractComponent from "./abstract-component";
 import EventTypeList from "./event-type-list";
-import Options from "./options";
+import OptionsComponent from "./options.component";
 import {getTypeByName} from "../util/get-type-by-name";
 import Destination from "./destination";
 
@@ -22,7 +22,7 @@ export default class TripEventEdit extends AbstractComponent {
       ? new Destination(this._destination).getTemplate()
       : ``;
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
-    this._optionsMarkup = new Options(Array.from(this._options)).getTemplate();
+    this._optionsMarkup = new OptionsComponent(Array.from(this._options)).getTemplate();
   }
 
   getTemplate() {

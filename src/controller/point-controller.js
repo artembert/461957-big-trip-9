@@ -131,7 +131,7 @@ function getOptions(container) {
   return [...container.querySelectorAll(`.event__offer-checkbox`)]
     .map((input) => ({
       name: input.dataset.name,
-      code: input.dataset.code,
+      id: input.dataset.id,
       isSelected: input.checked,
       price: input.dataset.price,
     }));

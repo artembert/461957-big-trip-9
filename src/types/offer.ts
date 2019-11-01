@@ -19,6 +19,10 @@ export interface AssignedOfferItem extends OfferItem {
   accepted: boolean;
 }
 
+export interface UniqueOfferItem extends OfferItem {
+  id: string;
+}
+
 export interface Offer {
   type: OfferType;
   offers: OfferItem[];
