@@ -5,7 +5,7 @@ import AbstractComponent from "./abstract-component";
 import EventTypeList from "./event-type-list";
 import OptionsComponent from "./options.component";
 import {getTypeByName} from "../util/get-type-by-name";
-import Destination from "./destination";
+import DestinationComponent from "./destination.component";
 
 
 export default class TripEventEdit extends AbstractComponent {
@@ -19,7 +19,7 @@ export default class TripEventEdit extends AbstractComponent {
     this._isNew = isNew || false;
 
     this._destinationMarkup = this._destination
-      ? new Destination(this._destination).getTemplate()
+      ? new DestinationComponent(this._destination).getTemplate()
       : ``;
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
     this._optionsMarkup = new OptionsComponent(Array.from(this._options)).getTemplate();
