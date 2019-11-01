@@ -28,6 +28,6 @@ function getPictures(pictures) {
     return ``;
   }
   return pictures.map((picture) =>
-    `<img class="event__photo" src="${picture.src}" alt="${picture.descriptions}">`.trim())
+    `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`.trim())
   .join();
 }

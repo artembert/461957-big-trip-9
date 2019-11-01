@@ -8,6 +8,7 @@ import { getTypeByName } from "../util/get-type-by-name";
 import { EventType } from "../types/event-type";
 import { EventDate } from "../types/event-date";
 import { AssignedOfferItem } from "../types/offer";
+import { Destination } from "../types/destination";
 
 export default class TripEvent extends AbstractComponent {
   private _type: EventType;
@@ -15,7 +16,7 @@ export default class TripEvent extends AbstractComponent {
   private _options: AssignedOfferItem[];
   private _date: EventDate;
   private readonly _optionsSelectedMarkup: string;
-  private readonly _destination: any;
+  private readonly _destination: Destination;
 
   constructor({ type, destination, price, options, date }) {
     super();
@@ -36,7 +37,7 @@ export default class TripEvent extends AbstractComponent {
     </div>
     
     <h3 class="event__title">
-      ${ucFirstLetter(this._type.name)} ${this._type.preposition} ${this._destination}
+      ${ucFirstLetter(this._type.name)} ${this._type.preposition} ${this._destination.name}
     </h3>
     
     <div class="event__schedule">

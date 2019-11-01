@@ -3,6 +3,7 @@ import {getRandomInteger} from "./util/math";
 import {cities} from "./models/places";
 import {descriptions} from "./models/descriptions";
 import {options} from "./models/options";
+// @ts-ignore
 import setMinutes from 'date-fns/setMinutes';
 import {DAYS_IN_WEEK, MINUTES_IN_HOUR, MS_IN_DAY, MS_IN_HOUR} from "./models/time";
 import {shuffle} from "./util/shuffle";
@@ -10,6 +11,8 @@ import {getTypeByName} from "./util/get-type-by-name";
 import {Pages} from "./models/pages";
 import {getId} from "./util/get-id";
 import {EventFilter} from "./models/event-filter";
+import { Destination } from "./types/destination";
+import { DestinationPicture } from "./types/destination-picture";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -87,7 +90,7 @@ function getType(typeList) {
   return typeList[getRandomInteger(0, typeList.length)];
 }
 
-function getDestination(type, cityList) {
+function getDestination(type, cityList): Destination {
   return {
     description: getDescription(descriptions),
     name: cityList[getRandomInteger(0, cityList.length)],
@@ -130,10 +133,10 @@ function getDate(currentDate) {
   return {start, duration, end};
 }
 
-function getPictures() {
+function getPictures(): DestinationPicture[] {
   return new Array(getRandomInteger(MIN_PICTURES_COUNT, MAX_PICTURES_COUNT)).fill(undefined).map(() => ({
     src: `http://picsum.photos/300/150?r=${Math.random()}`,
-    descriptions: `Photo description`
+    description: `Photo description`,
   }));
 }
 
@@ -157,8 +160,10 @@ function getDateEnd(event) {
 
 function getCost(events) {
   return events.reduce((sum, event) => {
+    // @ts-ignore
     const optionsCost = Array.from(event.options).filter((option) => option.isSelected)
     .reduce((accum, option) => {
+      // @ts-ignore
       return accum + Number(option.price);
     }, 0);
     return sum + Number(event.price) + optionsCost;
