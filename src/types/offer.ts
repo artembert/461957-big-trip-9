@@ -1,14 +1,6 @@
-export type OfferType =
-  | `taxi`
-  | `bus`
-  | `train`
-  | `ship`
-  | `transport`
-  | `drive`
-  | `flight`
-  | `check-in`
-  | `sightseeing`
-  | `restaurant`;
+import { EventTypeName } from "./event-type-name";
+
+export type OfferType = EventTypeName;
 
 export interface OfferItem {
   title: string;
