@@ -1,5 +1,5 @@
 import {types} from "./models/types";
-import {getRandomInteger} from "./util/math";
+import { getBooleanGivenProbability, getRandomInteger } from "./util/math";
 import {cities} from "./models/places";
 import {descriptions} from "./models/descriptions";
 import {options} from "./models/options";
@@ -13,6 +13,7 @@ import {getId} from "./util/get-id";
 import {EventFilter} from "./models/event-filter";
 import { Destination } from "./types/destination";
 import { DestinationPicture } from "./types/destination-picture";
+import { Point } from "./models/point";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;
@@ -27,8 +28,7 @@ const MAX_PICTURES_COUNT = 8;
 
 const dateNow = setMinutes(Date.now(), MIN_TIME_INTERVAL).getTime();
 
-function getEvent() {
-
+function getEvent(): Point {
   // вынес в переменную, чтобы иметь к ней доступ в функции getDestination()
   const type = getType(types);
   return {
@@ -41,9 +41,10 @@ function getEvent() {
     options: getOptions({
       optionList: options,
       maxLength: MAX_ADDITIONAL_OPTIONS_COUNT,
-      typeName: type.name
+      typeName: type.name,
     }),
     id: getId(),
+    isFavourite: getBooleanGivenProbability(0.5),
   };
 }
 
@@ -123,7 +124,7 @@ function getOptions({optionList, maxLength, typeName}) {
     .slice(selectedOptionsCount)
     .map(({price, title}) =>
       ({price, title, accepted: false}));
-  return new Set([...selectedOptions, ...unselectedOptions]);
+  return [...selectedOptions, ...unselectedOptions];
 }
 
 function getDate(currentDate) {
