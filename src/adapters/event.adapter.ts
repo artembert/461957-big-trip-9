@@ -1,7 +1,19 @@
-import getTime from 'date-fns/getTime';
+// @ts-ignore
+import getTime from "date-fns/getTime";
+import { PointJSON } from "../models/point-json";
 
 export default class EventAdapter {
-  constructor(json) {
+  public type: any;
+  public description: any;
+  public date: any;
+  public destination: any;
+  public price: any;
+  public options: any;
+  public pictures: any;
+  public id: any;
+  public isFavourite: any;
+
+  constructor(json: PointJSON) {
     this.type = json[`type`];
     this.description = undefined;
     this.date = {
@@ -11,25 +23,26 @@ export default class EventAdapter {
     };
     this.destination = undefined;
     this.price = json[`base_price`];
-    this.options = undefined;
+    this.options = json[`offers`];
     this.pictures = undefined;
     this.id = json[`id`];
     this.isFavourite = json[`is_favourite`];
   }
 
-  static parseEvent(json) {
+  public static parseEvent(json: PointJSON): EventAdapter {
     return new EventAdapter(json);
   }
 
-  static parseEvents(json) {
+  public static parseEvents(json: PointJSON[]): EventAdapter[] {
+    console.log(json);
     return json.map(EventAdapter.parseEvent);
   }
 }
 
-function getDuration(dateStart, dateEnd) {
+function getDuration(dateStart: number, dateEnd: number): number {
   return dateEnd - dateStart;
 }
 
-function dateToTimeStamp(dateString) {
+function dateToTimeStamp(dateString: number): number {
   return getTime(dateString);
 }

@@ -1,5 +1,5 @@
 import {Method} from "./models/method";
-import EventAdapter from "./adapters/event-adapter";
+import EventAdapter from "./adapters/event.adapter";
 
 const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
 const END_POINT = `https://htmlacademy-es-9.appspot.com/big-trip`;
