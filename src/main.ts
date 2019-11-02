@@ -1,26 +1,26 @@
-import TripInfo from './components/info';
-import Menu from './components/menu';
-import Filter from './components/filter';
-import {render} from "./util/dom";
-import {getEventList, getFilters, getInfo, getMenuItems} from "./mock-data";
-import {Position} from "./models/position";
-import {TripController} from "./controller/trip-controller";
-import {Pages} from "./models/pages";
+import TripInfo from "./components/info";
+import Menu from "./components/menu";
+import Filter from "./components/filter";
+import { render } from "./util/dom";
+import { getEventList, getFilters, getInfo, getMenuItems } from "./mock-data";
+import { Position } from "./models/position";
+import { TripController } from "./controller/trip.controller";
+import { Pages } from "./models/pages";
 import StatsController from "./controller/stats-controller";
 import api from "./api";
-import {allOptions} from "./data";
+import { allOptions } from "./data";
 
 const EVENT_COUNT = 7;
 
-const onChangeRoute = (route) => {
+const onChangeRoute = route => {
   switch (route) {
-    case (Pages.EVENTS):
+    case Pages.EVENTS:
       eventsController.unrenderDayList();
       eventsController.unrenderSort();
       eventsController.init();
       statsController.destroy();
       break;
-    case (Pages.STATS):
+    case Pages.STATS:
       eventsController.unrenderDayList();
       eventsController.unrenderSort();
       statsController.init();
@@ -34,7 +34,6 @@ const onAddNewEvent = () => {
   eventsController.createEvent();
 };
 
-
 const headerElement = document.querySelector(`.trip-main`);
 const menuContainer = document.querySelector(`.trip-main__menu`);
 const filterContainer = document.querySelector(`.trip-main__filter`);
@@ -42,8 +41,7 @@ const scheduleElement = document.querySelector(`.trip-events`);
 const statisticsContainer = document.querySelector(`.page-main__container`);
 const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
-api.getOptions()
-.then((response) => {
+api.getOptions().then(response => {
   allOptions.push(response);
   console.log(allOptions);
 });
@@ -61,16 +59,12 @@ render(menu.getElement(), menuContainer);
 render(filter.getElement(), filterContainer);
 onChangeRoute(Pages.EVENTS);
 
-Array.from(menu.getElement()
-.querySelectorAll(`.trip-tabs__toggle`))
-.forEach((link) => {
-  link.addEventListener(`change`, (evt) => onChangeRoute((evt.currentTarget as HTMLInputElement).value));
+Array.from(menu.getElement().querySelectorAll(`.trip-tabs__toggle`)).forEach(link => {
+  link.addEventListener(`change`, evt => onChangeRoute((evt.currentTarget as HTMLInputElement).value));
 });
 
 addNewEventButton.addEventListener(`click`, () => onAddNewEvent());
 
-Array.from(filter.getElement()
-.querySelectorAll(`.trip-filters__filter-input`))
-.forEach((link) => {
-  link.addEventListener(`change`, (evt) => eventsController.updateFilter((evt.currentTarget as HTMLInputElement).value));
+Array.from(filter.getElement().querySelectorAll(`.trip-filters__filter-input`)).forEach(link => {
+  link.addEventListener(`change`, evt => eventsController.updateFilter((evt.currentTarget as HTMLInputElement).value));
 });
