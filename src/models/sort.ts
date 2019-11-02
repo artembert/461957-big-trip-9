@@ -1,10 +1,12 @@
-export const SortType = {
+import { SortValue } from "../types/sort-value";
+
+export const SortType: { [key: string]: SortValue } = {
   EVENT: `event`,
   TIME: `time`,
   PRICE: `price`,
 };
 
-export const sortFns = {
+export const sortFns: { [key in SortValue]: Function } = {
   event: (a, b) => {
     if (a.isNew) {
       return -1;

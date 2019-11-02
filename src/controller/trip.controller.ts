@@ -17,19 +17,20 @@ import { EventFilter } from "../models/event-filter";
 import api from "../api";
 import { EventModeValue } from "../types/event-mode-value";
 import { EventFilterValue } from "../types/event-filter-value";
+import { SortValue } from "../types/sort-value";
 
 export class TripController {
-  private readonly _container: any;
+  private readonly _container: Element;
   private _eventListValue: any;
   private _dayList: any;
   private _emptyPointList: any;
-  private _sortType: any;
+  private _sortType: SortValue;
   private _sort: any;
   private _isEventCreating: any;
   private _filterType: EventFilterValue;
   private _subscriptions: any;
 
-  constructor(eventList, container) {
+  constructor(eventList, container: Element) {
     this._container = container;
     this._dayList = new DayList();
     this._emptyPointList = new EmptyPointList();
@@ -58,7 +59,7 @@ export class TripController {
     this._eventListValue = newValue;
   }
 
-  public init() {
+  public init(): void {
     api.getEvents().then(response => {
       this._eventListValue = response;
       if (this._eventList.length) {
