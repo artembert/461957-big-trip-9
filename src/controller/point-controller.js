@@ -8,6 +8,7 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import 'flatpickr/dist/themes/light.css';
 import {EventMode} from "../models/event-mode";
+import {allOptions} from "../data";
 
 export class PointController {
   constructor({eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode}) {
@@ -22,6 +23,11 @@ export class PointController {
   }
 
   init() {
+    //TODO: resolve
+    getAllOptions({
+      assertedOptions: this._eventData.options,
+      type: this._eventData.type,
+      allOptions});
     const flatpickrStart = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`), getDateConfig(this._eventData.date.start));
     const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), {
       ...getDateConfig(this._eventData.date.end),
@@ -117,6 +123,11 @@ export class PointController {
   closeEditForm() {
     this._tripEventEdit.getElement().replaceWith(this._tripEvent.getElement());
   }
+}
+
+function getAllOptions({assertedOptions, type, allOptions}) {
+  return assertedOptions;
+  return allOptions.find((groupOption) => groupOption.type === type).offers;
 }
 
 function parseTimeTag(dateTime) {
