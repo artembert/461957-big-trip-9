@@ -16,7 +16,7 @@ _`.editorconfig`, `.gitattributes`, `.gitignore`, `.travis.yml`, `package.json`.
 - Статистика
 - Обновление маршрута
 - Сортировка: Всегда проверять, есть ли события
-- DayList: всегда проверять, есть ли события. (вызывать EmptyDayList непосредственно из метода renderDayList) 
+- DayListComponent: всегда проверять, есть ли события. (вызывать EmptyDayList непосредственно из метода renderDayList) 
 
 ### Памятка
 

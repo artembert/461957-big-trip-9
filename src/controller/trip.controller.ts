@@ -1,4 +1,4 @@
-import DayList from "../components/day-list";
+import DayListComponent from "../components/day-list.component";
 import Day from "../components/day";
 import { render, unrender } from "../util/dom";
 import EmptyPointList from "../components/empty-point-list";
@@ -22,17 +22,17 @@ import { SortValue } from "../types/sort-value";
 export class TripController {
   private readonly _container: Element;
   private _eventListValue: any;
-  private _dayList: any;
+  private _dayList: DayListComponent;
   private _emptyPointList: any;
   private _sortType: SortValue;
   private _sort: any;
-  private _isEventCreating: any;
+  private _isEventCreating: boolean;
   private _filterType: EventFilterValue;
   private _subscriptions: any;
 
   constructor(eventList, container: Element) {
     this._container = container;
-    this._dayList = new DayList();
+    this._dayList = new DayListComponent();
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
     this._sort = new Sort(this._sortType, this._sortType === SortType.EVENT);
@@ -75,7 +75,8 @@ export class TripController {
     if (this._isEventCreating) {
       return;
     }
-    if (!this._dayList.length) {
+    // TODO: compare with previously state: `if (!this._dayList) {`
+    if (!this._dayList) {
       unrender(this._emptyPointList.getElement());
       this._emptyPointList.removeElement();
       this._renderSort();
