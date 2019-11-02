@@ -15,6 +15,8 @@ import { getId } from "../util/get-id";
 import { EventMode } from "../models/event-mode";
 import { EventFilter } from "../models/event-filter";
 import api from "../api";
+import { EventModeValue } from "../types/event-mode-value";
+import { EventFilterValue } from "../types/event-filter-value";
 
 export class TripController {
   private readonly _container: any;
@@ -24,7 +26,7 @@ export class TripController {
   private _sortType: any;
   private _sort: any;
   private _isEventCreating: any;
-  private _filterType: any;
+  private _filterType: EventFilterValue;
   private _subscriptions: any;
 
   constructor(eventList, container) {
@@ -155,7 +157,7 @@ export class TripController {
     this._eventList = [...this._eventList.slice(0, removeIndex), ...this._eventList.slice(removeIndex + 1)];
   }
 
-  private _onSortChange(evt) {
+  private _onSortChange(evt): void {
     this._sortType = evt.target.dataset.sort;
     this.unrenderDayList();
     this.unrenderSort();
@@ -164,7 +166,7 @@ export class TripController {
     this._renderDayList();
   }
 
-  private _onDataChange(entry) {
+  private _onDataChange(entry): void {
     this._isEventCreating = false;
     const changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
     updateProps(changedProperty, entry);
@@ -172,7 +174,7 @@ export class TripController {
     this._renderDayList();
   }
 
-  private _onRemoveEvent(eventId) {
+  private _onRemoveEvent(eventId: string): void {
     this._isEventCreating = false;
     this._removeEvent(eventId);
     this.unrenderDayList();
@@ -184,7 +186,7 @@ export class TripController {
     }
   }
 
-  private _onViewChange() {
+  private _onViewChange(): void {
     this._subscriptions.forEach(subscription => subscription());
   }
 }
@@ -205,7 +207,7 @@ function groupEventsByDay(eventList) {
   return Array.from(dayList.values());
 }
 
-function updateProps(originalEvent, newEvent) {
+function updateProps(originalEvent, newEvent): void {
   Object.entries(newEvent).forEach(([key, value]) => {
     if (originalEvent.hasOwnProperty(key)) {
       originalEvent[key] = value;
@@ -214,7 +216,7 @@ function updateProps(originalEvent, newEvent) {
   originalEvent.isNew = false;
 }
 
-function getEventMode(isNew) {
+function getEventMode(isNew: boolean): EventModeValue {
   return isNew ? EventMode.EDIT : EventMode.READ;
 }
 
