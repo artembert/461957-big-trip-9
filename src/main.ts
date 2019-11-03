@@ -9,6 +9,7 @@ import { Pages } from "./models/pages";
 import StatsController from "./controller/stats-controller";
 import api from "./api";
 import { allOptions } from "./data";
+import { EventFilterValue } from "./types/event-filter-value";
 
 const EVENT_COUNT = 7;
 
@@ -66,5 +67,7 @@ Array.from(menu.getElement().querySelectorAll(`.trip-tabs__toggle`)).forEach(lin
 addNewEventButton.addEventListener(`click`, () => onAddNewEvent());
 
 Array.from(filter.getElement().querySelectorAll(`.trip-filters__filter-input`)).forEach(link => {
-  link.addEventListener(`change`, evt => eventsController.updateFilter((evt.currentTarget as HTMLInputElement).value));
+  link.addEventListener(`change`, evt =>
+    eventsController.updateFilter((evt.currentTarget as HTMLInputElement).value as EventFilterValue),
+  );
 });

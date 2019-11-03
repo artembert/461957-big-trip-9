@@ -20,6 +20,7 @@ import { EventFilterValue } from "../types/event-filter-value";
 import { SortValue } from "../types/sort-value";
 import { Point } from "../types/point";
 import { EventEditInputField } from "../types/event-edit-input-field";
+import { RenderDayConfig } from "../types/render-day-config";
 
 export class TripController {
   private readonly _container: Element;
@@ -47,7 +48,7 @@ export class TripController {
     this._onRemoveEvent = this._onRemoveEvent.bind(this);
   }
 
-  private get _isShowDay() {
+  private get _isShowDay(): boolean {
     return this._sortType === SortType.EVENT;
   }
 
@@ -73,7 +74,7 @@ export class TripController {
     });
   }
 
-  public createEvent() {
+  public createEvent(): void {
     if (this._isEventCreating) {
       return;
     }
@@ -99,7 +100,7 @@ export class TripController {
     this._dayList.removeElement();
   }
 
-  public updateFilter(filterType): void {
+  public updateFilter(filterType: EventFilterValue): void {
     this._filterType = filterType;
     this.unrenderSort();
     this.unrenderDayList();
@@ -131,7 +132,7 @@ export class TripController {
     });
   }
 
-  private _renderDay({ dayEvents, dayIndex, container }): void {
+  private _renderDay({ dayEvents, dayIndex, container }: RenderDayConfig): void {
     const day = new Day({
       date: dayEvents[0].date.start,
       dayIndex: this._isEventCreating ? dayIndex : dayIndex + 1,
