@@ -11,7 +11,9 @@ export default class OptionsComponent extends AbstractComponent {
   }
 
   public getTemplate(): string {
-    return `<div class="event__available-offers">
+    return `<section class="event__section  event__section--offers">
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+      <div class="event__available-offers">
       ${this._optionList
         .map(
           offer =>
@@ -32,6 +34,7 @@ export default class OptionsComponent extends AbstractComponent {
     </div>`,
         )
         .join(``)}
-  </div>`;
+  </div>
+</section>`;
   }
 }

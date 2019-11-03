@@ -22,7 +22,8 @@ export default class TripEventEdit extends AbstractComponent {
       ? new DestinationComponent(this._destination).getTemplate()
       : ``;
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
-    this._optionsMarkup = new OptionsComponent(Array.from(this._options)).getTemplate();
+    this._optionsMarkup =
+      this._options && this._options.legend ? new OptionsComponent(Array.from(this._options)).getTemplate() : ``;
   }
 
   getTemplate() {
@@ -70,10 +71,7 @@ export default class TripEventEdit extends AbstractComponent {
     </header>
     
     <section class="event__details">
-      <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-        ${this._optionsMarkup}
-      </section>
+      ${this._optionsMarkup}
       ${this._destinationMarkup}
     </section>
     
