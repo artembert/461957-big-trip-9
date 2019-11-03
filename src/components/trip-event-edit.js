@@ -70,13 +70,22 @@ export default class TripEventEdit extends AbstractComponent {
       
     </header>
     
-    <section class="event__details">
-      ${this._optionsMarkup}
-      ${this._destinationMarkup}
-    </section>
+    ${this._getEventDetails()}
     
   </form>
 </li>`;
+  }
+
+  _getEventDetails() {
+    if (this._options && this._options.length && this._destination.description) {
+      return `
+    <section class="event__details">
+      ${this._optionsMarkup}
+      ${this._destinationMarkup}
+    </section>`;
+    } else {
+      return ``;
+    }
   }
 
   getSelectedTypeTemplate(icon) {
