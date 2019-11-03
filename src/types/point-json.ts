@@ -1,5 +1,5 @@
-import { Destination } from "../types/destination";
-import { AssignedOfferItem } from "../types/offer";
+import { Destination } from "./destination";
+import { AssignedOfferItem } from "./offer";
 
 export interface PointJSON {
   id?: string;

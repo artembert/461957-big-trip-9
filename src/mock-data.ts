@@ -13,7 +13,7 @@ import {getId} from "./util/get-id";
 import {EventFilter} from "./models/event-filter";
 import { Destination } from "./types/destination";
 import { DestinationPicture } from "./types/destination-picture";
-import { Point } from "./models/point";
+import { Point } from "./types/point";
 
 const MIN_PRICE = 3;
 const MAX_PRICE = 30;

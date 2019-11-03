@@ -1,7 +1,7 @@
 // @ts-ignore
 import getTime from "date-fns/getTime";
-import { PointJSON } from "../models/point-json";
-import { Point } from "../models/point";
+import { PointJSON } from "../types/point-json";
+import { Point } from "../types/point";
 import { EventDate } from "../types/event-date";
 import { Destination } from "../types/destination";
 import { EventTypeName } from "../types/event-type-name";
