@@ -1,17 +1,30 @@
 import TripEvent from "../components/trip-event";
 import TripEventEdit from "../components/trip-event-edit";
-import {createElement, render} from "../util/dom";
-import parse from 'date-fns/parse';
-import getTime from 'date-fns/getTime';
-import {getTypeByName} from "../util/get-type-by-name";
-import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.min.css';
-import 'flatpickr/dist/themes/light.css';
-import {EventMode} from "../models/event-mode";
-import {allOptions} from "../data";
+import { createElement, render } from "../util/dom";
+// @ts-ignore
+import parse from "date-fns/parse";
+// @ts-ignore
+import getTime from "date-fns/getTime";
+import { getTypeByName } from "../util/get-type-by-name";
+// @ts-ignore
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
+import "flatpickr/dist/themes/light.css";
+import { EventMode } from "../models/event-mode";
+import { allOptions } from "../data";
+import { EventTypeName } from "../types/event-type-name";
 
 export class PointController {
-  constructor({eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode}) {
+  private _container: any;
+  private _eventData: any;
+  private _mode: any;
+  private _onDataChange: any;
+  private _onRemoveEvent: any;
+  private _onViewChange: any;
+  private _tripEvent: any;
+  private _tripEventEdit: any;
+
+  constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode }) {
     this._container = container;
     this._eventData = eventData;
     this._mode = eventMode;
@@ -27,20 +40,24 @@ export class PointController {
     getAllOptions({
       assertedOptions: this._eventData.options,
       type: this._eventData.type,
-      allOptions});
-    const flatpickrStart = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`), getDateConfig(this._eventData.date.start));
+      allOptions,
+    });
+    const flatpickrStart = flatpickr(
+      this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`),
+      getDateConfig(this._eventData.date.start),
+    );
     const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), {
       ...getDateConfig(this._eventData.date.end),
       minDate: this._eventData.date.start,
     });
-    flatpickrStart.config.onChange.push((selectedDates) => flatpickrEnd.set(`minDate`, selectedDates[0]));
+    flatpickrStart.config.onChange.push(selectedDates => flatpickrEnd.set(`minDate`, selectedDates[0]));
 
     const onEditEvent = () => {
       this._onViewChange();
       this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
       document.addEventListener(`keydown`, onKeyDown);
     };
-    const onSaveEvent = (evt) => {
+    const onSaveEvent = evt => {
       evt.preventDefault();
       const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
       const entry = {
@@ -63,27 +80,30 @@ export class PointController {
       this.closeEditForm();
       document.removeEventListener(`keydown`, onKeyDown);
     };
-    const onKeyDown = (evt) => {
+    const onKeyDown = evt => {
       if (evt.code === `Esc` || evt.code === `Escape`) {
         onResetEvent();
         document.removeEventListener(`keydown`, onKeyDown);
       }
     };
-    const onChangeType = (evt) => {
+    const onChangeType = evt => {
       if (evt.target.checked) {
         return;
       }
-      const selectedTypeName = new FormData(this._tripEventEdit.getElement()
-        .querySelector(`.event--edit`)).get(`event-type`);
+      const selectedTypeName = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`)).get(
+        `event-type`,
+      ) as EventTypeName;
       const selectedType = getTypeByName(selectedTypeName);
-      const updatedTypeElement = createElement(this._tripEventEdit
-        .getSelectedTypeTemplate(selectedType.icon));
-      const updatedDestinationLabelElement = createElement(this._tripEventEdit
-        .getDestinationLabelTemplate(selectedType.name, selectedType.preposition));
-      this._tripEventEdit.getElement()
+      const updatedTypeElement = createElement(this._tripEventEdit.getSelectedTypeTemplate(selectedType.icon));
+      const updatedDestinationLabelElement = createElement(
+        this._tripEventEdit.getDestinationLabelTemplate(selectedType.name, selectedType.preposition),
+      );
+      this._tripEventEdit
+        .getElement()
         .querySelector(`.event__type-btn`)
         .replaceWith(updatedTypeElement);
-      this._tripEventEdit.getElement()
+      this._tripEventEdit
+        .getElement()
         .querySelector(`.event__type-output`)
         .replaceWith(updatedDestinationLabelElement);
     };
@@ -91,19 +111,24 @@ export class PointController {
       this._onRemoveEvent(this._eventData.id);
     };
 
-    this._tripEvent.getElement()
+    this._tripEvent
+      .getElement()
       .querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, onEditEvent);
-    this._tripEventEdit.getElement()
+    this._tripEventEdit
+      .getElement()
       .querySelector(`.event__save-btn`)
       .addEventListener(`click`, onSaveEvent);
-    this._tripEventEdit.getElement()
+    this._tripEventEdit
+      .getElement()
       .querySelector(`.event--edit`)
       .addEventListener(`submit`, onSaveEvent);
-    this._tripEventEdit.getElement()
+    this._tripEventEdit
+      .getElement()
       .querySelector(`.event__reset-btn`)
       .addEventListener(`click`, onRemoveEvent);
-    this._tripEventEdit.getElement()
+    this._tripEventEdit
+      .getElement()
       .querySelector(`.event__type-toggle`)
       .addEventListener(`change`, onChangeType);
 
@@ -125,9 +150,9 @@ export class PointController {
   }
 }
 
-function getAllOptions({assertedOptions, type, allOptions}) {
+function getAllOptions({ assertedOptions, type, allOptions }) {
   return assertedOptions;
-  return allOptions.find((groupOption) => groupOption.type === type).offers;
+  return allOptions.find(groupOption => groupOption.type === type).offers;
 }
 
 function parseTimeTag(dateTime) {
@@ -139,13 +164,12 @@ function getEventDuration(dateStart, dateEnd) {
 }
 
 function getOptions(container) {
-  return [...container.querySelectorAll(`.event__offer-checkbox`)]
-    .map((input) => ({
-      name: input.dataset.name,
-      id: input.dataset.id,
-      isSelected: input.checked,
-      price: input.dataset.price,
-    }));
+  return [...container.querySelectorAll(`.event__offer-checkbox`)].map(input => ({
+    name: input.dataset.name,
+    id: input.dataset.id,
+    isSelected: input.checked,
+    price: input.dataset.price,
+  }));
 }
 
 function getDateConfig(defaultDate) {

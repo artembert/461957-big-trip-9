@@ -10,7 +10,7 @@ import getDate from "date-fns/getDate";
 import getMonth from "date-fns/getMonth";
 // @ts-ignore
 import getYear from "date-fns/getYear";
-import { PointController } from "./point-controller";
+import { PointController } from "./point.controller";
 import { getId } from "../util/get-id";
 import { EventMode } from "../models/event-mode";
 import { EventFilter } from "../models/event-filter";
