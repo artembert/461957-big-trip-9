@@ -19,6 +19,7 @@ import { EventModeValue } from "../types/event-mode-value";
 import { EventFilterValue } from "../types/event-filter-value";
 import { SortValue } from "../types/sort-value";
 import { Point } from "../types/point";
+import { EventEditInputField } from "../types/event-edit-input-field";
 
 export class TripController {
   private readonly _container: Element;
@@ -155,13 +156,13 @@ export class TripController {
     this._subscriptions.push(event.closeEventsEdit.bind(event));
   }
 
-  private _removeEvent(eventId): void {
+  private _removeEvent(eventId: string): void {
     const removeIndex = this._eventList.findIndex(tripEvent => tripEvent.id === eventId);
     this._eventList = [...this._eventList.slice(0, removeIndex), ...this._eventList.slice(removeIndex + 1)];
   }
 
-  private _onSortChange(evt): void {
-    this._sortType = evt.target.dataset.sort;
+  private _onSortChange(evt: Event): void {
+    this._sortType = (evt.target as HTMLDivElement).dataset.sort as SortValue;
     this.unrenderDayList();
     this.unrenderSort();
     this._sort = new Sort(this._sortType, this._isShowDay);
@@ -169,7 +170,7 @@ export class TripController {
     this._renderDayList();
   }
 
-  private _onDataChange(entry): void {
+  private _onDataChange(entry: EventEditInputField): void {
     this._isEventCreating = false;
     const changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
     updateProps(changedProperty, entry);
