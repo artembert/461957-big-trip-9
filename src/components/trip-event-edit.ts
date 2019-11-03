@@ -1,15 +1,25 @@
-import {ucFirstLetter} from "../util/uc-first";
-import {format} from "date-fns";
-import {cities} from "../models/places";
+import { ucFirstLetter } from "../util/uc-first";
+// @ts-ignore
+import { format } from "date-fns";
+import { cities } from "../models/places";
 import AbstractComponent from "./abstract-component";
 import EventTypeList from "./event-type-list";
 import OptionsComponent from "./options.component";
-import {getTypeByName} from "../util/get-type-by-name";
+import { getTypeByName } from "../util/get-type-by-name";
 import DestinationComponent from "./destination.component";
 
-
 export default class TripEventEdit extends AbstractComponent {
-  constructor({type, destination, price, options, date, isNew}) {
+  private _type: any;
+  private _destination: any;
+  private _price: any;
+  private _options: any;
+  private _date: any;
+  private _isNew: any;
+  private _destinationMarkup: any;
+  private _eventTypeListMarkup: any;
+  private _optionsMarkup: any;
+
+  constructor({ type, destination, price, options, date, isNew }) {
     super();
     this._type = getTypeByName(type);
     this._destination = destination;
@@ -40,9 +50,11 @@ export default class TripEventEdit extends AbstractComponent {
       
       <div class="event__field-group  event__field-group--destination">
         ${this.getDestinationLabelTemplate(this._type.name, this._type.preposition)}
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${this._destination.name}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${
+          this._destination.name
+        }" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${cities.map((item) => `<option value="${item}"></option>`).join(``)}
+          ${cities.map(item => `<option value="${item}"></option>`).join(``)}
         </datalist>
       </div>
       
@@ -50,12 +62,18 @@ export default class TripEventEdit extends AbstractComponent {
         <label class="visually-hidden" for="event-start-time-1">
           From
         </label>
-        <input class="event__input  event__input--time event__input--time-start" id="event-start-time-1" type="text" name="event-start-time" value="${format(this._date.start, `dd/MM/yy HH:mm`)}">
+        <input class="event__input  event__input--time event__input--time-start" id="event-start-time-1" type="text" name="event-start-time" value="${format(
+          this._date.start,
+          `dd/MM/yy HH:mm`,
+        )}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">
           To
         </label>
-        <input class="event__input  event__input--time event__input--time-end" id="event-end-time-1" type="text" name="event-end-time" value="${format(this._date.end, `dd/MM/yy HH:mm`)}">
+        <input class="event__input  event__input--time event__input--time-end" id="event-end-time-1" type="text" name="event-end-time" value="${format(
+          this._date.end,
+          `dd/MM/yy HH:mm`,
+        )}">
       </div>
       
       <div class="event__field-group  event__field-group--price">
@@ -63,7 +81,9 @@ export default class TripEventEdit extends AbstractComponent {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${this._price}">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${
+          this._price
+        }">
       </div>
       
       ${getActionButtons(this._isNew)}
@@ -103,7 +123,6 @@ export default class TripEventEdit extends AbstractComponent {
   </label>`.trim();
   }
 }
-
 
 function getActionButtons(isNew) {
   return `
