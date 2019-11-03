@@ -7,17 +7,21 @@ import EventTypeList from "./event-type-list";
 import OptionsComponent from "./options.component";
 import { getTypeByName } from "../util/get-type-by-name";
 import DestinationComponent from "./destination.component";
+import { Destination } from "../types/destination";
+import { AssignedOfferItem } from "../types/offer";
+import { EventDate } from "../types/event-date";
+import { EventType } from "../types/event-type";
 
 export default class TripEventEdit extends AbstractComponent {
-  private _type: any;
-  private _destination: any;
-  private _price: any;
-  private _options: any;
-  private _date: any;
-  private _isNew: any;
-  private _destinationMarkup: any;
-  private _eventTypeListMarkup: any;
-  private _optionsMarkup: any;
+  private _type: EventType;
+  private _destination: Destination;
+  private readonly _price: number;
+  private readonly _options: AssignedOfferItem[];
+  private _date: EventDate;
+  private readonly _isNew: boolean;
+  private _destinationMarkup: string;
+  private _eventTypeListMarkup: string;
+  private _optionsMarkup: string;
 
   constructor({ type, destination, price, options, date, isNew }) {
     super();
@@ -33,7 +37,7 @@ export default class TripEventEdit extends AbstractComponent {
       : ``;
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
     this._optionsMarkup =
-      this._options && this._options.legend ? new OptionsComponent(Array.from(this._options)).getTemplate() : ``;
+      this._options && this._options.length ? new OptionsComponent(Array.from(this._options)).getTemplate() : ``;
   }
 
   public getTemplate(): string {
