@@ -1,6 +1,15 @@
 html {
   height: 100%; }
 
+.page-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.page-body::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 2px
+}
+
 body {
   padding: 0;
   margin: 0;
