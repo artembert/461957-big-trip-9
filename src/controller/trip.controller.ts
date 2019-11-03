@@ -136,13 +136,13 @@ export class TripController {
       dayIndex: this._isEventCreating ? dayIndex : dayIndex + 1,
       isShowDate: !dayEvents[0].isNew && this._isShowDay,
     });
-    const eventsContainer = day.getElement().querySelector(`.trip-events__list`);
+    const eventsContainer = day.getElement().querySelector<HTMLDivElement>(`.trip-events__list`);
 
     render(day.getElement(), container);
     dayEvents.forEach(event => this._renderEvent(event, eventsContainer));
   }
 
-  private _renderEvent(eventData, container): void {
+  private _renderEvent(eventData, container: HTMLDivElement): void {
     const event = new PointController({
       eventData,
       container,
