@@ -36,7 +36,7 @@ export default class TripEventEdit extends AbstractComponent {
       this._options && this._options.legend ? new OptionsComponent(Array.from(this._options)).getTemplate() : ``;
   }
 
-  getTemplate() {
+  public getTemplate(): string {
     return `
 <li class="trip-events__item">
   <form class="trip-events__item  event  event--edit" action="#" method="post">
@@ -96,7 +96,22 @@ export default class TripEventEdit extends AbstractComponent {
 </li>`;
   }
 
-  _getEventDetails() {
+  public getSelectedTypeTemplate(icon): string {
+    return `
+    <label class="event__type  event__type-btn" for="event-type-toggle-1">
+      <span class="visually-hidden">Choose event type</span>
+      <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event type icon">
+    </label>`.trim();
+  }
+
+  public getDestinationLabelTemplate(typeName, preposition): string {
+    return `
+  <label class="event__label  event__type-output" for="event-destination-1">
+    ${ucFirstLetter(typeName)} ${preposition}
+  </label>`.trim();
+  }
+
+  private _getEventDetails(): string {
     if (this._options && this._options.length && this._destination.description) {
       return `
     <section class="event__details">
@@ -107,24 +122,9 @@ export default class TripEventEdit extends AbstractComponent {
       return ``;
     }
   }
-
-  getSelectedTypeTemplate(icon) {
-    return `
-    <label class="event__type  event__type-btn" for="event-type-toggle-1">
-      <span class="visually-hidden">Choose event type</span>
-      <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event type icon">
-    </label>`.trim();
-  }
-
-  getDestinationLabelTemplate(typeName, preposition) {
-    return `
-  <label class="event__label  event__type-output" for="event-destination-1">
-    ${ucFirstLetter(typeName)} ${preposition}
-  </label>`.trim();
-  }
 }
 
-function getActionButtons(isNew) {
+function getActionButtons(isNew: boolean): string {
   return `
     <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
     <button class="event__reset-btn">${isNew ? `Cancel` : `Delete`}</button>
