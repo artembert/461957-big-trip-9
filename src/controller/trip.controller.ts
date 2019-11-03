@@ -88,17 +88,17 @@ export class TripController {
     this._renderDayList();
   }
 
-  public unrenderSort() {
+  public unrenderSort(): void {
     unrender(this._sort.getElement());
     this._sort.removeElement();
   }
 
-  public unrenderDayList() {
+  public unrenderDayList(): void {
     unrender(this._dayList.getElement());
     this._dayList.removeElement();
   }
 
-  public updateFilter(filterType) {
+  public updateFilter(filterType): void {
     this._filterType = filterType;
     this.unrenderSort();
     this.unrenderDayList();
@@ -106,16 +106,16 @@ export class TripController {
     this._renderDayList();
   }
 
-  private _renderSort() {
+  private _renderSort(): void {
     this._sort.getElement().addEventListener(`change`, this._onSortChange.bind(this));
     render(this._sort.getElement(), this._container);
   }
 
-  private _renderEmptyEventList() {
+  private _renderEmptyEventList(): void {
     render(this._emptyPointList.getElement(), this._container);
   }
 
-  private _renderDayList() {
+  private _renderDayList(): void {
     render(this._dayList.getElement(), this._container);
     const dayList = this._isShowDay
       ? groupEventsByDay(this._eventList.sort(sortFns[this._sortType]))
@@ -130,7 +130,7 @@ export class TripController {
     });
   }
 
-  private _renderDay({ dayEvents, dayIndex, container }) {
+  private _renderDay({ dayEvents, dayIndex, container }): void {
     const day = new Day({
       date: dayEvents[0].date.start,
       dayIndex: this._isEventCreating ? dayIndex : dayIndex + 1,
@@ -142,7 +142,7 @@ export class TripController {
     dayEvents.forEach(event => this._renderEvent(event, eventsContainer));
   }
 
-  private _renderEvent(eventData, container) {
+  private _renderEvent(eventData, container): void {
     const event = new PointController({
       eventData,
       container,
@@ -155,7 +155,7 @@ export class TripController {
     this._subscriptions.push(event.closeEventsEdit.bind(event));
   }
 
-  private _removeEvent(eventId) {
+  private _removeEvent(eventId): void {
     const removeIndex = this._eventList.findIndex(tripEvent => tripEvent.id === eventId);
     this._eventList = [...this._eventList.slice(0, removeIndex), ...this._eventList.slice(removeIndex + 1)];
   }
@@ -223,20 +223,23 @@ function getEventMode(isNew: boolean): EventModeValue {
   return isNew ? EventMode.EDIT : EventMode.READ;
 }
 
-function getDefaultEvent() {
+function getDefaultEvent(): PointNew {
   return {
     type: `train`,
-    description: ``,
     date: {
-      start: new Date(),
+      start: new Date().getTime(),
       duration: 0,
-      end: new Date(),
+      end: new Date().getTime(),
     },
-    destination: ``,
-    price: ``,
-    options: new Set(),
-    pictures: [],
+    destination: {
+      description: undefined,
+      name: undefined,
+      pictures: [],
+    },
+    price: 0,
+    options: [],
     id: getId(),
     isNew: true,
+    isFavourite: true,
   };
 }
