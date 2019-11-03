@@ -18,7 +18,7 @@ import api from "../api";
 import { EventModeValue } from "../types/event-mode-value";
 import { EventFilterValue } from "../types/event-filter-value";
 import { SortValue } from "../types/sort-value";
-import { Point, PointNew } from "../types/point";
+import { Point } from "../types/point";
 
 export class TripController {
   private readonly _container: Element;
@@ -223,7 +223,7 @@ function getEventMode(isNew: boolean): EventModeValue {
   return isNew ? EventMode.EDIT : EventMode.READ;
 }
 
-function getDefaultEvent(): PointNew {
+function getDefaultEvent(): Point {
   return {
     type: `train`,
     date: {

@@ -11,8 +11,5 @@ export interface Point {
   price: number;
   options: AssignedOfferItem[];
   isFavourite: boolean;
-}
-
-export interface PointNew extends Point {
-  isNew: true;
+  isNew?: boolean;
 }

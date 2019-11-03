@@ -13,18 +13,23 @@ import "flatpickr/dist/themes/light.css";
 import { EventMode } from "../models/event-mode";
 import { allOptions } from "../data";
 import { EventTypeName } from "../types/event-type-name";
+import { AssignedOfferItem } from "../types/offer";
+import { PointControllerConfig } from "../types/point-controller-config";
+import { EventEditInputField } from "../types/event-edit-input-field";
+import { Point } from "../types/point";
+import { EventModeValue } from "../types/event-mode-value";
 
 export class PointController {
-  private _container: any;
-  private _eventData: any;
-  private _mode: any;
-  private _onDataChange: any;
-  private _onRemoveEvent: any;
-  private _onViewChange: any;
-  private _tripEvent: any;
-  private _tripEventEdit: any;
+  private _container: HTMLDivElement;
+  private _eventData: Point;
+  private _mode: EventModeValue;
+  private _onDataChange: (EventEditInputField) => void;
+  private _onRemoveEvent: (string) => void;
+  private _onViewChange: () => void;
+  private _tripEvent: TripEvent;
+  private _tripEventEdit: TripEventEdit;
 
-  constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode }) {
+  constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode }: PointControllerConfig) {
     this._container = container;
     this._eventData = eventData;
     this._mode = eventMode;
@@ -35,7 +40,7 @@ export class PointController {
     this._tripEventEdit = new TripEventEdit(this._eventData);
   }
 
-  init() {
+  public init(): void {
     //TODO: resolve
     getAllOptions({
       assertedOptions: this._eventData.options,
@@ -60,7 +65,7 @@ export class PointController {
     const onSaveEvent = evt => {
       evt.preventDefault();
       const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
-      const entry = {
+      const entry: EventEditInputField = {
         type: formData.get(`event-type`),
         date: {
           start: parseTimeTag(formData.get(`event-start-time`)),
@@ -139,13 +144,13 @@ export class PointController {
     }
   }
 
-  closeEventsEdit() {
+  public closeEventsEdit(): void {
     if (this._container.contains(this._tripEventEdit.getElement())) {
       this.closeEditForm();
     }
   }
 
-  closeEditForm() {
+  public closeEditForm(): void {
     this._tripEventEdit.getElement().replaceWith(this._tripEvent.getElement());
   }
 }
@@ -155,24 +160,28 @@ function getAllOptions({ assertedOptions, type, allOptions }) {
   return allOptions.find(groupOption => groupOption.type === type).offers;
 }
 
-function parseTimeTag(dateTime) {
-  return getTime(parse(dateTime, `dd/MM/yy HH:mm`, new Date()));
+function parseTimeTag(dateTime: FormDataEntryValue | null): number {
+  if (typeof dateTime === `string`) {
+    return getTime(parse(dateTime, `dd/MM/yy HH:mm`, new Date()));
+  } else {
+    throw new Error(`Incorrect date format: ${dateTime}`);
+  }
 }
 
-function getEventDuration(dateStart, dateEnd) {
+function getEventDuration(dateStart: FormDataEntryValue | null, dateEnd: FormDataEntryValue | null): number {
   return parseTimeTag(dateEnd) - parseTimeTag(dateStart);
 }
 
-function getOptions(container) {
-  return [...container.querySelectorAll(`.event__offer-checkbox`)].map(input => ({
-    name: input.dataset.name,
+function getOptions(container: Element): AssignedOfferItem[] {
+  return [...container.querySelectorAll<HTMLInputElement>(`.event__offer-checkbox`)].map(input => ({
+    title: input.dataset.name,
     id: input.dataset.id,
-    isSelected: input.checked,
-    price: input.dataset.price,
+    accepted: input.checked,
+    price: +input.dataset.price,
   }));
 }
 
-function getDateConfig(defaultDate) {
+function getDateConfig(defaultDate: number): object {
   return {
     altInput: true,
     allowInput: true,
