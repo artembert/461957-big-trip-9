@@ -11,6 +11,7 @@ import { Destination } from "../types/destination";
 import { AssignedOfferItem } from "../types/offer";
 import { EventDate } from "../types/event-date";
 import { EventType } from "../types/event-type";
+import { TripEventEditConfig } from "../types/trip-event-edit-config";
 
 export default class TripEventEdit extends AbstractComponent {
   private _type: EventType;
@@ -23,7 +24,7 @@ export default class TripEventEdit extends AbstractComponent {
   private _eventTypeListMarkup: string;
   private _optionsMarkup: string;
 
-  constructor({ type, destination, price, options, date, isNew }) {
+  constructor({ type, destination, price, options, date, isNew }: TripEventEditConfig) {
     super();
     this._type = getTypeByName(type);
     this._destination = destination;
@@ -89,13 +90,9 @@ export default class TripEventEdit extends AbstractComponent {
           this._price
         }">
       </div>
-      
       ${getActionButtons(this._isNew)}
-      
     </header>
-    
     ${this._getEventDetails()}
-    
   </form>
 </li>`;
   }
