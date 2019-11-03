@@ -18,7 +18,7 @@ export default class TripEventEdit extends AbstractComponent {
     this._date = date;
     this._isNew = isNew || false;
 
-    this._destinationMarkup = this._destination
+    this._destinationMarkup = this._destination.description
       ? new DestinationComponent(this._destination).getTemplate()
       : ``;
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();

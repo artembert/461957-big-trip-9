@@ -15,21 +15,20 @@ export default class DestinationComponent extends AbstractComponent {
     <section class="event__section  event__section--destination">
       <h3 class="event__section-title  event__section-title--destination">Destination</h3>
       <p class="event__destination-description">${this._destination.description}</p>
-
-      <div class="event__photos-container">
-        <div class="event__photos-tape">
-        ${getPictures(this._destination.pictures)}
-        </div>
-      </div>
+      ${getPictures(this._destination.pictures)}
     </section>`;
   }
 }
 
 function getPictures(pictures: DestinationPicture[]): string {
-  if (!pictures.length) {
+  if (pictures && !pictures.length) {
     return ``;
   }
-  return pictures
-    .map(picture => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`.trim())
-    .join();
+  return `<div class="event__photos-container">
+        <div class="event__photos-tape">
+          ${pictures
+            .map(picture => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`.trim())
+            .join()}
+        </div>
+      </div>`;
 }
