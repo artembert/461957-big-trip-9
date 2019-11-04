@@ -13,7 +13,7 @@ import getYear from "date-fns/getYear";
 import { PointController } from "./point.controller";
 import { getId } from "../util/get-id";
 import { EventMode } from "../models/event-mode";
-import { EventFilter } from "../models/event-filter";
+import { EventFilter, filterFns } from "../models/event-filter";
 import api from "../api";
 import { EventModeValue } from "../types/event-mode-value";
 import { EventFilterValue } from "../types/event-filter-value";
@@ -53,9 +53,7 @@ export class TripController {
   }
 
   private get _eventList() {
-    return this._eventListValue;
-    //   .filter(filterFns[this._filterType])
-    //   .sort(sortFns[this._sortType]);
+    return this._eventListValue.filter(filterFns[this._filterType]).sort(sortFns[this._sortType]);
   }
 
   private set _eventList(newValue) {
