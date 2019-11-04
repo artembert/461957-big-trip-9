@@ -18,8 +18,13 @@ export default class TripInfo extends AbstractComponent {
     this._cost = cost;
   }
 
+  private get _paramsExist(): boolean {
+    return this._dateStart && this._dateEnd && this._cost && this._points;
+  }
+
   public getTemplate(): string {
-    return `<section class="trip-main__trip-info  trip-info">
+    if (this._paramsExist) {
+      return `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">
           ${this._points.start} &mdash; ${this._points.middle ? this._points.middle : `...`} &mdash; ${this._points.end}
@@ -30,6 +35,17 @@ export default class TripInfo extends AbstractComponent {
         Total: &euro;&nbsp;<span class="trip-info__cost-value">${this._cost}</span>
       </p>
     </section>`;
+    } else {
+      return `<section class="trip-main__trip-info  trip-info">
+      <div class="trip-info__main">
+        <h1 class="trip-info__title">Loading…</h1>
+        <p class="trip-info__dates">&nbsp;</p>
+      </div>
+      <p class="trip-info__cost">
+        <span class="trip-info__cost-value">&nbsp;</span>
+      </p>
+    </section>`;
+    }
   }
 }
 

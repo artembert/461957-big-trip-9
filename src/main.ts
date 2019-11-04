@@ -1,9 +1,7 @@
-import TripInfo from "./components/trip-info";
 import Menu from "./components/menu";
 import Filter from "./components/filter";
 import { render } from "./util/dom";
-import { getEventList, getFilters, getInfo, getMenuItems } from "./mock-data";
-import { Position } from "./models/position";
+import { getEventList, getFilters, getMenuItems } from "./mock-data";
 import { TripController } from "./controller/trip.controller";
 import { Pages } from "./models/pages";
 import StatsController from "./controller/stats-controller";
@@ -11,6 +9,7 @@ import api from "./api";
 import { allOptions } from "./data";
 import { EventFilterValue } from "./types/event-filter-value";
 import { InfoController } from "./controller/info.controller";
+import { Point } from "./types/point";
 
 const EVENT_COUNT = 7;
 
@@ -36,7 +35,7 @@ const onAddNewEvent = () => {
   eventsController.createEvent();
 };
 
-const headerElement = document.querySelector(`.trip-main`);
+const headerElement = document.querySelector<HTMLElement>(`.trip-main`);
 const menuContainer = document.querySelector(`.trip-main__menu`);
 const filterContainer = document.querySelector(`.trip-main__filter`);
 const scheduleElement = document.querySelector(`.trip-events`);
@@ -48,18 +47,24 @@ api.getOptions().then(response => {
   console.log(allOptions);
 });
 
+let eventList = [];
 const mockEventList = getEventList(EVENT_COUNT);
-const eventList = api.getEvents();
-const tripInfo = new TripInfo(getInfo(mockEventList));
 const menu = new Menu(getMenuItems());
 const filter = new Filter(getFilters());
+const infoController = new InfoController(headerElement, eventList);
 const statsController = new StatsController(statisticsContainer);
 const eventsController = new TripController(mockEventList, scheduleElement);
 
-render(tripInfo.getElement(), headerElement, Position.AFTERBEGIN);
+infoController.rerenderInfo();
 render(menu.getElement(), menuContainer);
 render(filter.getElement(), filterContainer);
 onChangeRoute(Pages.EVENTS);
+
+firstDataLoad().then(events => {
+  eventList = events;
+  infoController.updateData(eventList);
+  infoController.rerenderInfo();
+});
 
 Array.from(menu.getElement().querySelectorAll(`.trip-tabs__toggle`)).forEach(link => {
   link.addEventListener(`change`, evt => onChangeRoute((evt.currentTarget as HTMLInputElement).value));
@@ -72,3 +77,7 @@ Array.from(filter.getElement().querySelectorAll(`.trip-filters__filter-input`)).
     eventsController.updateFilter((evt.currentTarget as HTMLInputElement).value as EventFilterValue),
   );
 });
+
+function firstDataLoad(): Promise<Point[]> {
+  return api.getEvents();
+}
