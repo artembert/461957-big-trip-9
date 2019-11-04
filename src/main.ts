@@ -1,4 +1,4 @@
-import TripInfo from "./components/info";
+import TripInfo from "./components/trip-info";
 import Menu from "./components/menu";
 import Filter from "./components/filter";
 import { render } from "./util/dom";
@@ -10,6 +10,7 @@ import StatsController from "./controller/stats-controller";
 import api from "./api";
 import { allOptions } from "./data";
 import { EventFilterValue } from "./types/event-filter-value";
+import { InfoController } from "./controller/info.controller";
 
 const EVENT_COUNT = 7;
 

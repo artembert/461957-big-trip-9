@@ -1,9 +1,16 @@
-import isSameMonth from 'date-fns/isSameMonth';
-import format from 'date-fns/format';
+// @ts-ignore
+import isSameMonth from "date-fns/isSameMonth";
+// @ts-ignore
+import format from "date-fns/format";
 import AbstractComponent from "./abstract-component";
 
 export default class TripInfo extends AbstractComponent {
-  constructor({points, dateStart, dateEnd, cost}) {
+  private _points: any;
+  private _dateStart: any;
+  private _dateEnd: any;
+  private _cost: any;
+
+  constructor({ points, dateStart, dateEnd, cost }) {
     super();
     this._points = points;
     this._dateStart = dateStart;
@@ -11,7 +18,7 @@ export default class TripInfo extends AbstractComponent {
     this._cost = cost;
   }
 
-  getTemplate() {
+  public getTemplate(): string {
     return `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">
@@ -26,7 +33,7 @@ export default class TripInfo extends AbstractComponent {
   }
 }
 
-function formatDuration(start, end) {
+function formatDuration(start: number, end: number): string {
   if (isSameMonth(start, end)) {
     return `${format(start, `MMM dd`)} &mdash; ${format(end, `dd`)}`;
   }
