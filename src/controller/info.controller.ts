@@ -2,6 +2,8 @@ import { Point } from "../types/point";
 import TripInfo from "../components/trip-info";
 import { render, unrender } from "../util/dom";
 import { Position } from "../models/position";
+import { Info } from "../types/info";
+import { InfoPoints } from "../types/info-points";
 
 export class InfoController {
   private _tripInfoComponent: TripInfo;
@@ -21,7 +23,7 @@ export class InfoController {
     this._pointList = newPoints;
   }
 
-  private get _getInfo() {
+  private get _getInfo(): Info {
     if (!this._pointList.length) {
       return {
         points: undefined,
@@ -33,13 +35,9 @@ export class InfoController {
     const sortEventList = this._pointList.sort((event1, event2) => event1.date.start - event2.date.start);
     const firstEvent = sortEventList[0];
     const lastEvent = sortEventList[sortEventList.length - 1];
-    const points = getPoints(this._pointList);
+    const points = getDestinationList(this._pointList);
     return {
-      points: {
-        start: points[0],
-        middle: getMiddlePoint(points),
-        end: points[points.length - 1],
-      },
+      points: getPoints(points),
       dateStart: firstEvent.date.start,
       dateEnd: lastEvent.date.start,
       cost: getCost(this._pointList),
@@ -47,12 +45,36 @@ export class InfoController {
   }
 }
 
-function getPoints(events) {
-  return events.map(event => event.destination).filter(event => !!event);
+function getDestinationList(events: Point[]): string[] {
+  return Array.from(new Set(events.map(event => event.destination.name)));
 }
 
-function getMiddlePoint(points) {
-  return points.length > 3 ? undefined : points[1];
+function getPoints(destinationList: string[]): InfoPoints {
+  if (destinationList.length === 1) {
+    return {
+      start: destinationList[0],
+      middle: undefined,
+      end: undefined,
+    };
+  } else if (destinationList.length === 2) {
+    return {
+      start: destinationList[0],
+      middle: undefined,
+      end: destinationList[1],
+    };
+  } else if (destinationList.length === 3) {
+    return {
+      start: destinationList[0],
+      middle: destinationList[1],
+      end: destinationList[2],
+    };
+  } else {
+    return {
+      start: destinationList[0],
+      middle: `...`,
+      end: destinationList[destinationList.length - 1],
+    };
+  }
 }
 
 function getCost(events: Point[]) {

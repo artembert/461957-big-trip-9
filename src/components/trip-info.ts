@@ -3,14 +3,16 @@ import isSameMonth from "date-fns/isSameMonth";
 // @ts-ignore
 import format from "date-fns/format";
 import AbstractComponent from "./abstract-component";
+import { Info } from "../types/info";
+import { InfoPoints } from "../types/info-points";
 
 export default class TripInfo extends AbstractComponent {
-  private _points: any;
-  private _dateStart: any;
-  private _dateEnd: any;
-  private _cost: any;
+  private readonly _points: InfoPoints;
+  private readonly _dateStart: number;
+  private readonly _dateEnd: number;
+  private readonly _cost: number;
 
-  constructor({ points, dateStart, dateEnd, cost }) {
+  constructor({ points, dateStart, dateEnd, cost }: Info) {
     super();
     this._points = points;
     this._dateStart = dateStart;
@@ -19,7 +21,7 @@ export default class TripInfo extends AbstractComponent {
   }
 
   private get _paramsExist(): boolean {
-    return this._dateStart && this._dateEnd && this._cost && this._points;
+    return !!this._dateStart && !!this._dateEnd && !!this._cost && !!this._points.start;
   }
 
   public getTemplate(): string {
@@ -27,7 +29,7 @@ export default class TripInfo extends AbstractComponent {
       return `<section class="trip-main__trip-info  trip-info">
       <div class="trip-info__main">
         <h1 class="trip-info__title">
-          ${this._points.start} &mdash; ${this._points.middle ? this._points.middle : `...`} &mdash; ${this._points.end}
+          ${getDestinationMarkup(this._points)}
         </h1>
         <p class="trip-info__dates">${formatDuration(this._dateStart, this._dateEnd)}</p>
       </div>
@@ -54,4 +56,8 @@ function formatDuration(start: number, end: number): string {
     return `${format(start, `MMM dd`)} &mdash; ${format(end, `dd`)}`;
   }
   return `${format(start, `dd MMM`)} &mdash; ${format(end, `dd MMM`)}`;
+}
+
+function getDestinationMarkup({ start, middle, end }: InfoPoints): string {
+  return `${start} ${middle ? ` &mdash; ${middle}` : ``}${end ? ` &mdash; ${end}` : ``}`;
 }
