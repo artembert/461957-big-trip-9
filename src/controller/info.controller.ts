@@ -46,7 +46,16 @@ export class InfoController {
 }
 
 function getDestinationList(events: Point[]): string[] {
-  return Array.from(new Set(events.map(event => event.destination.name)));
+  return events
+    .map(event => event.destination.name)
+    .reduce((accum, currentDestination, index) => {
+      if (index && accum[index - 1] === currentDestination) {
+        return accum;
+      } else {
+        accum.push(currentDestination);
+        return accum;
+      }
+    }, []);
 }
 
 function getPoints(destinationList: string[]): InfoPoints {
