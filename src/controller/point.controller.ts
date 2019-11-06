@@ -160,6 +160,7 @@ export class PointController {
 }
 
 function getAllOptions({ assertedOptions, type, allOptions }) {
+  // TODO: resolve it
   return assertedOptions;
   return allOptions.find(groupOption => groupOption.type === type).offers;
 }
