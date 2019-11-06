@@ -93,7 +93,8 @@ export default class TripEventEdit extends AbstractComponent {
         }">
       </div>
       ${getActionButtons(this._isNew)}
-      ${getFavouriteButtonMarkup(this._isFavourite)}
+      ${getFavouriteButton(this._isFavourite)}
+      ${getCloseButton()}
     </header>
     ${this._getEventDetails()}
   </form>
@@ -135,7 +136,7 @@ function getActionButtons(isNew: boolean): string {
   `.trim();
 }
 
-function getFavouriteButtonMarkup(isFavourite: boolean): string {
+function getFavouriteButton(isFavourite: boolean): string {
   return `<input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${
     isFavourite ? `checked` : ``
   }>
@@ -146,4 +147,11 @@ function getFavouriteButtonMarkup(isFavourite: boolean): string {
     </svg>
   </label>
 </button>`;
+}
+
+function getCloseButton(): string {
+  return `
+  <button class="event__rollup-btn" type="button">
+    <span class="visually-hidden">Open event</span>
+  </button>`;
 }
