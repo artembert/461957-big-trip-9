@@ -19,7 +19,6 @@ import { EventModeValue } from "../types/event-mode-value";
 import { EventFilterValue } from "../types/event-filter-value";
 import { SortValue } from "../types/sort-value";
 import { Point } from "../types/point";
-import { EventEditInputField } from "../types/event-edit-input-field";
 import { RenderDayConfig } from "../types/render-day-config";
 
 export class TripController {
@@ -169,7 +168,7 @@ export class TripController {
     this._renderDayList();
   }
 
-  private _onDataChange(entry: EventEditInputField): void {
+  private _onDataChange(entry: Point): void {
     this._isEventCreating = false;
     const changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
     updateProps(changedProperty, entry);
@@ -210,9 +209,9 @@ function groupEventsByDay(eventList) {
   return Array.from(dayList.values());
 }
 
-function updateProps(originalEvent, newEvent): void {
+function updateProps(originalEvent: Point, newEvent: Point): void {
   Object.entries(newEvent).forEach(([key, value]) => {
-    if (originalEvent.hasOwnProperty(key)) {
+    if (originalEvent.hasOwnProperty(key) && !!value) {
       originalEvent[key] = value;
     }
   });

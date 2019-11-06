@@ -15,12 +15,11 @@ import { allOptions } from "../data";
 import { EventTypeName } from "../types/event-type-name";
 import { AssignedOfferItem } from "../types/offer";
 import { PointControllerConfig } from "../types/point-controller-config";
-import { EventEditInputField } from "../types/event-edit-input-field";
 import { Point } from "../types/point";
 import { EventModeValue } from "../types/event-mode-value";
 
 export class PointController {
-  private _container: HTMLDivElement;
+  private readonly _container: HTMLDivElement;
   private _eventData: Point;
   private _mode: EventModeValue;
   private _onDataChange: (EventEditInputField) => void;
@@ -65,17 +64,22 @@ export class PointController {
     const onSaveEvent = evt => {
       evt.preventDefault();
       const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
-      const entry: EventEditInputField = {
-        type: formData.get(`event-type`),
+      const entry: Point = {
+        type: formData.get(`event-type`) as EventTypeName,
         date: {
           start: parseTimeTag(formData.get(`event-start-time`)),
           duration: getEventDuration(formData.get(`event-start-time`), formData.get(`event-end-time`)),
           end: parseTimeTag(formData.get(`event-end-time`)),
         },
-        destination: formData.get(`event-destination`),
-        price: formData.get(`event-price`),
+        destination: {
+          name: formData.get(`event-destination`) as string,
+          description: null,
+          pictures: null,
+        },
+        price: +formData.get(`event-price`),
         options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),
         id: this._eventData.id,
+        isFavourite: !!formData.get(`event-favorite`),
       };
       this._onDataChange(entry);
       this.closeEditForm();
