@@ -35,12 +35,13 @@ export default class TripEventEdit extends AbstractComponent {
     this._isNew = isNew || false;
     this._isFavourite = isFavourite || false;
 
-    this._destinationMarkup = this._destination.description
-      ? new DestinationComponent(this._destination).getTemplate()
-      : ``;
+    this._destinationMarkup =
+      this._destination.description || (this._destination.pictures && this._destination.pictures.length)
+        ? new DestinationComponent(this._destination).getTemplate()
+        : ``;
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
     this._optionsMarkup =
-      this._options && this._options.length ? new OptionsComponent(Array.from(this._options)).getTemplate() : ``;
+      this._options && this._options.length ? new OptionsComponent(this._options).getTemplate() : ``;
   }
 
   public getTemplate(): string {
@@ -101,7 +102,7 @@ export default class TripEventEdit extends AbstractComponent {
 </li>`;
   }
 
-  public getSelectedTypeTemplate(icon): string {
+  public getSelectedTypeTemplate(icon: string): string {
     return `
     <label class="event__type  event__type-btn" for="event-type-toggle-1">
       <span class="visually-hidden">Choose event type</span>
@@ -109,7 +110,7 @@ export default class TripEventEdit extends AbstractComponent {
     </label>`.trim();
   }
 
-  public getDestinationLabelTemplate(typeName, preposition): string {
+  public getDestinationLabelTemplate(typeName: string, preposition: string): string {
     return `
   <label class="event__label  event__type-output" for="event-destination-1">
     ${ucFirstLetter(typeName)} ${preposition}
@@ -117,7 +118,7 @@ export default class TripEventEdit extends AbstractComponent {
   }
 
   private _getEventDetails(): string {
-    if (this._options && this._options.length && this._destination.description) {
+    if ((this._options && this._options.length) || this._destination.description) {
       return `
     <section class="event__details">
       ${this._optionsMarkup}
