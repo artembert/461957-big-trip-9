@@ -138,6 +138,10 @@ export class PointController {
       .getElement()
       .querySelector(`.event__type-toggle`)
       .addEventListener(`change`, onChangeType);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, onResetEvent);
 
     if (this._mode === EventMode.READ) {
       render(this._tripEvent.getElement(), this._container);
