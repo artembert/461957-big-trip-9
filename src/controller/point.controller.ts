@@ -73,8 +73,6 @@ export class PointController {
         },
         destination: {
           name: formData.get(`event-destination`) as string,
-          description: null,
-          pictures: null,
         },
         price: +formData.get(`event-price`),
         options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),

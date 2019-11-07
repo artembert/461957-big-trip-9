@@ -20,6 +20,8 @@ import { EventFilterValue } from "../types/event-filter-value";
 import { SortValue } from "../types/sort-value";
 import { Point } from "../types/point";
 import { RenderDayConfig } from "../types/render-day-config";
+// @ts-ignore
+import objectAssignDeep from "object-assign-deep";
 
 export class TripController {
   private readonly _container: Element;
@@ -170,8 +172,8 @@ export class TripController {
 
   private _onDataChange(entry: Point): void {
     this._isEventCreating = false;
-    const changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
-    updateProps(changedProperty, entry);
+    let changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
+    changedProperty = updateProps(changedProperty, entry);
     this.unrenderDayList();
     this._renderDayList();
   }
@@ -209,13 +211,10 @@ function groupEventsByDay(eventList) {
   return Array.from(dayList.values());
 }
 
-function updateProps(originalEvent: Point, newEvent: Point): void {
-  Object.entries(newEvent).forEach(([key, value]) => {
-    if (originalEvent.hasOwnProperty(key) && !!value) {
-      originalEvent[key] = value;
-    }
-  });
-  originalEvent.isNew = false;
+function updateProps(originalEvent: Point, newEvent: Point): Point {
+  const updatedEvent: Point = objectAssignDeep(originalEvent, newEvent);
+  updatedEvent.isNew = false;
+  return updatedEvent;
 }
 
 function getEventMode(isNew: boolean): EventModeValue {
