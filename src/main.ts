@@ -11,30 +11,9 @@ import { EventFilterValue } from "./types/event-filter-value";
 import { InfoController } from "./controller/info.controller";
 import { Point } from "./types/point";
 import { ActionType } from "./types/action-type";
+import { Route } from "./types/route";
 
 const EVENT_COUNT = 7;
-
-const onChangeRoute = route => {
-  switch (route) {
-    case Pages.EVENTS:
-      eventsController.unrenderDayList();
-      eventsController.unrenderSort();
-      eventsController.init();
-      statsController.destroy();
-      break;
-    case Pages.STATS:
-      eventsController.unrenderDayList();
-      eventsController.unrenderSort();
-      statsController.init();
-      break;
-    default:
-      return;
-  }
-};
-const onAddNewEvent = () => {
-  onChangeRoute(Pages.EVENTS);
-  eventsController.createEvent();
-};
 
 const headerElement = document.querySelector<HTMLElement>(`.trip-main`);
 const menuContainer = document.querySelector(`.trip-main__menu`);
@@ -68,7 +47,7 @@ firstDataLoad().then(events => {
 });
 
 Array.from(menu.getElement().querySelectorAll(`.trip-tabs__toggle`)).forEach(link => {
-  link.addEventListener(`change`, evt => onChangeRoute((evt.currentTarget as HTMLInputElement).value));
+  link.addEventListener(`change`, evt => onChangeRoute((evt.currentTarget as HTMLInputElement).value as Route));
 });
 
 addNewEventButton.addEventListener(`click`, () => onAddNewEvent());
@@ -96,4 +75,25 @@ function onDataChange(actionType: ActionType, point: Point): void {
         .then((eventList: Point[]) => eventsController.updateData(eventList));
       break;
   }
+}
+
+function onChangeRoute(route: Route): void {
+  switch (route) {
+    case Pages.EVENTS:
+      eventsController.unrenderDayList();
+      eventsController.unrenderSort();
+      eventsController.init();
+      statsController.destroy();
+      break;
+    case Pages.STATS:
+      eventsController.unrenderDayList();
+      eventsController.unrenderSort();
+      statsController.init();
+      break;
+  }
+}
+
+function onAddNewEvent(): void {
+  onChangeRoute(Pages.EVENTS);
+  eventsController.createEvent();
 }
