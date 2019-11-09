@@ -69,17 +69,25 @@ export class TripController {
   public init(): void {
     api.getEvents().then(response => {
       this._eventListValue = response;
-      if (this._eventList.length) {
-        this._renderSort();
-        this._renderDayList();
-      } else {
-        this._renderEmptyEventList();
-      }
+      this.renderTrip();
     });
+  }
+
+  public renderTrip(): void {
+    if (this._eventList.length) {
+      this._renderSort();
+      this._renderDayList();
+    } else {
+      this._renderEmptyEventList();
+    }
   }
 
   public updateData(eventList: Point[]): void {
     console.log(eventList);
+    this._eventListValue = eventList;
+    this.unrenderSort();
+    this.unrenderDayList();
+    this.renderTrip();
   }
 
   public createEvent(): void {
