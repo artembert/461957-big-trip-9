@@ -7,8 +7,9 @@ import { InfoPoints } from "../types/info-points";
 
 export class InfoController {
   private _tripInfoComponent: TripInfo;
+  private _pointList: Point[] = [];
 
-  constructor(private _container: HTMLElement, private _pointList: Point[]) {
+  constructor(private _container: HTMLElement) {
     this._tripInfoComponent = new TripInfo(this._getInfo);
   }
 

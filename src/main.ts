@@ -28,11 +28,10 @@ api.getOptions().then(response => {
   console.log(allOptions);
 });
 
-let eventList = [];
 const mockEventList = getEventList(EVENT_COUNT);
 const menu = new Menu(getMenuItems());
 const filter = new Filter(getFilters());
-const infoController = new InfoController(headerElement, eventList);
+const infoController = new InfoController(headerElement);
 const statsController = new StatsController(statisticsContainer);
 const eventsController = new TripController({ container: scheduleElement, onDataChange: onDataChange });
 
