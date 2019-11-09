@@ -124,6 +124,11 @@ export class TripController {
     this._renderDayList();
   }
 
+  public unrenderEmptyPointList(): void {
+    unrender(this._emptyPointList.getElement());
+    this._emptyPointList.removeElement();
+  }
+
   private _renderSort(): void {
     this._sort.getElement().addEventListener(`change`, this._onSortChange.bind(this));
     render(this._sort.getElement(), this._container);
