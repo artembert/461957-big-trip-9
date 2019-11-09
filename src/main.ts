@@ -12,6 +12,7 @@ import { InfoController } from "./controller/info.controller";
 import { Point } from "./types/point";
 import { ActionType } from "./types/action-type";
 import { Route } from "./types/route";
+import { Action } from "./models/action";
 
 const EVENT_COUNT = 7;
 
@@ -64,11 +65,11 @@ function firstDataLoad(): Promise<Point[]> {
 
 function onDataChange(actionType: ActionType, point: Point): void {
   switch (actionType) {
-    case `CREATE`:
+    case Action.CREATE:
       break;
-    case `UPDATE`:
+    case Action.UPDATE:
       break;
-    case `DELETE`:
+    case Action.DELETE:
       api
         .deleteEvent({ id: point.id })
         .then(() => api.getEvents())
