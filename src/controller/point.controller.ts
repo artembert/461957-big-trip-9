@@ -23,7 +23,7 @@ export class PointController {
   private _eventData: Point;
   private _mode: EventModeValue;
   private _onDataChange: (EventEditInputField) => void;
-  private _onRemoveEvent: (string) => void;
+  private _onRemoveEvent: (Point) => void;
   private _onViewChange: () => void;
   private _tripEvent: TripEvent;
   private _tripEventEdit: TripEventEdit;
@@ -114,8 +114,8 @@ export class PointController {
         .querySelector(`.event__type-output`)
         .replaceWith(updatedDestinationLabelElement);
     };
-    const onRemoveEvent = () => {
-      this._onRemoveEvent(this._eventData.id);
+    const onRemoveEvent = (): void => {
+      this._onRemoveEvent(this._eventData);
     };
 
     this._tripEvent

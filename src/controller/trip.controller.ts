@@ -24,6 +24,7 @@ import { RenderDayConfig } from "../types/render-day-config";
 import objectAssignDeep from "object-assign-deep";
 import { TripControllerConfig } from "../types/trip-controller-config";
 import { OnDataChange } from "../types/on-data-change";
+import { Action } from "../models/action";
 
 export class TripController {
   private readonly _container: Element;
@@ -164,9 +165,10 @@ export class TripController {
     this._subscriptions.push(event.closeEventsEdit.bind(event));
   }
 
-  private _removeEvent(eventId: string): void {
-    const removeIndex = this._eventList.findIndex(tripEvent => tripEvent.id === eventId);
-    this._eventList = [...this._eventList.slice(0, removeIndex), ...this._eventList.slice(removeIndex + 1)];
+  private _removeEvent(event: Point): void {
+    // const removeIndex = this._eventList.findIndex(tripEvent => tripEvent.id === eventId);
+    // this._eventList = [...this._eventList.slice(0, removeIndex), ...this._eventList.slice(removeIndex + 1)];
+    this._onDataChangeMain(Action.DELETE, event);
   }
 
   private _onSortChange(evt: Event): void {
@@ -186,9 +188,9 @@ export class TripController {
     this._renderDayList();
   }
 
-  private _onRemoveEvent(eventId: string): void {
+  private _onRemoveEvent(event: Point): void {
     this._isEventCreating = false;
-    this._removeEvent(eventId);
+    this._removeEvent(event);
     this.unrenderDayList();
     if (this._eventList.length) {
       this._renderDayList();

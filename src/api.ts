@@ -45,7 +45,7 @@ class API {
       .then(EventAdapter.parseEvent);
   }
 
-  public deleteEvent({ id }) {
+  public deleteEvent({ id }: { id: string }): Promise<Response | Error> {
     return this._load({
       url: `points/${id}`,
       method: Method.DELETE,
