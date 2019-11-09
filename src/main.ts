@@ -40,10 +40,10 @@ infoController.rerenderInfo();
 render(menu.getElement(), menuContainer);
 render(filter.getElement(), filterContainer);
 addEventListeners();
-
-function firstDataLoad(): Promise<Point[]> {
-  return api.getEvents();
-}
+api.getEvents().then(eventList => {
+  eventsController.updateData(eventList);
+  onChangeRoute(Pages.EVENTS);
+});
 
 function onDataChange(actionType: ActionType, point: Point): void {
   switch (actionType) {
@@ -55,7 +55,10 @@ function onDataChange(actionType: ActionType, point: Point): void {
       api
         .deleteEvent({ id: point.id })
         .then(() => api.getEvents())
-        .then(eventList => eventsController.updateData(eventList));
+        .then(eventList => {
+          eventsController.updateData(eventList);
+          eventsController.rerender();
+        });
       break;
   }
 }

@@ -85,8 +85,10 @@ export class TripController {
   }
 
   public updateData(eventList: Point[]): void {
-    console.log(eventList);
     this._eventListValue = eventList;
+  }
+
+  public rerender(): void {
     this.unrenderEmptyPointList();
     this.unrenderSort();
     this.unrenderDayList();
