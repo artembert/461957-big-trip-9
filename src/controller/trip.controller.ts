@@ -73,6 +73,10 @@ export class TripController {
     });
   }
 
+  public updateData(eventList: Point[]): void {
+    console.log(eventList);
+  }
+
   public createEvent(): void {
     if (this._isEventCreating) {
       return;

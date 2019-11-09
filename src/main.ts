@@ -10,6 +10,7 @@ import { allOptions } from "./data";
 import { EventFilterValue } from "./types/event-filter-value";
 import { InfoController } from "./controller/info.controller";
 import { Point } from "./types/point";
+import { ActionType } from "./types/action-type";
 
 const EVENT_COUNT = 7;
 
@@ -80,4 +81,19 @@ Array.from(filter.getElement().querySelectorAll(`.trip-filters__filter-input`)).
 
 function firstDataLoad(): Promise<Point[]> {
   return api.getEvents();
+}
+
+function onDataChange(actionType: ActionType, point: Point): void {
+  switch (actionType) {
+    case `CREATE`:
+      break;
+    case `UPDATE`:
+      break;
+    case `DELETE`:
+      api
+        .deleteEvent({ id: point.id })
+        .then(() => api.getEvents())
+        .then((eventList: Point[]) => eventsController.updateData(eventList));
+      break;
+  }
 }
