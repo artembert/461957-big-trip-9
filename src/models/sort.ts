@@ -1,4 +1,5 @@
 import { SortValue } from "../types/sort-value";
+import { Point } from "../types/point";
 
 export const SortType: { [key: string]: SortValue } = {
   EVENT: `event`,
@@ -6,7 +7,7 @@ export const SortType: { [key: string]: SortValue } = {
   PRICE: `price`,
 };
 
-export const sortFns: { [key in SortValue]: Function } = {
+export const sortFns: { [key in SortValue]: (a: Point, b: Point) => number } = {
   event: (a, b) => {
     if (a.isNew) {
       return -1;

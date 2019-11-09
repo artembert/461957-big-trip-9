@@ -1,4 +1,5 @@
 import { EventFilterValue } from "../types/event-filter-value";
+import { Point } from "../types/point";
 
 export const EventFilter: { [key: string]: EventFilterValue } = {
   DEFAULT: `default`,
@@ -6,8 +7,8 @@ export const EventFilter: { [key: string]: EventFilterValue } = {
   PAST: `past`,
 };
 
-export const filterFns: { [key in EventFilterValue]: Function } = {
+export const filterFns: { [key in EventFilterValue]: (Point?) => boolean } = {
   default: () => true,
-  feature: tripEvent => tripEvent.date.start > new Date(),
-  past: tripEvent => tripEvent.date.end <= new Date(),
+  feature: (tripEvent: Point) => tripEvent.date.start > new Date().getTime(),
+  past: (tripEvent: Point) => tripEvent.date.end <= new Date().getTime(),
 };
