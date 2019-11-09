@@ -29,7 +29,7 @@ import { Action } from "../models/action";
 export class TripController {
   private readonly _container: Element;
   private readonly _onDataChangeMain: OnDataChange;
-  private _eventListValue: any;
+  private _eventListValue: Point[] = [];
   private _dayList: DayListComponent;
   private _emptyPointList: any;
   private _sortType: SortValue;
@@ -59,7 +59,9 @@ export class TripController {
   }
 
   private get _eventList() {
-    return this._eventListValue.filter(filterFns[this._filterType]).sort(sortFns[this._sortType]);
+    return this._eventListValue.length
+      ? this._eventListValue.filter(filterFns[this._filterType]).sort(sortFns[this._sortType])
+      : [];
   }
 
   private set _eventList(newValue) {
@@ -85,6 +87,7 @@ export class TripController {
   public updateData(eventList: Point[]): void {
     console.log(eventList);
     this._eventListValue = eventList;
+    this.unrenderEmptyPointList();
     this.unrenderSort();
     this.unrenderDayList();
     this.renderTrip();
