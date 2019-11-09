@@ -44,7 +44,6 @@ onChangeRoute(Pages.EVENTS);
 firstDataLoad().then(events => {
   eventList = events;
   infoController.updateData(eventList);
-  infoController.rerenderInfo();
 });
 
 Array.from(menu.getElement().querySelectorAll(`.trip-tabs__toggle`)).forEach(link => {

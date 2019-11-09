@@ -21,6 +21,7 @@ export class InfoController {
 
   public updateData(newPoints: Point[]): void {
     this._pointList = newPoints;
+    this.rerenderInfo();
   }
 
   private get _getInfo(): Info {
