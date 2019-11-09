@@ -39,24 +39,7 @@ const eventsController = new TripController({ container: scheduleElement, onData
 infoController.rerenderInfo();
 render(menu.getElement(), menuContainer);
 render(filter.getElement(), filterContainer);
-onChangeRoute(Pages.EVENTS);
-
-firstDataLoad().then(events => {
-  eventList = events;
-  infoController.updateData(eventList);
-});
-
-Array.from(menu.getElement().querySelectorAll(`.trip-tabs__toggle`)).forEach(link => {
-  link.addEventListener(`change`, evt => onChangeRoute((evt.currentTarget as HTMLInputElement).value as Route));
-});
-
-addNewEventButton.addEventListener(`click`, () => onAddNewEvent());
-
-Array.from(filter.getElement().querySelectorAll(`.trip-filters__filter-input`)).forEach(link => {
-  link.addEventListener(`change`, evt =>
-    eventsController.updateFilter((evt.currentTarget as HTMLInputElement).value as EventFilterValue),
-  );
-});
+addEventListeners();
 
 function firstDataLoad(): Promise<Point[]> {
   return api.getEvents();
@@ -72,7 +55,7 @@ function onDataChange(actionType: ActionType, point: Point): void {
       api
         .deleteEvent({ id: point.id })
         .then(() => api.getEvents())
-        .then((eventList: Point[]) => eventsController.updateData(eventList));
+        .then(eventList => eventsController.updateData(eventList));
       break;
   }
 }
@@ -97,4 +80,18 @@ function onChangeRoute(route: Route): void {
 function onAddNewEvent(): void {
   onChangeRoute(Pages.EVENTS);
   eventsController.createEvent();
+}
+
+function addEventListeners(): void {
+  Array.from(menu.getElement().querySelectorAll(`.trip-tabs__toggle`)).forEach(link => {
+    link.addEventListener(`change`, evt => onChangeRoute((evt.currentTarget as HTMLInputElement).value as Route));
+  });
+
+  addNewEventButton.addEventListener(`click`, () => onAddNewEvent());
+
+  Array.from(filter.getElement().querySelectorAll(`.trip-filters__filter-input`)).forEach(link => {
+    link.addEventListener(`change`, evt =>
+      eventsController.updateFilter((evt.currentTarget as HTMLInputElement).value as EventFilterValue),
+    );
+  });
 }
