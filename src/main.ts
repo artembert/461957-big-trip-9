@@ -1,7 +1,7 @@
 import Menu from "./components/menu";
 import Filter from "./components/filter";
 import { render } from "./util/dom";
-import { getEventList, getFilters, getMenuItems } from "./mock-data";
+import { getFilters, getMenuItems } from "./mock-data";
 import { TripController } from "./controller/trip.controller";
 import { Pages } from "./models/pages";
 import StatsController from "./controller/stats-controller";
@@ -13,8 +13,6 @@ import { Point } from "./types/point";
 import { ActionType } from "./types/action-type";
 import { Route } from "./types/route";
 import { Action } from "./models/action";
-
-const EVENT_COUNT = 7;
 
 const headerElement = document.querySelector<HTMLElement>(`.trip-main`);
 const menuContainer = document.querySelector(`.trip-main__menu`);
@@ -28,7 +26,6 @@ api.getOptions().then(response => {
   console.log(allOptions);
 });
 
-const mockEventList = getEventList(EVENT_COUNT);
 const menu = new Menu(getMenuItems());
 const filter = new Filter(getFilters());
 const infoController = new InfoController(headerElement);
