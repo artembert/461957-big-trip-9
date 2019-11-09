@@ -41,6 +41,7 @@ render(menu.getElement(), menuContainer);
 render(filter.getElement(), filterContainer);
 addEventListeners();
 api.getEvents().then(eventList => {
+  infoController.updateData(eventList);
   eventsController.updateData(eventList);
   onChangeRoute(Pages.EVENTS);
 });
@@ -56,6 +57,7 @@ function onDataChange(actionType: ActionType, point: Point): void {
         .deleteEvent({ id: point.id })
         .then(() => api.getEvents())
         .then(eventList => {
+          infoController.updateData(eventList);
           eventsController.updateData(eventList);
           eventsController.rerender();
         });
