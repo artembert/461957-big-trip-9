@@ -22,9 +22,12 @@ import { Point } from "../types/point";
 import { RenderDayConfig } from "../types/render-day-config";
 // @ts-ignore
 import objectAssignDeep from "object-assign-deep";
+import { TripControllerConfig } from "../types/trip-controller-config";
+import { OnDataChange } from "../types/on-data-change";
 
 export class TripController {
   private readonly _container: Element;
+  private readonly _onDataChangeMain: OnDataChange;
   private _eventListValue: any;
   private _dayList: DayListComponent;
   private _emptyPointList: any;
@@ -34,15 +37,16 @@ export class TripController {
   private _filterType: EventFilterValue;
   private _subscriptions: any;
 
-  constructor(eventList, container: Element) {
+  constructor({ container, onDataChange }: TripControllerConfig) {
     this._container = container;
+    this._onDataChangeMain = onDataChange;
     this._dayList = new DayListComponent();
     this._emptyPointList = new EmptyPointList();
     this._sortType = SortType.EVENT;
     this._sort = new Sort(this._sortType, this._sortType === SortType.EVENT);
     this._isEventCreating = false;
-    this._filterType = EventFilter.DEFAULT;
 
+    this._filterType = EventFilter.DEFAULT;
     this._subscriptions = [];
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);

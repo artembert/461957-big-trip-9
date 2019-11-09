@@ -19,7 +19,7 @@ const EVENT_COUNT = 7;
 const headerElement = document.querySelector<HTMLElement>(`.trip-main`);
 const menuContainer = document.querySelector(`.trip-main__menu`);
 const filterContainer = document.querySelector(`.trip-main__filter`);
-const scheduleElement = document.querySelector(`.trip-events`);
+const scheduleElement = document.querySelector<HTMLElement>(`.trip-events`);
 const statisticsContainer = document.querySelector(`.page-main__container`);
 const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
@@ -34,7 +34,7 @@ const menu = new Menu(getMenuItems());
 const filter = new Filter(getFilters());
 const infoController = new InfoController(headerElement, eventList);
 const statsController = new StatsController(statisticsContainer);
-const eventsController = new TripController(mockEventList, scheduleElement);
+const eventsController = new TripController({ container: scheduleElement, onDataChange: onDataChange });
 
 infoController.rerenderInfo();
 render(menu.getElement(), menuContainer);
