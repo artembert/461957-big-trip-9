@@ -75,6 +75,12 @@ export class TripController {
     });
   }
 
+  public unrenderTrip(): void {
+    this.unrenderEmptyPointList();
+    this.unrenderSort();
+    this.unrenderDayList();
+  }
+
   public renderTrip(): void {
     if (this._eventList.length) {
       this._renderSort();

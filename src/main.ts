@@ -64,15 +64,12 @@ function onDataChange(actionType: ActionType, point: Point): void {
 function onChangeRoute(route: Route): void {
   switch (route) {
     case Pages.EVENTS:
-      eventsController.unrenderEmptyPointList();
-      eventsController.unrenderDayList();
-      eventsController.unrenderSort();
+      eventsController.unrenderTrip();
       eventsController.renderTrip();
       statsController.destroy();
       break;
     case Pages.STATS:
-      eventsController.unrenderDayList();
-      eventsController.unrenderSort();
+      eventsController.unrenderTrip();
       statsController.init();
       break;
   }
