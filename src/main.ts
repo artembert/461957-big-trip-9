@@ -6,7 +6,7 @@ import { TripController } from "./controller/trip.controller";
 import { Pages } from "./models/pages";
 import StatsController from "./controller/stats-controller";
 import api from "./api";
-import { allOptions } from "./data";
+import { allDestinations, allOptions } from "./data";
 import { EventFilterValue } from "./types/event-filter-value";
 import { InfoController } from "./controller/info.controller";
 import { Point } from "./types/point";
@@ -22,8 +22,12 @@ const statisticsContainer = document.querySelector(`.page-main__container`);
 const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
 api.getOptions().then(response => {
-  allOptions.push(response);
+  allOptions.push(...response);
   console.log(allOptions);
+});
+api.getDestinations().then(response => {
+  allDestinations.push(...response);
+  console.log(allDestinations);
 });
 
 const menu = new Menu(getMenuItems());
@@ -45,6 +49,14 @@ api.getEvents().then(eventList => {
 function onDataChange(actionType: ActionType, point: Point): void {
   switch (actionType) {
     case Action.CREATE:
+      api
+        .createEvent({ data: point })
+        .then(() => api.getEvents())
+        .then(eventList => {
+          infoController.updateData(eventList);
+          eventsController.updateData(eventList);
+          eventsController.rerender();
+        });
       break;
     case Action.UPDATE:
       api

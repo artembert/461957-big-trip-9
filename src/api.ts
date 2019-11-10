@@ -1,7 +1,6 @@
 import { Method } from "./models/method";
 import EventAdapter from "./adapters/event.adapter";
 import { Point } from "./types/point";
-import { PointJSON } from "./types/point-json";
 
 const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
 const END_POINT = `https://htmlacademy-es-9.appspot.com/big-trip`;
@@ -23,11 +22,11 @@ class API {
       .then(EventAdapter.parseEvents);
   }
 
-  public createEvent({ task }) {
+  public createEvent({ data }: { data: Point }) {
     return this._load({
       url: `points`,
       method: Method.POST,
-      body: JSON.stringify(task),
+      body: JSON.stringify(EventAdapter.toRAW(data)),
       headers: new Headers({ "Content-Type": `application/json` }),
     })
       .then(toJSON)
@@ -59,6 +58,13 @@ class API {
     }).then(toJSON);
   }
 
+  public getDestinations() {
+    return this._load({
+      url: `destinations`,
+      method: Method.GET,
+    }).then(toJSON);
+  }
+
   private _load({ url, method = Method.GET, body = null, headers = new Headers() }) {
     headers.append(`Authorization`, this._authorization);
 
@@ -84,6 +90,6 @@ function checkStatus(response: Response): Response | Error {
   }
 }
 
-function toJSON(response: Response): Promise<PointJSON | PointJSON[]> {
+function toJSON(response: Response) {
   return response.json();
 }

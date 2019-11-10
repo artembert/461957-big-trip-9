@@ -30,11 +30,11 @@ export default class EventAdapter implements Point {
     this.isFavourite = json[`is_favorite`];
   }
 
-  public static parseEvent(json: PointJSON): Point {
-    return new EventAdapter(json);
+  public static parseEvent(json: JSON): Point {
+    return new EventAdapter(json as PointJSON);
   }
 
-  public static parseEvents(json: PointJSON[]): Point[] {
+  public static parseEvents(json: JSON[]): Point[] {
     return json.map(EventAdapter.parseEvent);
   }
 

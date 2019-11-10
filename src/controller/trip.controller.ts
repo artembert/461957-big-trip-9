@@ -196,9 +196,13 @@ export class TripController {
 
   private _onDataChange(entry: Point): void {
     this._isEventCreating = false;
-    let changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
-    changedProperty = updateProps(changedProperty, entry);
-    this._onDataChangeMain(Action.UPDATE, changedProperty);
+    if (entry.isNew) {
+      this._onDataChangeMain(Action.CREATE, entry);
+    } else {
+      let changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
+      changedProperty = updateProps(changedProperty, entry);
+      this._onDataChangeMain(Action.UPDATE, changedProperty);
+    }
   }
 
   private _onRemoveEvent(event: Point): void {
@@ -253,8 +257,8 @@ function getDefaultEvent(): Point {
       end: new Date().getTime(),
     },
     destination: {
-      description: undefined,
-      name: undefined,
+      description: ``,
+      name: ``,
       pictures: [],
     },
     price: 0,
