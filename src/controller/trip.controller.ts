@@ -14,7 +14,6 @@ import { PointController } from "./point.controller";
 import { getId } from "../util/get-id";
 import { EventMode } from "../models/event-mode";
 import { EventFilter, filterFns } from "../models/event-filter";
-import api from "../api";
 import { EventModeValue } from "../types/event-mode-value";
 import { EventFilterValue } from "../types/event-filter-value";
 import { SortValue } from "../types/sort-value";
@@ -30,13 +29,13 @@ export class TripController {
   private readonly _container: Element;
   private readonly _onDataChangeMain: OnDataChange;
   private _eventListValue: Point[] = [];
-  private _dayList: DayListComponent;
-  private _emptyPointList: any;
+  private readonly _dayList: DayListComponent;
+  private _emptyPointList: EmptyPointList;
   private _sortType: SortValue;
-  private _sort: any;
+  private _sort: Sort;
   private _isEventCreating: boolean;
   private _filterType: EventFilterValue;
-  private _subscriptions: any;
+  private _subscriptions: VoidFunction[];
 
   constructor({ container, onDataChange }: TripControllerConfig) {
     this._container = container;
@@ -58,21 +57,14 @@ export class TripController {
     return this._sortType === SortType.EVENT;
   }
 
-  private get _eventList() {
+  private get _eventList(): Point[] {
     return this._eventListValue.length
       ? this._eventListValue.filter(filterFns[this._filterType]).sort(sortFns[this._sortType])
       : [];
   }
 
-  private set _eventList(newValue) {
+  private set _eventList(newValue: Point[]) {
     this._eventListValue = newValue;
-  }
-
-  public init(): void {
-    api.getEvents().then(response => {
-      this._eventListValue = response;
-      this.renderTrip();
-    });
   }
 
   public unrenderTrip(): void {
@@ -176,7 +168,7 @@ export class TripController {
     dayEvents.forEach(event => this._renderEvent(event, eventsContainer));
   }
 
-  private _renderEvent(eventData, container: HTMLDivElement): void {
+  private _renderEvent(eventData: Point, container: HTMLDivElement): void {
     const event = new PointController({
       eventData,
       container,
@@ -190,8 +182,6 @@ export class TripController {
   }
 
   private _removeEvent(event: Point): void {
-    // const removeIndex = this._eventList.findIndex(tripEvent => tripEvent.id === eventId);
-    // this._eventList = [...this._eventList.slice(0, removeIndex), ...this._eventList.slice(removeIndex + 1)];
     this._onDataChangeMain(Action.DELETE, event);
   }
 
@@ -228,7 +218,7 @@ export class TripController {
   }
 }
 
-function groupEventsByDay(eventList) {
+function groupEventsByDay(eventList: Point[]) {
   const dayList = eventList.reduce((accum, item) => {
     if (item.isNew) {
       accum.set(0, [item]);
