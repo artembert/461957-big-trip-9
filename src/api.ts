@@ -34,11 +34,11 @@ class API {
       .then(EventAdapter.parseEvent);
   }
 
-  public updateEvent({ id, data }) {
+  public updateEvent({ id, data }: { id: string; data: Point }): Promise<Point | Point[]> {
     return this._load({
       url: `points/${id}`,
       method: Method.PUT,
-      body: JSON.stringify(data),
+      body: JSON.stringify(EventAdapter.toRAW(data)),
       headers: new Headers({ "Content-Type": `application/json` }),
     })
       .then(toJSON)

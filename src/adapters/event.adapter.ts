@@ -37,6 +37,25 @@ export default class EventAdapter implements Point {
   public static parseEvents(json: PointJSON[]): Point[] {
     return json.map(EventAdapter.parseEvent);
   }
+
+  public static toRAW(point: Point): PointJSON {
+    return {
+      /* eslint-disable @typescript-eslint/camelcase */
+      id: point.id,
+      type: point.type,
+      date_from: point.date.start,
+      date_to: point.date.end,
+      destination: {
+        name: point.destination.name,
+        description: point.destination.description,
+        pictures: point.destination.pictures,
+      },
+      base_price: point.price,
+      is_favorite: point.isFavourite,
+      offers: point.options,
+      /* eslint-enable */
+    };
+  }
 }
 
 function getDuration(dateStart: number, dateEnd: number): number {

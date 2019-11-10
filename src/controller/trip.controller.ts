@@ -206,10 +206,11 @@ export class TripController {
 
   private _onDataChange(entry: Point): void {
     this._isEventCreating = false;
-    let changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
-    changedProperty = updateProps(changedProperty, entry);
-    this.unrenderDayList();
-    this._renderDayList();
+    // let changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
+    // changedProperty = updateProps(changedProperty, entry);
+    // this.unrenderDayList();
+    // this._renderDayList();
+    this._onDataChangeMain(Action.UPDATE, entry);
   }
 
   private _onRemoveEvent(event: Point): void {

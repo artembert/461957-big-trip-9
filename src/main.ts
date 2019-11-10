@@ -47,6 +47,14 @@ function onDataChange(actionType: ActionType, point: Point): void {
     case Action.CREATE:
       break;
     case Action.UPDATE:
+      api
+        .updateEvent({ id: point.id, data: point })
+        .then(() => api.getEvents())
+        .then(eventList => {
+          infoController.updateData(eventList);
+          eventsController.updateData(eventList);
+          eventsController.rerender();
+        });
       break;
     case Action.DELETE:
       api
