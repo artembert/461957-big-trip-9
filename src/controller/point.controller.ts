@@ -28,7 +28,6 @@ export class PointController {
   private _onViewChange: () => void;
   private _tripEvent: TripEvent;
   private _tripEventEdit: TripEventEdit;
-  private _destinationComponent: DestinationComponent;
 
   constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode }: PointControllerConfig) {
     this._container = container;
@@ -171,23 +170,27 @@ export class PointController {
     this._tripEventEdit.getElement().replaceWith(this._tripEvent.getElement());
   }
 
-  private replaceDestinationDescription(): void {
-    const destinationMarkupUpdated: HTMLElement = new DestinationComponent(this._eventData.destination).getElement();
-    let detailsMarkup: HTMLElement = this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event__details`);
-    if (!detailsMarkup) {
+  private get _detailsElement(): HTMLElement {
+    let detailsElement: HTMLElement = this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event__details`);
+    if (!detailsElement) {
       render(
         createElement(`<section class="event__details"></section>`),
         this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event--edit`),
       );
-      detailsMarkup = this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event__details`);
+      detailsElement = this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event__details`);
     }
+    return detailsElement;
+  }
+
+  private replaceDestinationDescription(): void {
+    const destinationMarkupUpdated: HTMLElement = new DestinationComponent(this._eventData.destination).getElement();
     const destinationMarkup: HTMLElement = this._tripEventEdit
       .getElement()
       .querySelector<HTMLElement>(`.event__section--destination`);
     if (destinationMarkup) {
       destinationMarkup.replaceWith(destinationMarkupUpdated);
     } else {
-      detailsMarkup.appendChild(destinationMarkupUpdated);
+      this._detailsElement.appendChild(destinationMarkupUpdated);
     }
   }
 }
