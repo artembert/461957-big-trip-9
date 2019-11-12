@@ -173,17 +173,21 @@ export class PointController {
 
   private replaceDestinationDescription(): void {
     const destinationMarkupUpdated: HTMLElement = new DestinationComponent(this._eventData.destination).getElement();
-    const detailsMarkup: HTMLElement = this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event__details`);
-    if (detailsMarkup) {
-      const destinationMarkup: HTMLElement = this._tripEventEdit
-        .getElement()
-        .querySelector<HTMLElement>(`.event__section--destination`);
-      if (destinationMarkup) {
-        destinationMarkup.replaceWith(destinationMarkupUpdated);
-      } else {
-        detailsMarkup.appendChild(destinationMarkupUpdated);
-      }
+    let detailsMarkup: HTMLElement = this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event__details`);
+    if (!detailsMarkup) {
+      render(
+        createElement(`<section class="event__details"></section>`),
+        this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event--edit`),
+      );
+      detailsMarkup = this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event__details`);
+    }
+    const destinationMarkup: HTMLElement = this._tripEventEdit
+      .getElement()
+      .querySelector<HTMLElement>(`.event__section--destination`);
+    if (destinationMarkup) {
+      destinationMarkup.replaceWith(destinationMarkupUpdated);
     } else {
+      detailsMarkup.appendChild(destinationMarkupUpdated);
     }
   }
 }
