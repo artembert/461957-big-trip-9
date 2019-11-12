@@ -18,6 +18,7 @@ import { PointControllerConfig } from "../types/point-controller-config";
 import { Point } from "../types/point";
 import { EventModeValue } from "../types/event-mode-value";
 import DestinationComponent from "../components/destination.component";
+import OptionsComponent from "../components/options.component";
 
 export class PointController {
   private readonly _container: HTMLDivElement;
@@ -190,7 +191,19 @@ export class PointController {
     if (destinationMarkup) {
       destinationMarkup.replaceWith(destinationMarkupUpdated);
     } else {
-      this._detailsElement.appendChild(destinationMarkupUpdated);
+      this._detailsElement.append(destinationMarkupUpdated);
+    }
+  }
+
+  private replaceOptions(): void {
+    const optionsMarkupUpdated: HTMLElement = new OptionsComponent(this._eventData.options).getElement();
+    const optionsMarkup: HTMLElement = this._tripEventEdit
+      .getElement()
+      .querySelector<HTMLElement>(`.event__section--offers`);
+    if (optionsMarkup) {
+      optionsMarkup.replaceWith(optionsMarkupUpdated);
+    } else {
+      this._detailsElement.prepend(optionsMarkupUpdated);
     }
   }
 }
