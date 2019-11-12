@@ -1,6 +1,8 @@
 import { Method } from "./models/method";
 import EventAdapter from "./adapters/event.adapter";
 import { Point } from "./types/point";
+import { Offer } from "./types/offer";
+import { Destination } from "./types/destination";
 
 const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
 const END_POINT = `https://htmlacademy-es-9.appspot.com/big-trip`;
@@ -22,26 +24,22 @@ class API {
       .then(EventAdapter.parseEvents);
   }
 
-  public createEvent({ data }: { data: Point }) {
+  public createEvent({ data }: { data: Point }): Promise<Response | Error> {
     return this._load({
       url: `points`,
       method: Method.POST,
       body: JSON.stringify(EventAdapter.toRAW(data)),
       headers: new Headers({ "Content-Type": `application/json` }),
-    })
-      .then(toJSON)
-      .then(EventAdapter.parseEvent);
+    });
   }
 
-  public updateEvent({ id, data }: { id: string; data: Point }): Promise<Point | Point[]> {
+  public updateEvent({ id, data }: { id: string; data: Point }): Promise<Response | Error> {
     return this._load({
       url: `points/${id}`,
       method: Method.PUT,
       body: JSON.stringify(EventAdapter.toRAW(data)),
       headers: new Headers({ "Content-Type": `application/json` }),
-    })
-      .then(toJSON)
-      .then(EventAdapter.parseEvent);
+    });
   }
 
   public deleteEvent({ id }: { id: string }): Promise<Response | Error> {
@@ -51,14 +49,14 @@ class API {
     });
   }
 
-  public getOptions() {
+  public getOptions(): Promise<Offer[]> {
     return this._load({
       url: `offers`,
       method: Method.GET,
     }).then(toJSON);
   }
 
-  public getDestinations() {
+  public getDestinations(): Promise<Destination[]> {
     return this._load({
       url: `destinations`,
       method: Method.GET,
