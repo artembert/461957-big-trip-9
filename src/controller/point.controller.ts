@@ -116,7 +116,9 @@ export class PointController {
         .getElement()
         .querySelector(`.event__type-output`)
         .replaceWith(updatedDestinationLabelElement);
-      this._eventData.options = allOptions.find(option => option.type === selectedType.name).offers;
+      this._eventData.options = allOptions
+        .find(option => option.type === selectedType.name)
+        .offers.map(offer => ({ ...offer, accepted: false }));
       this.replaceOptions();
     };
     const onRemoveEvent = (): void => {
