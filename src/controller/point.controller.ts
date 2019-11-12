@@ -80,6 +80,7 @@ export class PointController {
         options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),
         id: this._eventData.id,
         isFavourite: !!formData.get(`event-favorite`),
+        isNew: this._eventData.isNew,
       };
       this._onDataChange(entry);
       this.closeEditForm();

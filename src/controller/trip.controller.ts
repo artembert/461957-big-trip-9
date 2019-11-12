@@ -198,7 +198,8 @@ export class TripController {
   private _onDataChange(entry: Point): void {
     this._isEventCreating = false;
     if (entry.isNew) {
-      this._onDataChangeMain(Action.CREATE, entry);
+      const newPoint: Point = fillDestinationProperties(updateProps(getDefaultEvent(), entry));
+      this._onDataChangeMain(Action.CREATE, newPoint);
     } else {
       let changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
       changedProperty = updateProps(changedProperty, entry);
