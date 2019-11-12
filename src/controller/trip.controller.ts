@@ -24,6 +24,7 @@ import objectAssignDeep from "object-assign-deep";
 import { TripControllerConfig } from "../types/trip-controller-config";
 import { OnDataChange } from "../types/on-data-change";
 import { Action } from "../models/action";
+import { allDestinations } from "../data";
 
 export class TripController {
   private readonly _container: Element;
@@ -267,4 +268,12 @@ function getDefaultEvent(): Point {
     isNew: true,
     isFavourite: true,
   };
+}
+
+function fillDestinationProperties(newPoint: Point): Point {
+  newPoint.destination = objectAssignDeep(
+    newPoint.destination,
+    allDestinations.find(destination => destination.name === newPoint.destination.name),
+  );
+  return newPoint;
 }
