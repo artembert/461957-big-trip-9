@@ -1,7 +1,7 @@
 import { createElement } from "../util/dom";
 
 export default abstract class AbstractComponent {
-  private _element: HTMLElement;
+  protected _element: HTMLElement;
 
   constructor() {
     if (new.target === AbstractComponent) {

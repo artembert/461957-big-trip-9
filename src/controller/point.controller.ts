@@ -19,6 +19,7 @@ import { Point } from "../types/point";
 import { EventModeValue } from "../types/event-mode-value";
 import DestinationComponent from "../components/destination.component";
 import OptionsComponent from "../components/options.component";
+import { PointAction } from "../models/point-action";
 
 export class PointController {
   private readonly _container: HTMLDivElement;
@@ -64,6 +65,7 @@ export class PointController {
       document.addEventListener(`keydown`, onKeyDown);
     };
     const onSaveEvent = evt => {
+      this._tripEventEdit.lockForm();
       evt.preventDefault();
       const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
       const entry: Point = {
@@ -83,7 +85,6 @@ export class PointController {
         isNew: this._eventData.isNew,
       };
       this._onDataChange(entry);
-      this.closeEditForm();
       document.removeEventListener(`keydown`, onKeyDown);
     };
     const onResetEvent = () => {
@@ -122,6 +123,7 @@ export class PointController {
       this.replaceOptions();
     };
     const onRemoveEvent = (): void => {
+      this._tripEventEdit.lockForm(PointAction.DELETE);
       this._onRemoveEvent(this._eventData);
     };
     const onChangeDestination = evt => {

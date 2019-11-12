@@ -13,6 +13,13 @@ import { EventType } from "../types/event-type";
 import { Point } from "../types/point";
 import { allDestinations } from "../data";
 
+export const ButtonText = {
+  NORMAL: `Save`,
+  LOADING: `Loading...`,
+};
+
+export const LOADING_CLASSNAME = `state-loading`;
+
 export default class TripEventEdit extends AbstractComponent {
   private _type: EventType;
   private _destination: Destination;
@@ -115,6 +122,20 @@ export default class TripEventEdit extends AbstractComponent {
   <label class="event__label  event__type-output" for="event-destination-1">
     ${ucFirstLetter(typeName)} ${preposition}
   </label>`.trim();
+  }
+
+  // eslint-disable-next-line quotes
+  public lockForm(actionType: "save" | "delete" = `save`): void {
+    let button: HTMLButtonElement;
+    if (actionType === `save`) {
+      button = this._element.querySelector<HTMLButtonElement>(`.event__save-btn`);
+    } else if (actionType === `delete`) {
+      button = this._element.querySelector<HTMLButtonElement>(`.event__reset-btn`);
+    }
+    const form = this._element.querySelector<HTMLElement>(`.trip-events__item`);
+    button.innerText = ButtonText.LOADING;
+    button.disabled = true;
+    form.classList.add(LOADING_CLASSNAME);
   }
 
   private _getEventDetails(): string {
