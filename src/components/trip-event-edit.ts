@@ -1,7 +1,6 @@
 import { ucFirstLetter } from "../util/uc-first";
 // @ts-ignore
 import { format } from "date-fns";
-import { cities } from "../models/places";
 import AbstractComponent from "./abstract-component";
 import EventTypeList from "./event-type-list";
 import OptionsComponent from "./options.component";
@@ -12,6 +11,7 @@ import { AssignedOfferItem } from "../types/offer";
 import { EventDate } from "../types/event-date";
 import { EventType } from "../types/event-type";
 import { Point } from "../types/point";
+import { allDestinations } from "../data";
 
 export default class TripEventEdit extends AbstractComponent {
   private _type: EventType;
@@ -62,7 +62,7 @@ export default class TripEventEdit extends AbstractComponent {
           this._destination.name
         }" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${cities.map(item => `<option value="${item}"></option>`).join(``)}
+          ${allDestinations.map(item => `<option value="${item.name}"></option>`).join(``)}
         </datalist>
       </div>
       
