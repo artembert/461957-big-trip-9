@@ -28,7 +28,7 @@ function getPictures(pictures: DestinationPicture[]): string {
         <div class="event__photos-tape">
           ${pictures
             .map(picture => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`.trim())
-            .join()}
+            .join(``)}
         </div>
       </div>`;
 }
