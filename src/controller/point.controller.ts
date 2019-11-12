@@ -11,12 +11,13 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
 import { EventMode } from "../models/event-mode";
-import { allOptions } from "../data";
+import { allDestinations, allOptions } from "../data";
 import { EventTypeName } from "../types/event-type-name";
 import { AssignedOfferItem } from "../types/offer";
 import { PointControllerConfig } from "../types/point-controller-config";
 import { Point } from "../types/point";
 import { EventModeValue } from "../types/event-mode-value";
+import DestinationComponent from "../components/destination.component";
 
 export class PointController {
   private readonly _container: HTMLDivElement;
@@ -27,6 +28,7 @@ export class PointController {
   private _onViewChange: () => void;
   private _tripEvent: TripEvent;
   private _tripEventEdit: TripEventEdit;
+  private _destinationComponent: DestinationComponent;
 
   constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode }: PointControllerConfig) {
     this._container = container;
@@ -117,6 +119,11 @@ export class PointController {
     const onRemoveEvent = (): void => {
       this._onRemoveEvent(this._eventData);
     };
+    const onChangeDestination = evt => {
+      const newDestinationName = evt.target.value;
+      this._eventData.destination = allDestinations.find(destination => destination.name === newDestinationName);
+      this.replaceDestinationDescription();
+    };
 
     this._tripEvent
       .getElement()
@@ -142,6 +149,10 @@ export class PointController {
       .getElement()
       .querySelector(`.event__rollup-btn`)
       .addEventListener(`click`, onResetEvent);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__input--destination`)
+      .addEventListener(`change`, onChangeDestination);
 
     if (this._mode === EventMode.READ) {
       render(this._tripEvent.getElement(), this._container);
@@ -158,6 +169,22 @@ export class PointController {
 
   public closeEditForm(): void {
     this._tripEventEdit.getElement().replaceWith(this._tripEvent.getElement());
+  }
+
+  private replaceDestinationDescription(): void {
+    const destinationMarkupUpdated: HTMLElement = new DestinationComponent(this._eventData.destination).getElement();
+    const detailsMarkup: HTMLElement = this._tripEventEdit.getElement().querySelector<HTMLElement>(`.event__details`);
+    if (detailsMarkup) {
+      const destinationMarkup: HTMLElement = this._tripEventEdit
+        .getElement()
+        .querySelector<HTMLElement>(`.event__section--destination`);
+      if (destinationMarkup) {
+        destinationMarkup.replaceWith(destinationMarkupUpdated);
+      } else {
+        detailsMarkup.appendChild(destinationMarkupUpdated);
+      }
+    } else {
+    }
   }
 }
 
