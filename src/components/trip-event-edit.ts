@@ -20,6 +20,7 @@ export const ButtonText = {
 };
 
 export const LOADING_CLASSNAME = `state-loading`;
+export const ERROR_CLASSNAME = `state-error`;
 
 export default class TripEventEdit extends AbstractComponent {
   private _type: EventType;
@@ -32,6 +33,7 @@ export default class TripEventEdit extends AbstractComponent {
   private _destinationMarkup: string;
   private _eventTypeListMarkup: string;
   private _optionsMarkup: string;
+  private _formElement: HTMLFormElement;
 
   public onRequestError: VoidFunction;
 
@@ -136,10 +138,9 @@ export default class TripEventEdit extends AbstractComponent {
     } else if (actionType === `delete`) {
       button = this._element.querySelector<HTMLButtonElement>(`.event__reset-btn`);
     }
-    const form = this._element.querySelector<HTMLElement>(`.trip-events__item`);
     button.innerText = ButtonText.LOADING;
     button.disabled = true;
-    form.classList.add(LOADING_CLASSNAME);
+    this._form.classList.add(LOADING_CLASSNAME);
   }
 
   public unlockWithError(): void {
@@ -147,17 +148,25 @@ export default class TripEventEdit extends AbstractComponent {
     this._unlockForm();
   }
 
+  private get _form(): HTMLFormElement {
+    if (!this._formElement) {
+      this._formElement = this._element.querySelector<HTMLFormElement>(`.trip-events__item`);
+    }
+    return this._formElement;
+  }
+
   private _unlockForm(): void {
     const saveButton = this._element.querySelector<HTMLButtonElement>(`.event__save-btn`);
     const deleteButton = this._element.querySelector<HTMLButtonElement>(`.event__reset-btn`);
-    const form = this._element.querySelector<HTMLElement>(`.trip-events__item`);
     saveButton.innerText = ButtonText.NORMAL;
     deleteButton.innerText = ButtonText.DELETE;
-    form.classList.remove(LOADING_CLASSNAME);
+    saveButton.disabled = false;
+    deleteButton.disabled = false;
+    this._form.classList.remove(LOADING_CLASSNAME);
   }
 
   private _shake(): void {
-    this._element.style.border = `2px solid red`;
+    this._form.classList.add(ERROR_CLASSNAME);
   }
 
   private _getEventDetails(): string {

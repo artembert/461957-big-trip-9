@@ -993,3 +993,7 @@ main {
   border-radius: 18px;
   z-index: 1;
 }
+.state-error {
+  /*border: 3px solid palevioletred;*/
+  box-shadow: 0 0 0 3px #eb0b02;
+}
