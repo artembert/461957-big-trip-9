@@ -20,16 +20,19 @@ import { EventModeValue } from "../types/event-mode-value";
 import DestinationComponent from "../components/destination.component";
 import OptionsComponent from "../components/options.component";
 import { PointAction } from "../models/point-action";
+import { HandleServerError } from "../types/handle-server-error";
 
 export class PointController {
   private readonly _container: HTMLDivElement;
   private _eventData: Point;
   private _mode: EventModeValue;
-  private _onDataChange: (EventEditInputField) => void;
-  private _onRemoveEvent: (Point) => void;
+  private _onDataChange: (entry: Point) => void;
+  private _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
   private _onViewChange: () => void;
   private _tripEvent: TripEvent;
   private _tripEventEdit: TripEventEdit;
+
+  public onRequestError: VoidFunction;
 
   constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode }: PointControllerConfig) {
     this._container = container;
@@ -40,6 +43,7 @@ export class PointController {
     this._onViewChange = onViewChange;
     this._tripEvent = new TripEvent(this._eventData);
     this._tripEventEdit = new TripEventEdit(this._eventData);
+    this.onRequestError = this._tripEventEdit.onRequestError.bind(this);
   }
 
   public init(): void {
@@ -124,7 +128,7 @@ export class PointController {
     };
     const onRemoveEvent = (): void => {
       this._tripEventEdit.lockForm(PointAction.DELETE);
-      this._onRemoveEvent(this._eventData);
+      this._onRemoveEvent(this._eventData, this.onRequestError);
     };
     const onChangeDestination = evt => {
       const newDestinationName = evt.target.value;

@@ -25,6 +25,7 @@ import { TripControllerConfig } from "../types/trip-controller-config";
 import { OnDataChange } from "../types/on-data-change";
 import { Action } from "../models/action";
 import { allDestinations } from "../data";
+import { HandleServerError } from "../types/handle-server-error";
 
 export class TripController {
   private readonly _container: Element;
@@ -182,8 +183,8 @@ export class TripController {
     this._subscriptions.push(event.closeEventsEdit.bind(event));
   }
 
-  private _removeEvent(event: Point): void {
-    this._onDataChangeMain(Action.DELETE, event);
+  private _removeEvent(event: Point, onError: HandleServerError): void {
+    this._onDataChangeMain({ actionType: Action.DELETE, point: event, onError: onError });
   }
 
   private _onSortChange(evt: Event): void {
@@ -199,24 +200,17 @@ export class TripController {
     this._isEventCreating = false;
     if (entry.isNew) {
       const newPoint: Point = fillDestinationProperties(updateProps(getDefaultEvent(), entry));
-      this._onDataChangeMain(Action.CREATE, newPoint);
+      this._onDataChangeMain({ actionType: Action.CREATE, point: newPoint });
     } else {
       let changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
       changedProperty = updateProps(changedProperty, entry);
-      this._onDataChangeMain(Action.UPDATE, changedProperty);
+      this._onDataChangeMain({ actionType: Action.UPDATE, point: changedProperty });
     }
   }
 
-  private _onRemoveEvent(event: Point): void {
+  private _onRemoveEvent(event: Point, onError: HandleServerError): void {
     this._isEventCreating = false;
-    this._removeEvent(event);
-    this.unrenderDayList();
-    if (this._eventList.length) {
-      this._renderDayList();
-    } else {
-      this.unrenderSort();
-      this._renderEmptyEventList();
-    }
+    this._removeEvent(event, onError);
   }
 
   private _onViewChange(): void {
