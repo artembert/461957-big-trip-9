@@ -16,6 +16,7 @@ import { allDestinations } from "../data";
 export const ButtonText = {
   NORMAL: `Save`,
   LOADING: `Loading...`,
+  DELETE: `Delete`,
 };
 
 export const LOADING_CLASSNAME = `state-loading`;
@@ -31,6 +32,8 @@ export default class TripEventEdit extends AbstractComponent {
   private _destinationMarkup: string;
   private _eventTypeListMarkup: string;
   private _optionsMarkup: string;
+
+  public onRequestError: VoidFunction;
 
   constructor({ type, destination, price, options, date, isNew, isFavourite }: Point) {
     super();
@@ -49,6 +52,7 @@ export default class TripEventEdit extends AbstractComponent {
     this._eventTypeListMarkup = new EventTypeList(this._type).getTemplate();
     this._optionsMarkup =
       this._options && this._options.length ? new OptionsComponent(this._options).getTemplate() : ``;
+    this.onRequestError = this.unlockWithError.bind(this);
   }
 
   public getTemplate(): string {
@@ -136,6 +140,24 @@ export default class TripEventEdit extends AbstractComponent {
     button.innerText = ButtonText.LOADING;
     button.disabled = true;
     form.classList.add(LOADING_CLASSNAME);
+  }
+
+  public unlockWithError(): void {
+    this._shake();
+    this._unlockForm();
+  }
+
+  private _unlockForm(): void {
+    const saveButton = this._element.querySelector<HTMLButtonElement>(`.event__save-btn`);
+    const deleteButton = this._element.querySelector<HTMLButtonElement>(`.event__reset-btn`);
+    const form = this._element.querySelector<HTMLElement>(`.trip-events__item`);
+    saveButton.innerText = ButtonText.NORMAL;
+    deleteButton.innerText = ButtonText.DELETE;
+    form.classList.remove(LOADING_CLASSNAME);
+  }
+
+  private _shake(): void {
+    this._element.style.border = `2px solid red`;
   }
 
   private _getEventDetails(): string {
