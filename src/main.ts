@@ -9,10 +9,9 @@ import api from "./api";
 import { allDestinations, allOptions } from "./data";
 import { EventFilterValue } from "./types/event-filter-value";
 import { InfoController } from "./controller/info.controller";
-import { Point } from "./types/point";
-import { ActionType } from "./types/action-type";
 import { Route } from "./types/route";
 import { Action } from "./models/action";
+import { OnDataChangeConfig } from "./types/on-data-change-config";
 
 const headerElement = document.querySelector<HTMLElement>(`.trip-main`);
 const menuContainer = document.querySelector(`.trip-main__menu`);
@@ -46,7 +45,7 @@ api.getEvents().then(eventList => {
   onChangeRoute(Pages.EVENTS);
 });
 
-function onDataChange(actionType: ActionType, point: Point): void {
+function onDataChange({ actionType, point, onError }: OnDataChangeConfig): void {
   switch (actionType) {
     case Action.CREATE:
       api
@@ -56,6 +55,9 @@ function onDataChange(actionType: ActionType, point: Point): void {
           infoController.updateData(eventList);
           eventsController.updateData(eventList);
           eventsController.rerender();
+        })
+        .catch(e => {
+          onError(e);
         });
       break;
     case Action.UPDATE:
@@ -66,6 +68,9 @@ function onDataChange(actionType: ActionType, point: Point): void {
           infoController.updateData(eventList);
           eventsController.updateData(eventList);
           eventsController.rerender();
+        })
+        .catch(e => {
+          onError(e);
         });
       break;
     case Action.DELETE:
@@ -76,6 +81,9 @@ function onDataChange(actionType: ActionType, point: Point): void {
           infoController.updateData(eventList);
           eventsController.updateData(eventList);
           eventsController.rerender();
+        })
+        .catch(e => {
+          onError(e);
         });
       break;
   }
