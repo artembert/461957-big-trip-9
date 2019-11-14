@@ -21,6 +21,7 @@ export const ButtonText = {
 
 export const LOADING_CLASSNAME = `state-loading`;
 export const ERROR_CLASSNAME = `state-error`;
+export const SHAKE_CLASSNAME = `state-shake`;
 
 export default class TripEventEdit extends AbstractComponent {
   private _type: EventType;
@@ -140,6 +141,8 @@ export default class TripEventEdit extends AbstractComponent {
     }
     button.innerText = ButtonText.LOADING;
     button.disabled = true;
+    this._form.classList.remove(ERROR_CLASSNAME);
+    this._form.classList.remove(SHAKE_CLASSNAME);
     this._form.classList.add(LOADING_CLASSNAME);
   }
 
@@ -167,6 +170,7 @@ export default class TripEventEdit extends AbstractComponent {
 
   private _shake(): void {
     this._form.classList.add(ERROR_CLASSNAME);
+    this._form.classList.add(SHAKE_CLASSNAME);
   }
 
   private _getEventDetails(): string {
