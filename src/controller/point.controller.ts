@@ -1,6 +1,6 @@
 import TripEvent from "../components/trip-event";
 import TripEventEdit from "../components/trip-event-edit";
-import { createElement, render } from "../util/dom";
+import { createElement, render, unrender } from "../util/dom";
 // @ts-ignore
 import parse from "date-fns/parse";
 // @ts-ignore
@@ -195,14 +195,18 @@ export class PointController {
   }
 
   private replaceDestinationDescription(): void {
-    const destinationMarkupUpdated: HTMLElement = new DestinationComponent(this._eventData.destination).getElement();
     const destinationMarkup: HTMLElement = this._tripEventEdit
       .getElement()
       .querySelector<HTMLElement>(`.event__section--destination`);
-    if (destinationMarkup) {
-      destinationMarkup.replaceWith(destinationMarkupUpdated);
+    if (!this._eventData.destination) {
+      unrender(destinationMarkup);
     } else {
-      this._detailsElement.append(destinationMarkupUpdated);
+      const destinationMarkupUpdated: HTMLElement = new DestinationComponent(this._eventData.destination).getElement();
+      if (destinationMarkup) {
+        destinationMarkup.replaceWith(destinationMarkupUpdated);
+      } else {
+        this._detailsElement.append(destinationMarkupUpdated);
+      }
     }
   }
 
