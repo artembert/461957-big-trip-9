@@ -184,7 +184,7 @@ export class TripController {
   }
 
   private _removeEvent(event: Point, onError: HandleServerError): void {
-    this._onDataChangeMain({ actionType: Action.DELETE, point: event, onError: onError });
+    this._onDataChangeMain({ actionType: Action.DELETE, point: event, onError });
   }
 
   private _onSortChange(evt: Event): void {
