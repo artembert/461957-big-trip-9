@@ -134,6 +134,7 @@ export class PointController {
       const newDestinationName = evt.target.value;
       this._eventData.destination = allDestinations.find(destination => destination.name === newDestinationName);
       this.replaceDestinationDescription();
+      this._tripEventEdit.validateDestination(!!this._eventData.destination);
     };
 
     this._tripEvent

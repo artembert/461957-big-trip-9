@@ -36,6 +36,7 @@ export default class TripEventEdit extends AbstractComponent {
   private _optionsMarkup: string;
   private _formElement: HTMLFormElement;
 
+  public validateDestination: (isValid: boolean) => void;
   public onRequestError: VoidFunction;
 
   constructor({ type, destination, price, options, date, isNew, isFavourite }: Point) {
@@ -56,6 +57,7 @@ export default class TripEventEdit extends AbstractComponent {
     this._optionsMarkup =
       this._options && this._options.length ? new OptionsComponent(this._options).getTemplate() : ``;
     this.onRequestError = this.unlockWithError.bind(this);
+    this.validateDestination = this._validateDestination.bind(this);
   }
 
   public getTemplate(): string {
@@ -182,6 +184,18 @@ export default class TripEventEdit extends AbstractComponent {
     </section>`;
     } else {
       return ``;
+    }
+  }
+
+  private _validateDestination(isValid: boolean): void {
+    const saveButton: HTMLButtonElement = this._element.querySelector<HTMLButtonElement>(`.event__save-btn`);
+    const inputField: HTMLInputElement = this._element.querySelector<HTMLInputElement>(`.event__input--destination`);
+    if (isValid) {
+      saveButton.disabled = false;
+      inputField.classList.remove(ERROR_CLASSNAME);
+    } else {
+      saveButton.disabled = true;
+      inputField.classList.add(ERROR_CLASSNAME);
     }
   }
 }
