@@ -819,6 +819,8 @@ main {
 
 .event__favorite-checkbox:checked + .event__favorite-btn {
   color: #ffd054; }
+.event__favorite-checkbox:focus + .event__favorite-btn {
+  outline: -webkit-focus-ring-color auto 1px; }
 
 .event__favorite-icon {
   display: block;
