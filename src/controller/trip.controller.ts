@@ -196,15 +196,15 @@ export class TripController {
     this._renderDayList();
   }
 
-  private _onDataChange(entry: Point): void {
+  private _onDataChange(entry: Point, onError: HandleServerError): void {
     this._isEventCreating = false;
     if (entry.isNew) {
       const newPoint: Point = fillDestinationProperties(updateProps(getDefaultEvent(), entry));
-      this._onDataChangeMain({ actionType: Action.CREATE, point: newPoint });
+      this._onDataChangeMain({ actionType: Action.CREATE, point: newPoint, onError });
     } else {
       let changedProperty = this._eventList.find(tripEvent => tripEvent.id === entry.id);
       changedProperty = updateProps(changedProperty, entry);
-      this._onDataChangeMain({ actionType: Action.UPDATE, point: changedProperty });
+      this._onDataChangeMain({ actionType: Action.UPDATE, point: changedProperty, onError });
     }
   }
 

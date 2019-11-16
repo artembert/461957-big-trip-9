@@ -26,7 +26,7 @@ export class PointController {
   private readonly _container: HTMLDivElement;
   private _eventData: Point;
   private _mode: EventModeValue;
-  private _onDataChange: (entry: Point) => void;
+  private _onDataChange: (entry: Point, onError: HandleServerError) => void;
   private _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
   private _onViewChange: () => void;
   private _tripEvent: TripEvent;
@@ -88,7 +88,7 @@ export class PointController {
         isFavourite: !!formData.get(`event-favorite`),
         isNew: this._eventData.isNew,
       };
-      this._onDataChange(entry);
+      this._onDataChange(entry, this.onRequestError);
       document.removeEventListener(`keydown`, onKeyDown);
     };
     const onResetEvent = () => {

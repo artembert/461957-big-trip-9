@@ -6,7 +6,7 @@ export interface PointControllerConfig {
   eventData: Point;
   container: HTMLDivElement;
   eventMode: EventModeValue;
-  onDataChange: (entry: Point) => void;
+  onDataChange: (entry: Point, onError: HandleServerError) => void;
   onViewChange: () => void;
   onRemoveEvent: (point: Point, onError: HandleServerError) => void;
 }
