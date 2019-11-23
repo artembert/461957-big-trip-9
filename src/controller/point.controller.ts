@@ -47,12 +47,6 @@ export class PointController {
   }
 
   public init(): void {
-    //TODO: resolve
-    getAllOptions({
-      assertedOptions: this._eventData.options,
-      type: this._eventData.type,
-      allOptions,
-    });
     const flatpickrStart = flatpickr(
       this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`),
       getDateConfig(this._eventData.date.start),
@@ -238,12 +232,6 @@ export class PointController {
   private _unrenderPointEdit(): void {
     console.log(`_unrenderPointEdit`);
   }
-}
-
-function getAllOptions({ assertedOptions, type, allOptions }) {
-  // TODO: resolve it
-  return assertedOptions;
-  return allOptions.find(groupOption => groupOption.type === type).offers;
 }
 
 function parseTimeTag(dateTime: FormDataEntryValue | null): number {
