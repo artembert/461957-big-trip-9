@@ -188,10 +188,10 @@ export class PointController {
 
   private _initFlatpickr(): void {
     const flatpickrStart = flatpickr(
-      this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`),
+      this._tripEventEdit.getElement().querySelector(`.event__input--time-start`),
       getDateConfig(this._eventData.date.start),
     );
-    const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), {
+    const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelector(`.event__input--time-end`), {
       ...getDateConfig(this._eventData.date.end),
       minDate: this._eventData.date.start,
     });
