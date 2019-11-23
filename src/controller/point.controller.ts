@@ -222,6 +222,22 @@ export class PointController {
       this._detailsElement.prepend(optionsMarkupUpdated);
     }
   }
+
+  private _renderPointEdit(): void {
+    console.log(`_renderPointEdit`);
+  }
+
+  private _unrenderPoint(): void {
+    console.log(`_unrenderPoint`);
+  }
+
+  private _renderPoint(): void {
+    console.log(`_renderPoint`);
+  }
+
+  private _unrenderPointEdit(): void {
+    console.log(`_unrenderPointEdit`);
+  }
 }
 
 function getAllOptions({ assertedOptions, type, allOptions }) {
