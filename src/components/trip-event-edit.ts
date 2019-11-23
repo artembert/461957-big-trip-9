@@ -76,7 +76,7 @@ export default class TripEventEdit extends AbstractComponent {
         ${this.getDestinationLabelTemplate(this._type.name, this._type.preposition)}
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${
           this._destination.name
-        }" list="destination-list-1">
+        }" list="destination-list-1" placeholder="select from options">
         <datalist id="destination-list-1">
           ${allDestinations.map(item => `<option value="${item.name}"></option>`).join(``)}
         </datalist>

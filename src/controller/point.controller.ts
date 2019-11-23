@@ -143,7 +143,6 @@ export class PointController {
   }
 
   private _onDeleteEvent(): void {
-    // debugger;
     if (this._eventData.isNew) {
       this._requestToRefresh();
     } else {
