@@ -24,11 +24,11 @@ import { HandleServerError } from "../types/handle-server-error";
 
 export class PointController {
   private readonly _container: HTMLDivElement;
-  private _eventData: Point;
-  private _mode: EventModeValue;
-  private _onDataChange: (entry: Point, onError: HandleServerError) => void;
-  private _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
-  private _onViewChange: () => void;
+  private readonly _eventData: Point;
+  private readonly _mode: EventModeValue;
+  private readonly _onDataChange: (entry: Point, onError: HandleServerError) => void;
+  private readonly _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
+  private readonly _onViewChange: () => void;
   private _tripEvent: TripEvent;
   private _tripEventEdit: TripEventEdit;
 
