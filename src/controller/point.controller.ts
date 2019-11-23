@@ -60,7 +60,7 @@ export class PointController {
     const onEditEvent = () => {
       this._onViewChange();
       this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
-      document.addEventListener(`keydown`, onKeyDown);
+      document.addEventListener(`keydown`, this._onKeyDown.bind(this));
     };
     const onSaveEvent = evt => {
       this._tripEventEdit.lockForm();
@@ -83,17 +83,7 @@ export class PointController {
         isNew: this._eventData.isNew,
       };
       this._onDataChange(entry, this.onRequestError);
-      document.removeEventListener(`keydown`, onKeyDown);
-    };
-    const onResetEvent = () => {
-      this.closeEditForm();
-      document.removeEventListener(`keydown`, onKeyDown);
-    };
-    const onKeyDown = evt => {
-      if (evt.code === `Esc` || evt.code === `Escape`) {
-        onResetEvent();
-        document.removeEventListener(`keydown`, onKeyDown);
-      }
+      document.removeEventListener(`keydown`, this._onKeyDown.bind(this));
     };
     const onChangeType = evt => {
       if (evt.target.checked) {
@@ -154,7 +144,7 @@ export class PointController {
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, onResetEvent);
+      .addEventListener(`click`, this._onResetEvent.bind(this));
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__input--destination`)
@@ -217,16 +207,30 @@ export class PointController {
     }
   }
 
-  private _renderPointEdit(): void {
-    console.log(`_renderPointEdit`);
+  private _onResetEvent(): void {
+    this.closeEditForm();
+    document.removeEventListener(`keydown`, this._onKeyDown);
+  }
+
+  private _onKeyDown(evt: KeyboardEvent): void {
+    if (evt.code === `Esc` || evt.code === `Escape`) {
+      this._onResetEvent();
+      document.removeEventListener(`keydown`, this._onKeyDown);
+    }
+  }
+
+  private _renderPoint(): void {
+    console.log(`_renderPoint`);
+    this._addPointEventListeners();
   }
 
   private _unrenderPoint(): void {
     console.log(`_unrenderPoint`);
   }
 
-  private _renderPoint(): void {
-    console.log(`_renderPoint`);
+  private _renderPointEdit(): void {
+    console.log(`_renderPointEdit`);
+    this._addPointEditEventListeners();
   }
 
   private _unrenderPointEdit(): void {
