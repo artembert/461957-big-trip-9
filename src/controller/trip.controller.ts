@@ -12,9 +12,7 @@ import getMonth from "date-fns/getMonth";
 import getYear from "date-fns/getYear";
 import { PointController } from "./point.controller";
 import { getId } from "../util/get-id";
-import { EventMode } from "../models/event-mode";
 import { EventFilter, filterFns } from "../models/event-filter";
-import { EventModeValue } from "../types/event-mode-value";
 import { EventFilterValue } from "../types/event-filter-value";
 import { SortValue } from "../types/sort-value";
 import { Point } from "../types/point";
@@ -53,6 +51,7 @@ export class TripController {
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onRemoveEvent = this._onRemoveEvent.bind(this);
+    this._requestToRefresh = this._requestToRefresh.bind(this);
   }
 
   private get _isShowDay(): boolean {
@@ -99,8 +98,7 @@ export class TripController {
     if (this._isEventCreating) {
       return;
     }
-    // TODO: compare with previously state: `if (!this._dayList) {`
-    if (!this._dayList) {
+    if (!this._eventList.length) {
       unrender(this._emptyPointList.getElement());
       this._emptyPointList.removeElement();
       this._renderSort();
@@ -174,10 +172,11 @@ export class TripController {
     const event = new PointController({
       eventData,
       container,
-      eventMode: getEventMode(eventData.isNew),
+      isEditing: eventData.isNew,
       onDataChange: this._onDataChange,
       onViewChange: this._onViewChange,
       onRemoveEvent: this._onRemoveEvent,
+      requestToRefresh: this._requestToRefresh,
     });
     event.init();
     this._subscriptions.push(event.closeEventsEdit.bind(event));
@@ -216,6 +215,11 @@ export class TripController {
   private _onViewChange(): void {
     this._subscriptions.forEach(subscription => subscription());
   }
+
+  private _requestToRefresh(): void {
+    this._isEventCreating = false;
+    this._onDataChangeMain({ actionType: Action.REFRESH });
+  }
 }
 
 function groupEventsByDay(eventList: Point[]) {
@@ -238,10 +242,6 @@ function updateProps(originalEvent: Point, newEvent: Point): Point {
   const updatedEvent: Point = objectAssignDeep(originalEvent, newEvent);
   updatedEvent.isNew = false;
   return updatedEvent;
-}
-
-function getEventMode(isNew: boolean): EventModeValue {
-  return isNew ? EventMode.EDIT : EventMode.READ;
 }
 
 function getDefaultEvent(): Point {

@@ -164,7 +164,8 @@ main {
   margin-bottom: 35px; }
 
 .trip-main__trip-controls {
-  width: 600px; }
+  width: 600px;
+  align-self: center; }
 
 .trip-main__event-add-btn {
   min-width: 170px; }
@@ -923,6 +924,15 @@ main {
   display: flex;
   -ms-flex-align: start;
       align-items: flex-start; }
+
+.event__photos-container::-webkit-scrollbar {
+  height: 5px;
+}
+
+.event__photos-container::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 2px;
+}
 
 .event__photo {
   display: block;

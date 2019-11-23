@@ -36,5 +36,6 @@ module.exports = {
       2,
       { overrides: { constructors: 'no-public' }},
     ],
+    "@typescript-eslint/ban-ts-ignore": [0, false]
   },
 };

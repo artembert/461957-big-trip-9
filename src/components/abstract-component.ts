@@ -14,7 +14,11 @@ export default abstract class AbstractComponent {
     if (!this._element) {
       this._element = createElement(this.getTemplate().trim());
     }
-    return this._element as HTMLElement;
+    if (this._element) {
+      return this._element as HTMLElement;
+    } else {
+      return document.createElement(`div`);
+    }
   }
 
   public abstract getTemplate(): string;

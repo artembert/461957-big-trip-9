@@ -10,13 +10,11 @@ import { getTypeByName } from "../util/get-type-by-name";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
-import { EventMode } from "../models/event-mode";
 import { allDestinations, allOptions } from "../data";
 import { EventTypeName } from "../types/event-type-name";
 import { AssignedOfferItem } from "../types/offer";
 import { PointControllerConfig } from "../types/point-controller-config";
 import { Point } from "../types/point";
-import { EventModeValue } from "../types/event-mode-value";
 import DestinationComponent from "../components/destination.component";
 import OptionsComponent from "../components/options.component";
 import { PointAction } from "../models/point-action";
@@ -24,163 +22,64 @@ import { HandleServerError } from "../types/handle-server-error";
 
 export class PointController {
   private readonly _container: HTMLDivElement;
-  private _eventData: Point;
-  private _mode: EventModeValue;
-  private _onDataChange: (entry: Point, onError: HandleServerError) => void;
-  private _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
-  private _onViewChange: () => void;
-  private _tripEvent: TripEvent;
-  private _tripEventEdit: TripEventEdit;
+  private readonly _eventData: Point;
+  private _isEditing: boolean;
+  private readonly _onDataChange: (entry: Point, onError: HandleServerError) => void;
+  private readonly _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
+  private readonly _onViewChange: () => void;
+  private readonly _tripEvent: TripEvent;
+  private readonly _tripEventEdit: TripEventEdit;
+  private readonly _requestToRefresh: () => void;
 
   public onRequestError: VoidFunction;
 
-  constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode }: PointControllerConfig) {
+  constructor({
+    eventData,
+    container,
+    onDataChange,
+    onViewChange,
+    onRemoveEvent,
+    isEditing,
+    requestToRefresh,
+  }: PointControllerConfig) {
     this._container = container;
     this._eventData = eventData;
-    this._mode = eventMode;
+    this._isEditing = isEditing;
     this._onDataChange = onDataChange;
     this._onRemoveEvent = onRemoveEvent;
     this._onViewChange = onViewChange;
+    this._requestToRefresh = requestToRefresh;
     this._tripEvent = new TripEvent(this._eventData);
     this._tripEventEdit = new TripEventEdit(this._eventData);
     this.onRequestError = this._tripEventEdit.onRequestError.bind(this);
+
+    this._onSaveEvent = this._onSaveEvent.bind(this);
+    this._onDeleteEvent = this._onDeleteEvent.bind(this);
+    this._onChangeType = this._onChangeType.bind(this);
+    this._onResetEvent = this._onResetEvent.bind(this);
+    this._onChangeDestination = this._onChangeDestination.bind(this);
+    this._onKeyDown = this._onKeyDown.bind(this);
+    this._onEditEvent = this._onEditEvent.bind(this);
+    this._requestToRefresh = this._requestToRefresh.bind(this);
   }
 
   public init(): void {
-    //TODO: resolve
-    getAllOptions({
-      assertedOptions: this._eventData.options,
-      type: this._eventData.type,
-      allOptions,
-    });
-    const flatpickrStart = flatpickr(
-      this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`),
-      getDateConfig(this._eventData.date.start),
-    );
-    const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), {
-      ...getDateConfig(this._eventData.date.end),
-      minDate: this._eventData.date.start,
-    });
-    flatpickrStart.config.onChange.push(selectedDates => flatpickrEnd.set(`minDate`, selectedDates[0]));
-
-    const onEditEvent = () => {
-      this._onViewChange();
-      this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
-      document.addEventListener(`keydown`, onKeyDown);
-    };
-    const onSaveEvent = evt => {
-      this._tripEventEdit.lockForm();
-      evt.preventDefault();
-      const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
-      const entry: Point = {
-        type: formData.get(`event-type`) as EventTypeName,
-        date: {
-          start: parseTimeTag(formData.get(`event-start-time`)),
-          duration: getEventDuration(formData.get(`event-start-time`), formData.get(`event-end-time`)),
-          end: parseTimeTag(formData.get(`event-end-time`)),
-        },
-        destination: {
-          name: formData.get(`event-destination`) as string,
-        },
-        price: +formData.get(`event-price`),
-        options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),
-        id: this._eventData.id,
-        isFavourite: !!formData.get(`event-favorite`),
-        isNew: this._eventData.isNew,
-      };
-      this._onDataChange(entry, this.onRequestError);
-      document.removeEventListener(`keydown`, onKeyDown);
-    };
-    const onResetEvent = () => {
-      this.closeEditForm();
-      document.removeEventListener(`keydown`, onKeyDown);
-    };
-    const onKeyDown = evt => {
-      if (evt.code === `Esc` || evt.code === `Escape`) {
-        onResetEvent();
-        document.removeEventListener(`keydown`, onKeyDown);
-      }
-    };
-    const onChangeType = evt => {
-      if (evt.target.checked) {
-        return;
-      }
-      const selectedTypeName = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`)).get(
-        `event-type`,
-      ) as EventTypeName;
-      const selectedType = getTypeByName(selectedTypeName);
-      const updatedTypeElement = createElement(this._tripEventEdit.getSelectedTypeTemplate(selectedType.icon));
-      const updatedDestinationLabelElement = createElement(
-        this._tripEventEdit.getDestinationLabelTemplate(selectedType.name, selectedType.preposition),
-      );
-      this._tripEventEdit
-        .getElement()
-        .querySelector(`.event__type-btn`)
-        .replaceWith(updatedTypeElement);
-      this._tripEventEdit
-        .getElement()
-        .querySelector(`.event__type-output`)
-        .replaceWith(updatedDestinationLabelElement);
-      this._eventData.options = allOptions
-        .find(option => option.type === selectedType.name)
-        .offers.map(offer => ({ ...offer, accepted: false }));
-      this.replaceOptions();
-    };
-    const onRemoveEvent = (): void => {
-      this._tripEventEdit.lockForm(PointAction.DELETE);
-      this._onRemoveEvent(this._eventData, this.onRequestError);
-    };
-    const onChangeDestination = evt => {
-      const newDestinationName = evt.target.value;
-      this._eventData.destination = allDestinations.find(destination => destination.name === newDestinationName);
-      this.replaceDestinationDescription();
-      this._tripEventEdit.validateDestination(!!this._eventData.destination);
-    };
-
-    this._tripEvent
-      .getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, onEditEvent);
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__save-btn`)
-      .addEventListener(`click`, onSaveEvent);
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event--edit`)
-      .addEventListener(`submit`, onSaveEvent);
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, onRemoveEvent);
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__type-toggle`)
-      .addEventListener(`change`, onChangeType);
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, onResetEvent);
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__input--destination`)
-      .addEventListener(`change`, onChangeDestination);
-
-    if (this._mode === EventMode.READ) {
-      render(this._tripEvent.getElement(), this._container);
-    } else if (this._mode === EventMode.EDIT) {
-      render(this._tripEventEdit.getElement(), this._container);
+    if (this._isEditing) {
+      this._renderPointEdit();
+    } else {
+      this._renderPoint();
     }
   }
 
   public closeEventsEdit(): void {
-    if (this._container.contains(this._tripEventEdit.getElement())) {
+    if (this._isEditing) {
       this.closeEditForm();
     }
   }
 
   public closeEditForm(): void {
     this._tripEventEdit.getElement().replaceWith(this._tripEvent.getElement());
+    this._isEditing = false;
   }
 
   private get _detailsElement(): HTMLElement {
@@ -222,12 +121,150 @@ export class PointController {
       this._detailsElement.prepend(optionsMarkupUpdated);
     }
   }
-}
 
-function getAllOptions({ assertedOptions, type, allOptions }) {
-  // TODO: resolve it
-  return assertedOptions;
-  return allOptions.find(groupOption => groupOption.type === type).offers;
+  private _onResetEvent(): void {
+    this.closeEditForm();
+    document.removeEventListener(`keydown`, this._onKeyDown);
+  }
+
+  private _onKeyDown(evt: KeyboardEvent): void {
+    if (evt.code === `Esc` || evt.code === `Escape`) {
+      this._onResetEvent();
+      document.removeEventListener(`keydown`, this._onKeyDown);
+    }
+  }
+
+  private _onEditEvent(): void {
+    this._onViewChange();
+    this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
+    this._isEditing = true;
+    this._addPointEditEventListeners();
+    document.addEventListener(`keydown`, this._onKeyDown);
+  }
+
+  private _onDeleteEvent(): void {
+    if (this._eventData.isNew) {
+      this._requestToRefresh();
+    } else {
+      this._tripEventEdit.lockForm(PointAction.DELETE);
+      this._onRemoveEvent(this._eventData, this.onRequestError);
+    }
+  }
+
+  private _onChangeDestination(evt: InputEvent): void {
+    const newDestinationName = (evt.target as HTMLInputElement).value;
+    this._eventData.destination = allDestinations.find(destination => destination.name === newDestinationName);
+    this.replaceDestinationDescription();
+    this._tripEventEdit.validateDestination(!!this._eventData.destination);
+  }
+
+  private _onChangeType(evt: Event): void {
+    if ((evt.target as HTMLInputElement).checked) {
+      return;
+    }
+    const selectedTypeName = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`)).get(
+      `event-type`,
+    ) as EventTypeName;
+    const selectedType = getTypeByName(selectedTypeName);
+    const updatedTypeElement = createElement(this._tripEventEdit.getSelectedTypeTemplate(selectedType.icon));
+    const updatedDestinationLabelElement = createElement(
+      this._tripEventEdit.getDestinationLabelTemplate(selectedType.name, selectedType.preposition),
+    );
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__type-btn`)
+      .replaceWith(updatedTypeElement);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__type-output`)
+      .replaceWith(updatedDestinationLabelElement);
+    this._eventData.options = allOptions
+      .find(option => option.type === selectedType.name)
+      .offers.map(offer => ({ ...offer, accepted: false }));
+    this.replaceOptions();
+  }
+
+  private _onSaveEvent(evt: Event): void {
+    evt.preventDefault();
+    this._tripEventEdit.lockForm();
+    const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
+    const entry: Point = {
+      type: formData.get(`event-type`) as EventTypeName,
+      date: {
+        start: parseTimeTag(formData.get(`event-start-time`)),
+        duration: getEventDuration(formData.get(`event-start-time`), formData.get(`event-end-time`)),
+        end: parseTimeTag(formData.get(`event-end-time`)),
+      },
+      destination: {
+        name: formData.get(`event-destination`) as string,
+      },
+      price: +formData.get(`event-price`),
+      options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),
+      id: this._eventData.id,
+      isFavourite: !!formData.get(`event-favorite`),
+      isNew: this._eventData.isNew,
+    };
+    this._onDataChange(entry, this.onRequestError);
+    document.removeEventListener(`keydown`, this._onKeyDown);
+  }
+
+  private _initFlatpickr(): void {
+    const flatpickrStart = flatpickr(
+      this._tripEventEdit.getElement().querySelector(`.event__input--time-start`),
+      getDateConfig(this._eventData.date.start),
+    );
+    const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelector(`.event__input--time-end`), {
+      ...getDateConfig(this._eventData.date.end),
+      minDate: this._eventData.date.start,
+    });
+    flatpickrStart.config.onChange.push(selectedDates => flatpickrEnd.set(`minDate`, selectedDates[0]));
+  }
+
+  private _renderPoint(): void {
+    render(this._tripEvent.getElement(), this._container);
+    this._addPointEventListeners();
+  }
+
+  private _renderPointEdit(): void {
+    render(this._tripEventEdit.getElement(), this._container);
+    this._addPointEditEventListeners();
+  }
+
+  private _addPointEventListeners(): void {
+    this._tripEvent
+      .getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, this._onEditEvent);
+  }
+
+  private _addPointEditEventListeners(): void {
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__save-btn`)
+      .addEventListener(`click`, this._onSaveEvent);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event--edit`)
+      .addEventListener(`submit`, this._onSaveEvent);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, this._onDeleteEvent);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__type-toggle`)
+      .addEventListener(`change`, this._onChangeType);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, this._onResetEvent);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__input--destination`)
+      .addEventListener(`change`, this._onChangeDestination);
+
+    this._initFlatpickr();
+  }
 }
 
 function parseTimeTag(dateTime: FormDataEntryValue | null): number {

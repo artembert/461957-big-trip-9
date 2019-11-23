@@ -13,6 +13,8 @@ import { Route } from "./types/route";
 import { Action } from "./models/action";
 import { OnDataChangeConfig } from "./types/on-data-change-config";
 
+const IS_NAV_ACTIVE = false;
+
 const headerElement = document.querySelector<HTMLElement>(`.trip-main`);
 const menuContainer = document.querySelector(`.trip-main__menu`);
 const filterContainer = document.querySelector(`.trip-main__filter`);
@@ -22,11 +24,9 @@ const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
 api.getOptions().then(response => {
   allOptions.push(...response);
-  console.log(allOptions);
 });
 api.getDestinations().then(response => {
   allDestinations.push(...response);
-  console.log(allDestinations);
 });
 
 const menu = new Menu(getMenuItems());
@@ -36,7 +36,9 @@ const statsController = new StatsController(statisticsContainer);
 const eventsController = new TripController({ container: scheduleElement, onDataChange: onDataChange });
 
 infoController.rerenderInfo();
-render(menu.getElement(), menuContainer);
+if (IS_NAV_ACTIVE) {
+  render(menu.getElement(), menuContainer);
+}
 render(filter.getElement(), filterContainer);
 addEventListeners();
 api.getEvents().then(eventList => {
@@ -77,6 +79,18 @@ function onDataChange({ actionType, point, onError }: OnDataChangeConfig): void 
       api
         .deleteEvent({ id: point.id })
         .then(() => api.getEvents())
+        .then(eventList => {
+          infoController.updateData(eventList);
+          eventsController.updateData(eventList);
+          eventsController.rerender();
+        })
+        .catch(e => {
+          onError(e);
+        });
+      break;
+    case Action.REFRESH:
+      api
+        .getEvents()
         .then(eventList => {
           infoController.updateData(eventList);
           eventsController.updateData(eventList);
