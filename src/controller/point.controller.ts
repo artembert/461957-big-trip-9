@@ -47,15 +47,7 @@ export class PointController {
   }
 
   public init(): void {
-    const flatpickrStart = flatpickr(
-      this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`),
-      getDateConfig(this._eventData.date.start),
-    );
-    const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), {
-      ...getDateConfig(this._eventData.date.end),
-      minDate: this._eventData.date.start,
-    });
-    flatpickrStart.config.onChange.push(selectedDates => flatpickrEnd.set(`minDate`, selectedDates[0]));
+    this._initFlatpickr();
 
     this._tripEvent
       .getElement()
@@ -221,6 +213,18 @@ export class PointController {
     };
     this._onDataChange(entry, this.onRequestError);
     document.removeEventListener(`keydown`, this._onKeyDown);
+  }
+
+  private _initFlatpickr(): void {
+    const flatpickrStart = flatpickr(
+      this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-start`),
+      getDateConfig(this._eventData.date.start),
+    );
+    const flatpickrEnd = flatpickr(this._tripEventEdit.getElement().querySelectorAll(`.event__input--time-end`), {
+      ...getDateConfig(this._eventData.date.end),
+      minDate: this._eventData.date.start,
+    });
+    flatpickrStart.config.onChange.push(selectedDates => flatpickrEnd.set(`minDate`, selectedDates[0]));
   }
 
   private _renderPoint(): void {
