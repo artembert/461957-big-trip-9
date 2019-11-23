@@ -80,37 +80,6 @@ export class PointController {
       this._onDataChange(entry, this.onRequestError);
       document.removeEventListener(`keydown`, this._onKeyDown.bind(this));
     };
-    const onChangeType = evt => {
-      if (evt.target.checked) {
-        return;
-      }
-      const selectedTypeName = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`)).get(
-        `event-type`,
-      ) as EventTypeName;
-      const selectedType = getTypeByName(selectedTypeName);
-      const updatedTypeElement = createElement(this._tripEventEdit.getSelectedTypeTemplate(selectedType.icon));
-      const updatedDestinationLabelElement = createElement(
-        this._tripEventEdit.getDestinationLabelTemplate(selectedType.name, selectedType.preposition),
-      );
-      this._tripEventEdit
-        .getElement()
-        .querySelector(`.event__type-btn`)
-        .replaceWith(updatedTypeElement);
-      this._tripEventEdit
-        .getElement()
-        .querySelector(`.event__type-output`)
-        .replaceWith(updatedDestinationLabelElement);
-      this._eventData.options = allOptions
-        .find(option => option.type === selectedType.name)
-        .offers.map(offer => ({ ...offer, accepted: false }));
-      this.replaceOptions();
-    };
-    const onChangeDestination = evt => {
-      const newDestinationName = evt.target.value;
-      this._eventData.destination = allDestinations.find(destination => destination.name === newDestinationName);
-      this.replaceDestinationDescription();
-      this._tripEventEdit.validateDestination(!!this._eventData.destination);
-    };
 
     this._tripEvent
       .getElement()
@@ -131,7 +100,7 @@ export class PointController {
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__type-toggle`)
-      .addEventListener(`change`, onChangeType);
+      .addEventListener(`change`, this._onChangeType.bind(this));
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__rollup-btn`)
@@ -139,7 +108,7 @@ export class PointController {
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__input--destination`)
-      .addEventListener(`change`, onChangeDestination);
+      .addEventListener(`change`, this._onChangeDestination.bind(this));
 
     if (this._mode === EventMode.READ) {
       render(this._tripEvent.getElement(), this._container);
@@ -219,6 +188,39 @@ export class PointController {
   private _onDeleteEvent(): void {
     this._tripEventEdit.lockForm(PointAction.DELETE);
     this._onRemoveEvent(this._eventData, this.onRequestError);
+  }
+
+  private _onChangeDestination(evt: InputEvent): void {
+    const newDestinationName = (evt.target as HTMLInputElement).value;
+    this._eventData.destination = allDestinations.find(destination => destination.name === newDestinationName);
+    this.replaceDestinationDescription();
+    this._tripEventEdit.validateDestination(!!this._eventData.destination);
+  }
+
+  private _onChangeType(evt: Event): void {
+    if ((evt.target as HTMLInputElement).checked) {
+      return;
+    }
+    const selectedTypeName = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`)).get(
+      `event-type`,
+    ) as EventTypeName;
+    const selectedType = getTypeByName(selectedTypeName);
+    const updatedTypeElement = createElement(this._tripEventEdit.getSelectedTypeTemplate(selectedType.icon));
+    const updatedDestinationLabelElement = createElement(
+      this._tripEventEdit.getDestinationLabelTemplate(selectedType.name, selectedType.preposition),
+    );
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__type-btn`)
+      .replaceWith(updatedTypeElement);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__type-output`)
+      .replaceWith(updatedDestinationLabelElement);
+    this._eventData.options = allOptions
+      .find(option => option.type === selectedType.name)
+      .offers.map(offer => ({ ...offer, accepted: false }));
+    this.replaceOptions();
   }
 
   private _renderPoint(): void {
