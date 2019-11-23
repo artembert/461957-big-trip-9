@@ -13,6 +13,8 @@ import { Route } from "./types/route";
 import { Action } from "./models/action";
 import { OnDataChangeConfig } from "./types/on-data-change-config";
 
+const IS_NAV_ACTIVE = false;
+
 const headerElement = document.querySelector<HTMLElement>(`.trip-main`);
 const menuContainer = document.querySelector(`.trip-main__menu`);
 const filterContainer = document.querySelector(`.trip-main__filter`);
@@ -34,7 +36,9 @@ const statsController = new StatsController(statisticsContainer);
 const eventsController = new TripController({ container: scheduleElement, onDataChange: onDataChange });
 
 infoController.rerenderInfo();
-render(menu.getElement(), menuContainer);
+if (IS_NAV_ACTIVE) {
+  render(menu.getElement(), menuContainer);
+}
 render(filter.getElement(), filterContainer);
 addEventListeners();
 api.getEvents().then(eventList => {
