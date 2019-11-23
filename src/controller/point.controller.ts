@@ -211,19 +211,9 @@ export class PointController {
     this._addPointEventListeners();
   }
 
-  private _unrenderPoint(): void {
-    this._removePointEditEventListeners();
-    unrender(this._tripEvent.getElement());
-  }
-
   private _renderPointEdit(): void {
     render(this._tripEventEdit.getElement(), this._container);
     this._addPointEditEventListeners();
-  }
-
-  private _unrenderPointEdit(): void {
-    this._removePointEditEventListeners();
-    unrender(this._tripEventEdit.getElement());
   }
 
   private _addPointEventListeners(): void {
@@ -233,12 +223,7 @@ export class PointController {
       .addEventListener(`click`, this._onEditEvent);
   }
 
-  private _removePointEventListeners(): void {
-    console.log(this);
-  }
-
   private _addPointEditEventListeners(): void {
-    console.log(`_addPointEditEventListeners`);
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__save-btn`)
@@ -265,10 +250,6 @@ export class PointController {
       .addEventListener(`change`, this._onChangeDestination);
 
     this._initFlatpickr();
-  }
-
-  private _removePointEditEventListeners(): void {
-    console.log(this);
   }
 }
 
