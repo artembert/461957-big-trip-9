@@ -57,30 +57,6 @@ export class PointController {
     });
     flatpickrStart.config.onChange.push(selectedDates => flatpickrEnd.set(`minDate`, selectedDates[0]));
 
-    const onSaveEvent = evt => {
-      this._tripEventEdit.lockForm();
-      evt.preventDefault();
-      const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
-      const entry: Point = {
-        type: formData.get(`event-type`) as EventTypeName,
-        date: {
-          start: parseTimeTag(formData.get(`event-start-time`)),
-          duration: getEventDuration(formData.get(`event-start-time`), formData.get(`event-end-time`)),
-          end: parseTimeTag(formData.get(`event-end-time`)),
-        },
-        destination: {
-          name: formData.get(`event-destination`) as string,
-        },
-        price: +formData.get(`event-price`),
-        options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),
-        id: this._eventData.id,
-        isFavourite: !!formData.get(`event-favorite`),
-        isNew: this._eventData.isNew,
-      };
-      this._onDataChange(entry, this.onRequestError);
-      document.removeEventListener(`keydown`, this._onKeyDown.bind(this));
-    };
-
     this._tripEvent
       .getElement()
       .querySelector(`.event__rollup-btn`)
@@ -88,11 +64,11 @@ export class PointController {
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__save-btn`)
-      .addEventListener(`click`, onSaveEvent);
+      .addEventListener(`click`, this._onSaveEvent.bind(this));
     this._tripEventEdit
       .getElement()
       .querySelector(`.event--edit`)
-      .addEventListener(`submit`, onSaveEvent);
+      .addEventListener(`submit`, this._onSaveEvent.bind(this));
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__reset-btn`)
@@ -221,6 +197,30 @@ export class PointController {
       .find(option => option.type === selectedType.name)
       .offers.map(offer => ({ ...offer, accepted: false }));
     this.replaceOptions();
+  }
+
+  private _onSaveEvent(evt: Event): void {
+    evt.preventDefault();
+    this._tripEventEdit.lockForm();
+    const formData = new FormData(this._tripEventEdit.getElement().querySelector(`.event--edit`));
+    const entry: Point = {
+      type: formData.get(`event-type`) as EventTypeName,
+      date: {
+        start: parseTimeTag(formData.get(`event-start-time`)),
+        duration: getEventDuration(formData.get(`event-start-time`), formData.get(`event-end-time`)),
+        end: parseTimeTag(formData.get(`event-end-time`)),
+      },
+      destination: {
+        name: formData.get(`event-destination`) as string,
+      },
+      price: +formData.get(`event-price`),
+      options: getOptions(this._tripEventEdit.getElement().querySelector(`.event--edit`)),
+      id: this._eventData.id,
+      isFavourite: !!formData.get(`event-favorite`),
+      isNew: this._eventData.isNew,
+    };
+    this._onDataChange(entry, this.onRequestError);
+    document.removeEventListener(`keydown`, this._onKeyDown);
   }
 
   private _renderPoint(): void {
