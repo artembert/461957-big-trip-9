@@ -22,11 +22,9 @@ const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
 api.getOptions().then(response => {
   allOptions.push(...response);
-  console.log(allOptions);
 });
 api.getDestinations().then(response => {
   allDestinations.push(...response);
-  console.log(allDestinations);
 });
 
 const menu = new Menu(getMenuItems());
