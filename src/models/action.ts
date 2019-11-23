@@ -4,4 +4,5 @@ export const Action: { [key: string]: ActionType } = {
   CREATE: `create`,
   UPDATE: `update`,
   DELETE: `delete`,
+  REFRESH: `refresh`,
 };

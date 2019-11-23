@@ -7,5 +7,6 @@ export interface PointControllerConfig {
   isEditing: boolean;
   onDataChange: (entry: Point, onError: HandleServerError) => void;
   onViewChange: () => void;
+  requestToRefresh: () => void;
   onRemoveEvent: (point: Point, onError: HandleServerError) => void;
 }

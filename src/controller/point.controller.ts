@@ -29,16 +29,26 @@ export class PointController {
   private readonly _onViewChange: () => void;
   private readonly _tripEvent: TripEvent;
   private readonly _tripEventEdit: TripEventEdit;
+  private readonly _requestToRefresh: () => void;
 
   public onRequestError: VoidFunction;
 
-  constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, isEditing }: PointControllerConfig) {
+  constructor({
+    eventData,
+    container,
+    onDataChange,
+    onViewChange,
+    onRemoveEvent,
+    isEditing,
+    requestToRefresh,
+  }: PointControllerConfig) {
     this._container = container;
     this._eventData = eventData;
     this._isEditing = isEditing;
     this._onDataChange = onDataChange;
     this._onRemoveEvent = onRemoveEvent;
     this._onViewChange = onViewChange;
+    this._requestToRefresh = requestToRefresh;
     this._tripEvent = new TripEvent(this._eventData);
     this._tripEventEdit = new TripEventEdit(this._eventData);
     this.onRequestError = this._tripEventEdit.onRequestError.bind(this);
@@ -50,6 +60,7 @@ export class PointController {
     this._onChangeDestination = this._onChangeDestination.bind(this);
     this._onKeyDown = this._onKeyDown.bind(this);
     this._onEditEvent = this._onEditEvent.bind(this);
+    this._requestToRefresh = this._requestToRefresh.bind(this);
   }
 
   public init(): void {
@@ -132,8 +143,13 @@ export class PointController {
   }
 
   private _onDeleteEvent(): void {
-    this._tripEventEdit.lockForm(PointAction.DELETE);
-    this._onRemoveEvent(this._eventData, this.onRequestError);
+    // debugger;
+    if (this._eventData.isNew) {
+      this._requestToRefresh();
+    } else {
+      this._tripEventEdit.lockForm(PointAction.DELETE);
+      this._onRemoveEvent(this._eventData, this.onRequestError);
+    }
   }
 
   private _onChangeDestination(evt: InputEvent): void {

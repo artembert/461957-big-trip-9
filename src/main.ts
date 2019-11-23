@@ -88,6 +88,18 @@ function onDataChange({ actionType, point, onError }: OnDataChangeConfig): void 
           onError(e);
         });
       break;
+    case Action.REFRESH:
+      api
+        .getEvents()
+        .then(eventList => {
+          infoController.updateData(eventList);
+          eventsController.updateData(eventList);
+          eventsController.rerender();
+        })
+        .catch(e => {
+          onError(e);
+        });
+      break;
   }
 }
 

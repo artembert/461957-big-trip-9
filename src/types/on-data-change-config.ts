@@ -4,6 +4,6 @@ import { HandleServerError } from "./handle-server-error";
 
 export interface OnDataChangeConfig {
   actionType: ActionType;
-  point: Point;
+  point?: Point;
   onError?: HandleServerError;
 }

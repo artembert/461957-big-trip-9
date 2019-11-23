@@ -202,8 +202,8 @@ export default class TripEventEdit extends AbstractComponent {
 
 function getActionButtons(isNew: boolean): string {
   return `
-    <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-    <button class="event__reset-btn">${isNew ? `Cancel` : `Delete`}</button>
+    <button class="event__save-btn  btn  btn--blue" type="button">Save</button>
+    <button class="event__reset-btn" type="button">${isNew ? `Cancel` : `Delete`}</button>
   `.trim();
 }
 

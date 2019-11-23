@@ -51,6 +51,7 @@ export class TripController {
     this._onDataChange = this._onDataChange.bind(this);
     this._onViewChange = this._onViewChange.bind(this);
     this._onRemoveEvent = this._onRemoveEvent.bind(this);
+    this._requestToRefresh = this._requestToRefresh.bind(this);
   }
 
   private get _isShowDay(): boolean {
@@ -175,6 +176,7 @@ export class TripController {
       onDataChange: this._onDataChange,
       onViewChange: this._onViewChange,
       onRemoveEvent: this._onRemoveEvent,
+      requestToRefresh: this._requestToRefresh,
     });
     event.init();
     this._subscriptions.push(event.closeEventsEdit.bind(event));
@@ -212,6 +214,11 @@ export class TripController {
 
   private _onViewChange(): void {
     this._subscriptions.forEach(subscription => subscription());
+  }
+
+  private _requestToRefresh(): void {
+    this._isEventCreating = false;
+    this._onDataChangeMain({ actionType: Action.REFRESH });
   }
 }
 
