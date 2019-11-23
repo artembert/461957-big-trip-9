@@ -57,11 +57,6 @@ export class PointController {
     });
     flatpickrStart.config.onChange.push(selectedDates => flatpickrEnd.set(`minDate`, selectedDates[0]));
 
-    const onEditEvent = () => {
-      this._onViewChange();
-      this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
-      document.addEventListener(`keydown`, this._onKeyDown.bind(this));
-    };
     const onSaveEvent = evt => {
       this._tripEventEdit.lockForm();
       evt.preventDefault();
@@ -110,10 +105,6 @@ export class PointController {
         .offers.map(offer => ({ ...offer, accepted: false }));
       this.replaceOptions();
     };
-    const onRemoveEvent = (): void => {
-      this._tripEventEdit.lockForm(PointAction.DELETE);
-      this._onRemoveEvent(this._eventData, this.onRequestError);
-    };
     const onChangeDestination = evt => {
       const newDestinationName = evt.target.value;
       this._eventData.destination = allDestinations.find(destination => destination.name === newDestinationName);
@@ -124,7 +115,7 @@ export class PointController {
     this._tripEvent
       .getElement()
       .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, onEditEvent);
+      .addEventListener(`click`, this._onEditEvent.bind(this));
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__save-btn`)
@@ -136,7 +127,7 @@ export class PointController {
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, onRemoveEvent);
+      .addEventListener(`click`, this._onDeleteEvent.bind(this));
     this._tripEventEdit
       .getElement()
       .querySelector(`.event__type-toggle`)
@@ -217,6 +208,17 @@ export class PointController {
       this._onResetEvent();
       document.removeEventListener(`keydown`, this._onKeyDown);
     }
+  }
+
+  private _onEditEvent(): void {
+    this._onViewChange();
+    this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
+    document.addEventListener(`keydown`, this._onKeyDown.bind(this));
+  }
+
+  private _onDeleteEvent(): void {
+    this._tripEventEdit.lockForm(PointAction.DELETE);
+    this._onRemoveEvent(this._eventData, this.onRequestError);
   }
 
   private _renderPoint(): void {
