@@ -25,7 +25,7 @@ import { HandleServerError } from "../types/handle-server-error";
 export class PointController {
   private readonly _container: HTMLDivElement;
   private readonly _eventData: Point;
-  private readonly _mode: EventModeValue;
+  private _mode: EventModeValue;
   private readonly _onDataChange: (entry: Point, onError: HandleServerError) => void;
   private readonly _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
   private readonly _onViewChange: () => void;
@@ -63,14 +63,14 @@ export class PointController {
   }
 
   public closeEventsEdit(): void {
-    // TODO: prevent getting elements
-    if (this._container.contains(this._tripEventEdit.getElement())) {
+    if (this._mode === `edit`) {
       this.closeEditForm();
     }
   }
 
   public closeEditForm(): void {
     this._tripEventEdit.getElement().replaceWith(this._tripEvent.getElement());
+    this._mode = `read`;
   }
 
   private get _detailsElement(): HTMLElement {
@@ -129,6 +129,7 @@ export class PointController {
     this._onViewChange();
     this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
     document.addEventListener(`keydown`, this._onKeyDown);
+    this._mode = `edit`;
     this._addPointEditEventListeners();
   }
 
