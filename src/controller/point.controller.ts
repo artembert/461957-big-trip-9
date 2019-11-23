@@ -29,8 +29,8 @@ export class PointController {
   private readonly _onDataChange: (entry: Point, onError: HandleServerError) => void;
   private readonly _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
   private readonly _onViewChange: () => void;
-  private _tripEvent: TripEvent;
-  private _tripEventEdit: TripEventEdit;
+  private readonly _tripEvent: TripEvent;
+  private readonly _tripEventEdit: TripEventEdit;
 
   public onRequestError: VoidFunction;
 
@@ -47,45 +47,15 @@ export class PointController {
   }
 
   public init(): void {
-    this._initFlatpickr();
-
-    this._tripEvent
-      .getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, this._onEditEvent.bind(this));
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__save-btn`)
-      .addEventListener(`click`, this._onSaveEvent.bind(this));
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event--edit`)
-      .addEventListener(`submit`, this._onSaveEvent.bind(this));
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__reset-btn`)
-      .addEventListener(`click`, this._onDeleteEvent.bind(this));
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__type-toggle`)
-      .addEventListener(`change`, this._onChangeType.bind(this));
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__rollup-btn`)
-      .addEventListener(`click`, this._onResetEvent.bind(this));
-    this._tripEventEdit
-      .getElement()
-      .querySelector(`.event__input--destination`)
-      .addEventListener(`change`, this._onChangeDestination.bind(this));
-
     if (this._mode === EventMode.READ) {
-      render(this._tripEvent.getElement(), this._container);
+      this._renderPoint();
     } else if (this._mode === EventMode.EDIT) {
-      render(this._tripEventEdit.getElement(), this._container);
+      this._renderPointEdit();
     }
   }
 
   public closeEventsEdit(): void {
+    // TODO: prevent getting elements
     if (this._container.contains(this._tripEventEdit.getElement())) {
       this.closeEditForm();
     }
@@ -151,6 +121,7 @@ export class PointController {
     this._onViewChange();
     this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
     document.addEventListener(`keydown`, this._onKeyDown.bind(this));
+    this._addPointEditEventListeners();
   }
 
   private _onDeleteEvent(): void {
@@ -224,25 +195,73 @@ export class PointController {
       ...getDateConfig(this._eventData.date.end),
       minDate: this._eventData.date.start,
     });
+    debugger;
     flatpickrStart.config.onChange.push(selectedDates => flatpickrEnd.set(`minDate`, selectedDates[0]));
   }
 
   private _renderPoint(): void {
-    console.log(`_renderPoint`);
+    render(this._tripEvent.getElement(), this._container);
     this._addPointEventListeners();
   }
 
   private _unrenderPoint(): void {
-    console.log(`_unrenderPoint`);
+    this._removePointEditEventListeners();
+    unrender(this._tripEvent.getElement());
   }
 
   private _renderPointEdit(): void {
-    console.log(`_renderPointEdit`);
+    render(this._tripEventEdit.getElement(), this._container);
     this._addPointEditEventListeners();
   }
 
   private _unrenderPointEdit(): void {
-    console.log(`_unrenderPointEdit`);
+    this._removePointEditEventListeners();
+    unrender(this._tripEventEdit.getElement());
+  }
+
+  private _addPointEventListeners(): void {
+    this._tripEvent
+      .getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, this._onEditEvent.bind(this));
+  }
+
+  private _removePointEventListeners(): void {
+    console.log(this);
+  }
+
+  private _addPointEditEventListeners(): void {
+    console.log(`_addPointEditEventListeners`);
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__save-btn`)
+      .addEventListener(`click`, this._onSaveEvent.bind(this));
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event--edit`)
+      .addEventListener(`submit`, this._onSaveEvent.bind(this));
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__reset-btn`)
+      .addEventListener(`click`, this._onDeleteEvent.bind(this));
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__type-toggle`)
+      .addEventListener(`change`, this._onChangeType.bind(this));
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__rollup-btn`)
+      .addEventListener(`click`, this._onResetEvent.bind(this));
+    this._tripEventEdit
+      .getElement()
+      .querySelector(`.event__input--destination`)
+      .addEventListener(`change`, this._onChangeDestination.bind(this));
+
+    this._initFlatpickr();
+  }
+
+  private _removePointEditEventListeners(): void {
+    console.log(this);
   }
 }
 
