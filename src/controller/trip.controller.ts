@@ -97,8 +97,7 @@ export class TripController {
     if (this._isEventCreating) {
       return;
     }
-    // TODO: compare with previously state: `if (!this._dayList) {`
-    if (!this._dayList) {
+    if (!this._eventList.length) {
       unrender(this._emptyPointList.getElement());
       this._emptyPointList.removeElement();
       this._renderSort();
