@@ -10,13 +10,11 @@ import { getTypeByName } from "../util/get-type-by-name";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import "flatpickr/dist/themes/light.css";
-import { EventMode } from "../models/event-mode";
 import { allDestinations, allOptions } from "../data";
 import { EventTypeName } from "../types/event-type-name";
 import { AssignedOfferItem } from "../types/offer";
 import { PointControllerConfig } from "../types/point-controller-config";
 import { Point } from "../types/point";
-import { EventModeValue } from "../types/event-mode-value";
 import DestinationComponent from "../components/destination.component";
 import OptionsComponent from "../components/options.component";
 import { PointAction } from "../models/point-action";
@@ -25,7 +23,7 @@ import { HandleServerError } from "../types/handle-server-error";
 export class PointController {
   private readonly _container: HTMLDivElement;
   private readonly _eventData: Point;
-  private _mode: EventModeValue;
+  private _isEditing: boolean;
   private readonly _onDataChange: (entry: Point, onError: HandleServerError) => void;
   private readonly _onRemoveEvent: (point: Point, onError: HandleServerError) => void;
   private readonly _onViewChange: () => void;
@@ -34,10 +32,10 @@ export class PointController {
 
   public onRequestError: VoidFunction;
 
-  constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, eventMode }: PointControllerConfig) {
+  constructor({ eventData, container, onDataChange, onViewChange, onRemoveEvent, isEditing }: PointControllerConfig) {
     this._container = container;
     this._eventData = eventData;
-    this._mode = eventMode;
+    this._isEditing = isEditing;
     this._onDataChange = onDataChange;
     this._onRemoveEvent = onRemoveEvent;
     this._onViewChange = onViewChange;
@@ -55,22 +53,22 @@ export class PointController {
   }
 
   public init(): void {
-    if (this._mode === EventMode.READ) {
-      this._renderPoint();
-    } else if (this._mode === EventMode.EDIT) {
+    if (this._isEditing) {
       this._renderPointEdit();
+    } else {
+      this._renderPoint();
     }
   }
 
   public closeEventsEdit(): void {
-    if (this._mode === `edit`) {
+    if (this._isEditing) {
       this.closeEditForm();
     }
   }
 
   public closeEditForm(): void {
     this._tripEventEdit.getElement().replaceWith(this._tripEvent.getElement());
-    this._mode = `read`;
+    this._isEditing = false;
   }
 
   private get _detailsElement(): HTMLElement {
@@ -128,9 +126,9 @@ export class PointController {
   private _onEditEvent(): void {
     this._onViewChange();
     this._tripEvent.getElement().replaceWith(this._tripEventEdit.getElement());
-    document.addEventListener(`keydown`, this._onKeyDown);
-    this._mode = `edit`;
+    this._isEditing = true;
     this._addPointEditEventListeners();
+    document.addEventListener(`keydown`, this._onKeyDown);
   }
 
   private _onDeleteEvent(): void {

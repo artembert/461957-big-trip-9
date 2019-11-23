@@ -12,9 +12,7 @@ import getMonth from "date-fns/getMonth";
 import getYear from "date-fns/getYear";
 import { PointController } from "./point.controller";
 import { getId } from "../util/get-id";
-import { EventMode } from "../models/event-mode";
 import { EventFilter, filterFns } from "../models/event-filter";
-import { EventModeValue } from "../types/event-mode-value";
 import { EventFilterValue } from "../types/event-filter-value";
 import { SortValue } from "../types/sort-value";
 import { Point } from "../types/point";
@@ -174,7 +172,7 @@ export class TripController {
     const event = new PointController({
       eventData,
       container,
-      eventMode: getEventMode(eventData.isNew),
+      isEditing: eventData.isNew,
       onDataChange: this._onDataChange,
       onViewChange: this._onViewChange,
       onRemoveEvent: this._onRemoveEvent,
@@ -238,10 +236,6 @@ function updateProps(originalEvent: Point, newEvent: Point): Point {
   const updatedEvent: Point = objectAssignDeep(originalEvent, newEvent);
   updatedEvent.isNew = false;
   return updatedEvent;
-}
-
-function getEventMode(isNew: boolean): EventModeValue {
-  return isNew ? EventMode.EDIT : EventMode.READ;
 }
 
 function getDefaultEvent(): Point {
