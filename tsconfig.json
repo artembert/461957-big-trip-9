@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "es6",
+    "noImplicitAny": false,
+    "noErrorTruncation": true,
+    "target": "esnext",
+    "allowJs": true,
+    "sourceMap": true,
+    "noEmit": false
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "lib": [
+    "dom"
+  ]
+}
