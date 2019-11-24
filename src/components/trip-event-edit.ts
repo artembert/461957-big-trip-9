@@ -1,6 +1,6 @@
 import { ucFirstLetter } from "../util/uc-first";
 // @ts-ignore
-import { format } from "date-fns";
+import format from "date-fns/format";
 import AbstractComponent from "./abstract-component";
 import EventTypeList from "./event-type-list";
 import OptionsComponent from "./options.component";
