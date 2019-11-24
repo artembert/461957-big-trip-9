@@ -24,11 +24,4 @@ module.exports = {
   resolve: {
     extensions: [`.ts`, `.js`, `.json`, `.webpack.js`],
   },
-  devtool: `inline-source-map`,
-  devServer: {
-    contentBase: path.join(__dirname, `public`),
-    publicPath: `http://localhost:9090/`,
-    port: 9090,
-    watchContentBase: true,
-  },
 };
