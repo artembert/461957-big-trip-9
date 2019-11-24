@@ -4,7 +4,7 @@ import { render } from "./util/dom";
 import { getFilters, getMenuItems } from "./mock-data";
 import { TripController } from "./controller/trip.controller";
 import { Pages } from "./models/pages";
-import StatsController from "./controller/stats-controller";
+// import StatsController from "./controller/stats-controller";
 import api from "./api";
 import { allDestinations, allOptions } from "./data";
 import { EventFilterValue } from "./types/event-filter-value";
@@ -13,13 +13,11 @@ import { Route } from "./types/route";
 import { Action } from "./models/action";
 import { OnDataChangeConfig } from "./types/on-data-change-config";
 
-const IS_NAV_ACTIVE = false;
-
 const headerElement = document.querySelector<HTMLElement>(`.trip-main`);
-const menuContainer = document.querySelector(`.trip-main__menu`);
+// const menuContainer = document.querySelector(`.trip-main__menu`);
 const filterContainer = document.querySelector(`.trip-main__filter`);
 const scheduleElement = document.querySelector<HTMLElement>(`.trip-events`);
-const statisticsContainer = document.querySelector(`.page-main__container`);
+// const statisticsContainer = document.querySelector(`.page-main__container`);
 const addNewEventButton = document.querySelector(`.trip-main__event-add-btn`);
 
 api.getOptions().then(response => {
@@ -32,13 +30,11 @@ api.getDestinations().then(response => {
 const menu = new Menu(getMenuItems());
 const filter = new Filter(getFilters());
 const infoController = new InfoController(headerElement);
-const statsController = new StatsController(statisticsContainer);
+// const statsController = new StatsController(statisticsContainer);
 const eventsController = new TripController({ container: scheduleElement, onDataChange: onDataChange });
 
 infoController.rerenderInfo();
-if (IS_NAV_ACTIVE) {
-  render(menu.getElement(), menuContainer);
-}
+// render(menu.getElement(), menuContainer);
 render(filter.getElement(), filterContainer);
 addEventListeners();
 api.getEvents().then(eventList => {
@@ -108,11 +104,11 @@ function onChangeRoute(route: Route): void {
     case Pages.EVENTS:
       eventsController.unrenderTrip();
       eventsController.renderTrip();
-      statsController.destroy();
+      // statsController.destroy();
       break;
     case Pages.STATS:
-      eventsController.unrenderTrip();
-      statsController.init();
+      // eventsController.unrenderTrip();
+      // statsController.init();
       break;
   }
 }
