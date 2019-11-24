@@ -8,6 +8,9 @@
     "sourceMap": true,
     "noEmit": false
   },
+  "awesomeTypescriptLoaderOptions": {
+    "silent": true
+  },
   "exclude": [
     "node_modules"
   ],
