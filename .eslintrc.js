@@ -11,7 +11,7 @@ module.exports = {
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. '@typescript-eslint/explicit-function-return-type': 'off',
-    quotes: [2, "backtick"],
+    quotes: [2, "double", { "allowTemplateLiterals": true }],
     "@typescript-eslint/typedef": [
       2,
       {
